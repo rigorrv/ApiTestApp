@@ -33,7 +33,7 @@ fun HomeScreen(
                     }
                 }
                 composable(ComposeNavigation.MovieInfo.rout) {
-                    MovieInfo(info = info[index.value], navController = navController)
+                    MovieInfo(info = info[index.value], navController = navController,movieViewModel)
                 }
             }
         )
