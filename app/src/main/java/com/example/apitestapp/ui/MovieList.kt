@@ -10,20 +10,19 @@ import androidx.compose.foundation.lazy.LazyVerticalGrid
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Alignment.Companion.TopEnd
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberImagePainter
+import com.example.apitestapp.R
 import com.example.apitestapp.model.Result
 import com.example.apitestapp.utilities.ApplicationConstants.thumbPath
-import com.example.apitestapp.utilities.Remove
 import com.example.apitestapp.viewmodel.MovieViewModel
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -70,28 +69,28 @@ fun MovieList(
                                 Row(
                                     Modifier
                                         .background(
-                                            color = Color.White,
+                                            color = Color.Black,
                                             shape = RoundedCornerShape(20.dp)
                                         )
                                         .padding(5.dp)
                                 ) {
+                                    if (counterState.value.containsKey(item?.id)) {
+                                        Image(
+                                            painter = painterResource(id = R.drawable.remove),
+                                            contentDescription = "remove",
+                                        )
+                                    }
+                                    if (counterState.value.containsKey(item?.id)) {
+                                        Text(
+                                            text = counterState.value.filterKeys { it == item?.id }.values.joinToString(),
+                                            Modifier.width(20.dp),
+                                            textAlign = TextAlign.Center,
+                                            color = Color.White
+                                        )
+                                    }
                                     Image(
-                                        imageVector = Remove,
-                                        contentDescription = "Phone",
-                                        Modifier
-                                            .clickable {
-
-                                            }
-                                    )
-                                    Text(
-                                        text = counterState.value.filterKeys { it == item?.id }.values.joinToString(),
-                                        Modifier
-                                            .width(20.dp),
-                                        textAlign = TextAlign.Center
-                                    )
-                                    Image(
-                                        imageVector = Icons.Default.Add,
-                                        contentDescription = "Phone",
+                                        painterResource(id = R.drawable.add),
+                                        contentDescription = "add",
                                         Modifier
                                             .clickable {
                                                 movieViewModel.addCounter(item?.id)
