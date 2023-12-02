@@ -29,6 +29,13 @@ class MovieViewModel @Inject constructor(private val repository: Repository) : V
         counterStateFlow.value = listCounter
     }
 
+
+    fun removeCounter(id: Int?) {
+        idMovie.remove(id)
+        val listCounter = idMovie.groupingBy { it }.eachCount().toMutableMap()
+        counterStateFlow.value = listCounter
+    }
+
     private fun getMovie() {
         viewModelScope.launch {
             repository.getMovie().apply {

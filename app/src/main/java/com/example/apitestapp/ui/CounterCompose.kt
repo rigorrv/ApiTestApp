@@ -34,6 +34,9 @@ fun CounterCompose(viewModel: MovieViewModel, item: Result?) {
             Image(
                 painter = painterResource(id = R.drawable.remove),
                 contentDescription = "remove",
+                Modifier.clickable {
+                    viewModel.removeCounter(item?.id)
+                }
             )
         }
         if (counterState.value.containsKey(item?.id)) {
