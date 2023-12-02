@@ -10,15 +10,23 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-
 @HiltViewModel
 class MovieViewModel @Inject constructor(private val repository: Repository) : ViewModel() {
 
-    val _movieStateFlow = MutableStateFlow<MovieDB?>(MovieDB())
-    var movieStateFlow: StateFlow<MovieDB?> = _movieStateFlow
+    private val _movieStateFlow = MutableStateFlow<MovieDB?>(MovieDB())
+    val movieStateFlow: StateFlow<MovieDB?> = _movieStateFlow
+
+    var counterStateFlow = MutableStateFlow(mutableMapOf<Int?, Int>())
+    private val idMovie = mutableListOf<Int?>(0, 0)
 
     init {
         getMovie()
+    }
+
+    fun addCounter(id: Int?) {
+        idMovie.add(id)
+        val listCounter = idMovie.groupingBy { it }.eachCount().toMutableMap()
+        counterStateFlow.value = listCounter
     }
 
     private fun getMovie() {

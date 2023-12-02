@@ -7,39 +7,42 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment.Companion.CenterHorizontally
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import coil.compose.rememberImagePainter
 import com.example.apitestapp.model.Result
 import com.example.apitestapp.utilities.ApplicationConstants.imagePath
 
 @Composable
-fun MovieInfo(info: List<Result>, navController: NavController, index: Int) {
-    info[index].let {
+fun MovieInfo(info: Result?, navController: NavController) {
+    info?.let {
         Column(
             Modifier
                 .fillMaxWidth()
                 .fillMaxHeight(),
-            horizontalAlignment = CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Row(Modifier.fillMaxWidth()) {
                 Image(
-                    imageVector = Icons.Default.ArrowBack, contentDescription = it.title,
+                    imageVector = Icons.Default.ArrowBack, contentDescription = "Back",
                     Modifier
-                        .weight(3f)
-                        .clickable { navController.popBackStack() }
+                        .weight(2f)
+                        .clickable {
+                            navController.popBackStack()
+                        }
                 )
-                Text(text = it.title, Modifier.weight(8f), textAlign = TextAlign.Center)
-                Box(modifier = Modifier.weight(3f))
+                Text(text = info.title, Modifier.weight(8f), textAlign = TextAlign.Center)
+                Box(modifier = Modifier.weight(2f))
             }
-            Image(
-                painter = rememberImagePainter(data = imagePath + it.poster_path),
-                contentDescription = it.title
-            )
-            Text(text = it.overview, Modifier.padding(top = 20.dp), textAlign = TextAlign.Center)
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                Image(
+                    painter = rememberImagePainter(data = imagePath + info.poster_path),
+                    contentDescription = info.title
+                )
+                Text(text = info.overview, textAlign = TextAlign.Center)
+            }
         }
     }
 }

@@ -1,4 +1,4 @@
-package com.example.apitestapp.di
+package com.example.apitestapp.injection
 
 import com.example.apitestapp.api.Api
 import com.example.apitestapp.api.Repository
@@ -12,7 +12,6 @@ import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
-
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -36,5 +35,5 @@ class Injection {
 
     @Provides
     @Singleton
-    fun providesRepository(api: Api): Repository = Repository(api)
+    fun providesRepository(api: Api) = Repository(api)
 }
