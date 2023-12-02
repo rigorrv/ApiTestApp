@@ -4,4 +4,5 @@ sealed class ComposeNavigation(val rout: String) {
 
     object MovieList : ComposeNavigation("MovieList")
     object MovieInfo : ComposeNavigation("MovieInfo")
+    object Checkout : ComposeNavigation("Checkout")
 }

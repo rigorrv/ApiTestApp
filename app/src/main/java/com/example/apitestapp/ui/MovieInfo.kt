@@ -1,11 +1,11 @@
 package com.example.apitestapp.ui
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -26,24 +26,7 @@ fun MovieInfo(info: Result?, navController: NavController, movieViewModel: Movie
                 .fillMaxHeight(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-                Image(
-                    imageVector = Icons.Default.ArrowBack, contentDescription = "Back",
-                    Modifier
-                        .weight(2f)
-                        .clickable {
-                            navController.popBackStack()
-                        }
-                )
-                Text(
-                    text = info.title,
-                    Modifier
-                        .weight(8f)
-                        .padding(top = 20.dp, bottom = 20.dp),
-                    textAlign = TextAlign.Center
-                )
-                Box(modifier = Modifier.weight(2f))
-            }
+            Header(info = info, navController = navController, "")
             Column(
                 Modifier.padding(horizontal = 20.dp),
                 horizontalAlignment = Alignment.CenterHorizontally

@@ -12,7 +12,7 @@ import com.example.apitestapp.viewmodel.MovieViewModel
 @Composable
 fun HomeScreen(
     info: List<Result?>?,
-    movieViewModel: MovieViewModel
+    viewModel: MovieViewModel
 ) {
     val navController = rememberNavController()
     val index = remember {
@@ -24,16 +24,22 @@ fun HomeScreen(
             startDestination = ComposeNavigation.MovieList.rout,
             builder = {
                 composable(ComposeNavigation.MovieList.rout) {
-                    MovieList(
-                        info = info,
-                        movieViewModel
-                    ) {
+                    MovieList(info = info, movieViewModel = viewModel, click = {
                         index.value = it
                         navController.navigate(ComposeNavigation.MovieInfo.rout)
+                    }) {
+                        navController.navigate(ComposeNavigation.Checkout.rout)
                     }
                 }
                 composable(ComposeNavigation.MovieInfo.rout) {
-                    MovieInfo(info = info[index.value], navController = navController,movieViewModel)
+                    MovieInfo(
+                        info = info[index.value],
+                        navController = navController,
+                        viewModel
+                    )
+                }
+                composable(ComposeNavigation.Checkout.rout) {
+                    Checkout(info = info, viewModel,navController)
                 }
             }
         )
