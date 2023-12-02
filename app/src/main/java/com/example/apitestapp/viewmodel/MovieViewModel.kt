@@ -17,7 +17,7 @@ class MovieViewModel @Inject constructor(private val repository: Repository) : V
     val movieStateFlow: StateFlow<MovieDB?> = _movieStateFlow
 
     var counterStateFlow = MutableStateFlow(mutableMapOf<Int?, Int>())
-    private val idMovie = mutableListOf<Int?>(0, 0)
+    private val idMovie = mutableListOf<Int?>()
 
     init {
         getMovie()
