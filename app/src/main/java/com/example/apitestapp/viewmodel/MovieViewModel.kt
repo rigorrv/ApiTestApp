@@ -6,6 +6,7 @@ import com.example.apitestapp.api.Repository
 import com.example.apitestapp.model.MovieDB
 import com.example.apitestapp.utilities.ApplicationConstants.AddStepper
 import com.example.apitestapp.utilities.ApplicationConstants.Delet
+import com.example.apitestapp.utilities.ApplicationConstants.RemoveAll
 import com.example.apitestapp.utilities.ApplicationConstants.RemoveStepper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -25,6 +26,7 @@ class MovieViewModel @Inject constructor(private val repository: Repository) : V
         id?.let {
             when (action) {
                 RemoveStepper -> movieId.remove(id)
+                RemoveAll -> movieId.clear()
                 AddStepper -> movieId.add(id)
                 Delet -> while (movieId.contains(id)) {
                     movieId.remove(id)

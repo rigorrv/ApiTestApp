@@ -11,5 +11,6 @@ object ApplicationConstants {
     const val imagePath = "http://image.tmdb.org/t/p/w500/"
     const val AddStepper = "ADD"
     const val RemoveStepper = "Remove"
+    const val RemoveAll = "RemoveAll"
     const val Delet = "Delet"
 }

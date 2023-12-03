@@ -7,6 +7,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -27,17 +28,25 @@ fun MovieInfo(
                 .fillMaxHeight()
                 .fillMaxWidth()
         ) {
-            Row(Modifier.fillMaxWidth()) {
+            Row(
+                Modifier
+                    .fillMaxWidth()
+                    .padding(20.dp)
+            ) {
                 Image(
                     imageVector = Icons.Default.ArrowBack, contentDescription = "Back",
                     Modifier
                         .weight(2f)
                         .clickable { navClick.invoke() }
                 )
-                Text(text = info.title.toString(), Modifier.weight(8f))
+                Text(
+                    text = info.title.toString(),
+                    Modifier.weight(8f),
+                    textAlign = TextAlign.Center
+                )
                 Box(modifier = Modifier.weight(2f))
             }
-            Column {
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Image(
                     painter = rememberImagePainter(data = imagePath + info.poster_path),
                     contentDescription = info.title, Modifier.padding(bottom = 20.dp)
@@ -47,7 +56,7 @@ fun MovieInfo(
                 })
                 Text(
                     text = info.overview,
-                    Modifier.padding(horizontal = 20.dp),
+                    Modifier.padding(horizontal = 20.dp, vertical = 20.dp),
                     textAlign = TextAlign.Center
                 )
             }

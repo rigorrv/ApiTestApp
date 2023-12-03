@@ -1,5 +1,6 @@
 package com.example.apitestapp.ui
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -29,7 +30,8 @@ fun Checkout(
     navBack: () -> Unit,
     click: (int: Int) -> Unit,
     stepperClick: (id: Int?, action: String) -> Unit,
-    backHome: () -> Unit
+    backHome: () -> Unit,
+    payNav: () -> Unit
 ) {
     if (steppers.isNullOrEmpty()) {
         LaunchedEffect(key1 = Unit) {
@@ -55,36 +57,53 @@ fun Checkout(
                 )
             }
             Column {
-                LazyColumn(content = {
-                    itemsIndexed(info) { index, item ->
-                        if (steppers.containsKey(item?.id))
-                            Row(
-                                Modifier.padding(start = 20.dp, end = 20.dp, bottom = 5.dp),
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
-                                Image(
-                                    painter = rememberImagePainter(data = thumbPath + item?.poster_path),
-                                    contentDescription = item?.title,
-                                    Modifier
-                                        .weight(2f)
-                                        .width(100.dp)
-                                        .height(100.dp)
-                                        .clickable { click.invoke(index) }
-                                )
-                                Text(text = item?.title.toString(), Modifier.weight(7f))
-                                Text(
-                                    text = steppers.filterKeys { it == item?.id }.values.joinToString(),
-                                    Modifier.weight(2f)
-                                )
-                                Image(
-                                    imageVector = Icons.Default.Delete,
-                                    contentDescription = "Delet", Modifier.clickable {
-                                        stepperClick.invoke(item?.id, Delet)
-                                    }
-                                )
-                            }
+                LazyColumn(
+                    Modifier.weight(8f),
+                    content = {
+                        itemsIndexed(info) { index, item ->
+                            if (steppers.containsKey(item?.id))
+                                Row(
+                                    Modifier.padding(start = 20.dp, end = 20.dp, bottom = 5.dp),
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Image(
+                                        painter = rememberImagePainter(data = thumbPath + item?.poster_path),
+                                        contentDescription = item?.title,
+                                        Modifier
+                                            .weight(2f)
+                                            .width(100.dp)
+                                            .height(100.dp)
+                                            .clickable { click.invoke(index) }
+                                    )
+                                    Text(
+                                        text = item?.title.toString(),
+                                        Modifier
+                                            .weight(7f)
+                                            .padding(start = 20.dp)
+                                    )
+                                    Text(
+                                        text = steppers.filterKeys { it == item?.id }.values.joinToString(),
+                                        Modifier.weight(2f)
+                                    )
+                                    Image(
+                                        imageVector = Icons.Default.Delete,
+                                        contentDescription = "Delet", Modifier.clickable {
+                                            stepperClick.invoke(item?.id, Delet)
+                                        }
+                                    )
+                                }
+                        }
+                    })
+                Column(
+                    Modifier
+                        .weight(1.5f)
+                        .padding(20.dp)
+                ) {
+                    CTA(stepper = steppers) {
+                        payNav.invoke()
+                        Log.d("TAG", "Checkout: Check")
                     }
-                })
+                }
             }
         }
     }

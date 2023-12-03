@@ -51,10 +51,20 @@ fun HomeScreen(
                         },
                         stepperClick = { id, action ->
                             addStepper.invoke(id, action)
+                        }, backHome = {
+                            navController.navigate(ComposeNavigation.MovieList.route)
                         }
                     ) {
-                        navController.navigate(ComposeNavigation.MovieList.route)
+                        navController.navigate(ComposeNavigation.Payment.route)
                     }
+                }
+                composable(ComposeNavigation.Payment.route) {
+                    Payment(
+                        addStepper = { id, action ->
+                            navController.navigate(ComposeNavigation.MovieList.route)
+                            addStepper(0, action)
+                        }
+                    )
                 }
             }
         )
