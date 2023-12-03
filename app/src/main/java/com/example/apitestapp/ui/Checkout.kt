@@ -81,15 +81,18 @@ fun Checkout(
                                             .weight(7f)
                                             .padding(start = 20.dp)
                                     )
-                                    Text(
-                                        text = steppers.filterKeys { it == item?.id }.values.joinToString(),
-                                        Modifier.weight(2f)
-                                    )
+                                    Steppers(
+                                        info = item,
+                                        steppers = steppers,
+                                        click = { id, action -> stepperClick.invoke(id, action) })
                                     Image(
                                         imageVector = Icons.Default.Delete,
-                                        contentDescription = "Delet", Modifier.clickable {
-                                            stepperClick.invoke(item?.id, Delet)
-                                        }
+                                        contentDescription = "Delet",
+                                        Modifier
+                                            .padding(start = 20.dp)
+                                            .clickable {
+                                                stepperClick.invoke(item?.id, Delet)
+                                            }
                                     )
                                 }
                         }
