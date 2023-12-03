@@ -7,41 +7,55 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.apitestapp.model.Result
-import com.example.apitestapp.viewmodel.MovieViewModel
 
 @Composable
 fun HomeScreen(
     info: List<Result?>?,
-    viewModel: MovieViewModel
+    steppers: MutableMap<Int, Int>,
+    addStepper: (id: Int?, action: String) -> Unit,
 ) {
     val navController = rememberNavController()
     val index = remember {
         mutableStateOf(0)
     }
-    info?.let {
         NavHost(
             navController = navController,
-            startDestination = ComposeNavigation.MovieList.rout,
+            startDestination = ComposeNavigation.MovieList.route,
             builder = {
-                composable(ComposeNavigation.MovieList.rout) {
-                    MovieList(info = info, movieViewModel = viewModel, click = {
+                composable(ComposeNavigation.MovieList.route) {
+                    MovieList(info = info, stepper = steppers, stepperClick = { id, action ->
+                        addStepper.invoke(id, action)
+                    }, navClick = {
                         index.value = it
-                        navController.navigate(ComposeNavigation.MovieInfo.rout)
+                        navController.navigate(ComposeNavigation.MovieInfo.route)
                     }) {
-                        navController.navigate(ComposeNavigation.Checkout.rout)
+                        navController.navigate(ComposeNavigation.Checkout.route)
                     }
                 }
-                composable(ComposeNavigation.MovieInfo.rout) {
+                composable(ComposeNavigation.MovieInfo.route) {
                     MovieInfo(
-                        info = info[index.value],
-                        navController = navController,
-                        viewModel
-                    )
+                        info = info?.get(index.value),
+                        steppers = steppers,
+                        stepperClick = { id, action -> addStepper.invoke(id, action) }) {
+                        navController.popBackStack()
+                    }
                 }
-                composable(ComposeNavigation.Checkout.rout) {
-                    Checkout(info = info, viewModel,navController)
+                composable(ComposeNavigation.Checkout.route) {
+                    Checkout(
+                        info = info,
+                        steppers = steppers,
+                        navBack = { navController.popBackStack() },
+                        click = {
+                            index.value = it
+                            navController.navigate(ComposeNavigation.MovieInfo.route)
+                        },
+                        stepperClick = { id, action ->
+                            addStepper.invoke(id, action)
+                        }
+                    ) {
+                        navController.navigate(ComposeNavigation.MovieList.route)
+                    }
                 }
             }
         )
-    }
 }

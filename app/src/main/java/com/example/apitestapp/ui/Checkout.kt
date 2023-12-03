@@ -1,54 +1,91 @@
 package com.example.apitestapp.ui
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.Start
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
+import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
 import com.example.apitestapp.model.Result
+import com.example.apitestapp.utilities.ApplicationConstants.Delet
 import com.example.apitestapp.utilities.ApplicationConstants.thumbPath
-import com.example.apitestapp.viewmodel.MovieViewModel
 
+@OptIn(ExperimentalCoilApi::class)
 @Composable
 fun Checkout(
-    info: List<Result?>,
-    viewModel: MovieViewModel, navController: NavController
+    info: List<Result?>?,
+    steppers: MutableMap<Int, Int>,
+    navBack: () -> Unit,
+    click: (int: Int) -> Unit,
+    stepperClick: (id: Int?, action: String) -> Unit,
+    backHome: () -> Unit
 ) {
-    val counterState = viewModel.counterStateFlow.collectAsState()
-    Column(
-        Modifier
-            .fillMaxWidth()
-            .fillMaxHeight(),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Header(title = "Checkout", navController = navController, info = null)
-        LazyColumn(content = {
-            itemsIndexed(info) { index, item ->
-                if (counterState.value.containsKey(item?.id)) {
-                    Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-                        Image(
-                            painter = rememberImagePainter(data = thumbPath + item?.poster_path),
-                            contentDescription = item?.title,
-                            Modifier
-                                .width(100.dp)
-                                .height(100.dp)
-                                .weight(3f)
-                        )
-                        Text(text = item?.title.toString(), Modifier.weight(7f))
-                        Text(
-                            text = counterState.value.filterKeys { it == item?.id }.values.joinToString(),
-                            Modifier.weight(3f)
-                        )
-                    }
-                }
+    if (steppers.isNullOrEmpty()) {
+        LaunchedEffect(key1 = Unit) {
+            backHome.invoke()
+        }
+    }
+    info?.let {
+        Column(
+            Modifier
+                .fillMaxWidth()
+                .fillMaxHeight(),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Column(
+                Modifier
+                    .fillMaxWidth()
+                    .padding(20.dp), horizontalAlignment = Start
+            ) {
+                Image(
+                    imageVector = Icons.Default.ArrowBack, contentDescription = "Back",
+                    Modifier
+                        .clickable { navBack.invoke() }
+                )
             }
-        })
+            Column {
+                LazyColumn(content = {
+                    itemsIndexed(info) { index, item ->
+                        if (steppers.containsKey(item?.id))
+                            Row(
+                                Modifier.padding(start = 20.dp, end = 20.dp, bottom = 5.dp),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Image(
+                                    painter = rememberImagePainter(data = thumbPath + item?.poster_path),
+                                    contentDescription = item?.title,
+                                    Modifier
+                                        .weight(2f)
+                                        .width(100.dp)
+                                        .height(100.dp)
+                                        .clickable { click.invoke(index) }
+                                )
+                                Text(text = item?.title.toString(), Modifier.weight(7f))
+                                Text(
+                                    text = steppers.filterKeys { it == item?.id }.values.joinToString(),
+                                    Modifier.weight(2f)
+                                )
+                                Image(
+                                    imageVector = Icons.Default.Delete,
+                                    contentDescription = "Delet", Modifier.clickable {
+                                        stepperClick.invoke(item?.id, Delet)
+                                    }
+                                )
+                            }
+                    }
+                })
+            }
+        }
     }
 }

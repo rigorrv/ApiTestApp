@@ -4,6 +4,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.apitestapp.api.Repository
 import com.example.apitestapp.model.MovieDB
+import com.example.apitestapp.utilities.ApplicationConstants.AddStepper
+import com.example.apitestapp.utilities.ApplicationConstants.Delet
+import com.example.apitestapp.utilities.ApplicationConstants.RemoveStepper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -15,28 +18,28 @@ class MovieViewModel @Inject constructor(private val repository: Repository) : V
 
     private val _movieStateFlow = MutableStateFlow<MovieDB?>(MovieDB())
     val movieStateFlow: StateFlow<MovieDB?> = _movieStateFlow
+    private var movieId = mutableListOf<Int>()
+    val counter = MutableStateFlow(mutableMapOf<Int, Int>())
 
-    var counterStateFlow = MutableStateFlow(mutableMapOf<Int?, Int>())
-    private val idMovie = mutableListOf<Int?>()
+    fun counterStepper(id: Int?, action: String) {
+        id?.let {
+            when (action) {
+                RemoveStepper -> movieId.remove(id)
+                AddStepper -> movieId.add(id)
+                Delet -> while (movieId.contains(id)) {
+                    movieId.remove(id)
+                }
+            }
+            val list = movieId.groupingBy { it }.eachCount().toMutableMap()
+            counter.value = list
+        }
+    }
 
     init {
         getMovie()
     }
 
-    fun addCounter(id: Int?) {
-        idMovie.add(id)
-        val listCounter = idMovie.groupingBy { it }.eachCount().toMutableMap()
-        counterStateFlow.value = listCounter
-    }
-
-
-    fun removeCounter(id: Int?) {
-        idMovie.remove(id)
-        val listCounter = idMovie.groupingBy { it }.eachCount().toMutableMap()
-        counterStateFlow.value = listCounter
-    }
-
-    private fun getMovie() {
+    fun getMovie() {
         viewModelScope.launch {
             repository.getMovie().apply {
                 if (this.isSuccessful) {
@@ -45,4 +48,5 @@ class MovieViewModel @Inject constructor(private val repository: Repository) : V
             }
         }
     }
+
 }

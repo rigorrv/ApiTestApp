@@ -9,4 +9,7 @@ object ApplicationConstants {
     const val endPoint = "/3/discover/movie"
     const val thumbPath = "http://image.tmdb.org/t/p/w200/"
     const val imagePath = "http://image.tmdb.org/t/p/w500/"
+    const val AddStepper = "ADD"
+    const val RemoveStepper = "Remove"
+    const val Delet = "Delet"
 }
