@@ -56,7 +56,12 @@ fun HomeScreen(
                         payment = {
                             Log.d("TAG", "youPayFor: $steppers")
                             navController.navigate(ComposeNavigation.Payment.route)
-                        })
+                        },
+                        clickInfo = {
+                            index.value = it
+                            navController.navigate(ComposeNavigation.MovieInfo.route)
+                        }
+                    )
                 }
                 composable(ComposeNavigation.Payment.route) {
                     Payment(info,steppers, clickStepper) { navController.popBackStack() }

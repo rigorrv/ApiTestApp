@@ -29,7 +29,8 @@ fun Checkout(
     steppers: MutableMap<Int, Int>,
     clickStepper: (id: Int, action: String) -> Unit,
     nav: () -> Unit,
-    payment: () -> Unit
+    payment: () -> Unit,
+    clickInfo: (int: Int) -> Unit
 ) {
     if (steppers.isNullOrEmpty()) {
         LaunchedEffect(key1 = 1) {
@@ -74,6 +75,9 @@ fun Checkout(
                                     .weight(2f)
                                     .width(100.dp)
                                     .height(100.dp)
+                                    .clickable {
+                                        clickInfo.invoke(index)
+                                    }
                             )
                             Text(
                                 text = item.title,
