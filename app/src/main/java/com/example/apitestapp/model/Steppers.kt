@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey
 @Entity
 data class Steppers(
     @PrimaryKey
+    val id: Int = 0,
     @NonNull
-    val id: Int? = 1,
-    val stepper: List<Stepper>
+    val stepper: MutableList<Int>?
 )

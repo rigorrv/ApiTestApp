@@ -3,14 +3,11 @@ package com.example.apitestapp.room
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.example.apitestapp.model.Step
-import com.example.apitestapp.model.SteppConverter
-import com.example.apitestapp.model.StepperConverter
 import com.example.apitestapp.model.Steppers
+import com.example.apitestapp.model.SteppConverter
 
-@Database(entities = [Steppers::class, Step::class], version = 1)
+@Database(entities = [Steppers::class], version = 1)
 @TypeConverters(
-    StepperConverter::class,
     SteppConverter::class
 )
 abstract class AppDataBase : RoomDatabase() {

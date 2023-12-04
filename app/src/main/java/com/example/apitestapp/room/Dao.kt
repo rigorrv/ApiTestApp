@@ -4,16 +4,19 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy.Companion.REPLACE
 import androidx.room.Query
-import com.example.apitestapp.model.Step
+import com.example.apitestapp.model.Steppers
 
 
 @Dao
 interface Dao {
 
-    @Query("SELECT * FROM step")
-    suspend fun getStep(): Step?
+    @Query("SELECT * FROM steppers")
+    suspend fun getStep(): Steppers?
 
     @Insert(onConflict = REPLACE)
-    suspend fun insertStep(vararg step: Step)
+    suspend fun insertStep(vararg step: Steppers)
+
+    @Query("DELETE FROM steppers")
+    suspend fun delete()
 
 }
