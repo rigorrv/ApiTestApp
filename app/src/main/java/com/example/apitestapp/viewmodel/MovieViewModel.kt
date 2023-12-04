@@ -53,8 +53,9 @@ class MovieViewModel @Inject constructor(private val repository: Repository) : V
 
     private fun getSteppers() {
         viewModelScope.launch {
-            stepper.value =
-                repository.getSteppers()?.stepper?.groupingBy { it }?.eachCount()?.toMutableMap()!!
+            repository.getSteppers()?.stepper?.groupingBy { it }?.eachCount()?.toMutableMap()?.let {
+                stepper.value = it
+            }
         }
     }
 }
