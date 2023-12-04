@@ -8,7 +8,7 @@ import javax.inject.Inject
 class Repository @Inject constructor(private val api: Api, private val dao: Dao) : DaoInterface {
 
     override suspend fun getMovie() = api.getMovies(header)
-    override suspend fun getSteppers() = dao.getStep()
+    override suspend fun getSteppers() = dao.getSteppers()
     override suspend fun insertSteppers(steppers: Steppers) = dao.insertStep(steppers)
 
 }

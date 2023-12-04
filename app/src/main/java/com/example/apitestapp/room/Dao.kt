@@ -11,7 +11,7 @@ import com.example.apitestapp.model.Steppers
 interface Dao {
 
     @Query("SELECT * FROM steppers")
-    suspend fun getStep(): Steppers?
+    suspend fun getSteppers(): Steppers?
 
     @Insert(onConflict = REPLACE)
     suspend fun insertStep(vararg step: Steppers)
