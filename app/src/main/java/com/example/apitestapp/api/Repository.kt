@@ -5,10 +5,10 @@ import com.example.apitestapp.room.Dao
 import com.example.apitestapp.utilities.ApplicationConstants.header
 import javax.inject.Inject
 
-class Repository @Inject constructor(private val api: Api, private val dao: Dao) {
+class Repository @Inject constructor(private val api: Api, private val dao: Dao) : DaoInterface {
 
-    suspend fun getMovie() = api.getMovies(header)
-    suspend fun getSteppers() = dao.getStep()
-    suspend fun insertSteppers(steppers: Steppers) = dao.insertStep(steppers)
-    suspend fun delet() = dao.delete()
+    override suspend fun getMovie() = api.getMovies(header)
+    override suspend fun getSteppers() = dao.getStep()
+    override suspend fun insertSteppers(steppers: Steppers) = dao.insertStep(steppers)
+
 }
