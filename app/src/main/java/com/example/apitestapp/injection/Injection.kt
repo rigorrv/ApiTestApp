@@ -56,6 +56,4 @@ class Injection {
             "MyMovies.db"
         ).build()
     }
-
-
 }
