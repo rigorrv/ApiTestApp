@@ -4,10 +4,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.apitestapp.api.Repository
 import com.example.apitestapp.model.MovieDB
-import com.example.apitestapp.utilities.ApplicationConstants.AddStepper
-import com.example.apitestapp.utilities.ApplicationConstants.Delet
-import com.example.apitestapp.utilities.ApplicationConstants.RemoveAll
-import com.example.apitestapp.utilities.ApplicationConstants.RemoveStepper
+import com.example.apitestapp.utilities.ApplicationConstants.AddSteppers
+import com.example.apitestapp.utilities.ApplicationConstants.DeletSteppers
+import com.example.apitestapp.utilities.ApplicationConstants.RemoveAllSteppers
+import com.example.apitestapp.utilities.ApplicationConstants.RemoveSteppers
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -19,26 +19,22 @@ class MovieViewModel @Inject constructor(private val repository: Repository) : V
 
     private val _movieStateFlow = MutableStateFlow<MovieDB?>(MovieDB())
     val movieStateFlow: StateFlow<MovieDB?> = _movieStateFlow
-    private var movieId = mutableListOf<Int>()
-    val counter = MutableStateFlow(mutableMapOf<Int, Int>())
-
-    fun counterStepper(id: Int?, action: String) {
-        id?.let {
-            when (action) {
-                RemoveStepper -> movieId.remove(id)
-                RemoveAll -> movieId.clear()
-                AddStepper -> movieId.add(id)
-                Delet -> while (movieId.contains(id)) {
-                    movieId.remove(id)
-                }
-            }
-            val list = movieId.groupingBy { it }.eachCount().toMutableMap()
-            counter.value = list
-        }
-    }
+    var movieId = mutableListOf<Int>()
+    val steppers = MutableStateFlow(mutableMapOf<Int, Int>())
 
     init {
         getMovie()
+    }
+
+    fun steppers(id: Int, action: String) {
+        when (action) {
+            RemoveSteppers -> movieId.remove(id)
+            AddSteppers -> movieId.add(id)
+            RemoveAllSteppers -> while (movieId.contains(id)) movieId.remove(id)
+            DeletSteppers -> movieId.clear()
+        }
+        val list = movieId.groupingBy { it }.eachCount().toMutableMap()
+        steppers.value = list
     }
 
     fun getMovie() {
@@ -50,5 +46,4 @@ class MovieViewModel @Inject constructor(private val repository: Repository) : V
             }
         }
     }
-
 }

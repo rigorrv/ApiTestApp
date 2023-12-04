@@ -4,40 +4,42 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.apitestapp.R
 import com.example.apitestapp.model.Result
-import com.example.apitestapp.utilities.ApplicationConstants.AddStepper
-import com.example.apitestapp.utilities.ApplicationConstants.RemoveStepper
+import com.example.apitestapp.utilities.ApplicationConstants.AddSteppers
+import com.example.apitestapp.utilities.ApplicationConstants.RemoveSteppers
 
 @Composable
 fun Steppers(
-    info: Result?,
+    info: Result,
     steppers: MutableMap<Int, Int>,
-    click: (id: Int, action: String) -> Unit
+    clickStepper: (id: Int, action: String) -> Unit
 ) {
-    info?.let {
-        Row(Modifier.background(color = Color.Black, shape = RoundedCornerShape(20.dp))) {
-            if (steppers.containsKey(info.id)) {
-                Image(
-                    painter = painterResource(id = R.drawable.remove),
-                    contentDescription = "remove",
-                    Modifier.clickable { click.invoke(info.id, RemoveStepper) })
-                Text(
-                    text = steppers.filterKeys { it == info.id }.values.joinToString(),
-                    color = Color.White
-                )
-            }
+    Row(Modifier.background(color = Color.Black, shape = RoundedCornerShape(20.dp))) {
+        if (steppers.containsKey(info.id)) {
             Image(
-                painter = painterResource(id = R.drawable.add),
-                contentDescription = "remove",
-                Modifier.clickable { click.invoke(info.id, AddStepper) })
+                painter = painterResource(id = R.drawable.remove),
+                contentDescription = "Remove",
+                Modifier.clickable { clickStepper.invoke(info.id, RemoveSteppers) })
+            Text(
+                text = steppers.filterKeys { it == info.id }.values.joinToString(),
+                Modifier.width(18.dp),
+                color = Color.White,
+                textAlign = TextAlign.Center
+            )
         }
+        Image(
+            painter = painterResource(id = R.drawable.add),
+            contentDescription = "Add",
+            Modifier.clickable { clickStepper.invoke(info.id, AddSteppers) })
     }
 }

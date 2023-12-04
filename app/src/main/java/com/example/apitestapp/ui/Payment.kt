@@ -10,27 +10,37 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
-import com.example.apitestapp.utilities.ApplicationConstants.RemoveAll
+import androidx.compose.ui.unit.dp
+import com.example.apitestapp.utilities.ApplicationConstants.DeletSteppers
 
 @Composable
-fun Payment(
-    addStepper: (id: Int?, action: String) -> Unit
-) {
-    Row(Modifier.fillMaxWidth()) {
-        Image(
-            imageVector = Icons.Default.ArrowBack,
-            contentDescription = "Back",
-            Modifier.clickable {
-                addStepper(0, RemoveAll)
-            })
-    }
+fun Payment(nav: () -> Unit, clickStepper: (id: Int, action: String) -> Unit) {
     Column(
         Modifier
             .fillMaxWidth()
-            .fillMaxHeight(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+            .fillMaxHeight()
     ) {
-        Text(text = "YOU Pay NOW, \n YOUR LIST WILL BE CLEAR NOW", textAlign = TextAlign.Center)
+        Row(
+            Modifier
+                .fillMaxWidth()
+                .padding(20.dp)
+        ) {
+            Image(
+                imageVector = Icons.Default.ArrowBack,
+                contentDescription = "Back",
+                Modifier.clickable {
+                    clickStepper.invoke(0, DeletSteppers)
+                    nav.invoke()
+                })
+        }
+        Column(
+            Modifier
+                .fillMaxWidth()
+                .fillMaxHeight(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(text = "Your Payment was Successful", textAlign = TextAlign.Center)
+        }
     }
 }

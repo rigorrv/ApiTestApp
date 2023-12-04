@@ -7,6 +7,7 @@ import retrofit2.http.GET
 import retrofit2.http.Header
 
 interface Api {
+
     @GET(endPoint)
-    suspend fun getMovie(@Header("Authorization") value: String): Response<MovieDB>
+    suspend fun getMovie(@Header("Authorization")value : String):Response<MovieDB>
 }

@@ -20,10 +20,13 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             val info = viewModel.movieStateFlow.collectAsState().value?.results
-            val steppers = viewModel.counter.collectAsState().value
-            HomeScreen(info = info, steppers = steppers, addStepper = { id, action ->
-                viewModel.counterStepper(id, action)
-            })
+            val steppers = viewModel.steppers.collectAsState().value
+            info?.let {
+                HomeScreen(
+                    info = info,
+                    steppers = steppers,
+                    clickSteppers = { id, action -> viewModel.steppers(id, action) })
+            }
         }
     }
 }

@@ -17,49 +17,41 @@ import com.example.apitestapp.utilities.ApplicationConstants.imagePath
 
 @Composable
 fun MovieInfo(
-    info: Result?,
+    info: Result,
     steppers: MutableMap<Int, Int>,
-    stepperClick: (id: Int, action: String) -> Unit,
-    navClick: () -> Unit
+    clickStepper: (id: Int, action: String) -> Unit,
+    nav: () -> Unit
 ) {
-    info?.let {
-        Column(
+    Column(
+        Modifier
+            .fillMaxWidth()
+            .fillMaxHeight(),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Row(
             Modifier
-                .fillMaxHeight()
                 .fillMaxWidth()
+                .padding(20.dp)
         ) {
-            Row(
+            Image(
+                imageVector = Icons.Default.ArrowBack, contentDescription = "Back",
                 Modifier
-                    .fillMaxWidth()
-                    .padding(20.dp)
-            ) {
-                Image(
-                    imageVector = Icons.Default.ArrowBack, contentDescription = "Back",
-                    Modifier
-                        .weight(2f)
-                        .clickable { navClick.invoke() }
-                )
-                Text(
-                    text = info.title.toString(),
-                    Modifier.weight(8f),
-                    textAlign = TextAlign.Center
-                )
-                Box(modifier = Modifier.weight(2f))
-            }
-            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                Image(
-                    painter = rememberImagePainter(data = imagePath + info.poster_path),
-                    contentDescription = info.title, Modifier.padding(bottom = 20.dp)
-                )
-                Steppers(info = info, steppers = steppers, click = { id, action ->
-                    stepperClick.invoke(id, action)
-                })
-                Text(
-                    text = info.overview,
-                    Modifier.padding(horizontal = 20.dp, vertical = 20.dp),
-                    textAlign = TextAlign.Center
-                )
-            }
+                    .weight(2f)
+                    .clickable { nav.invoke() }
+            )
+            Text(text = info.title, Modifier.weight(8f), textAlign = TextAlign.Center)
+            Box(modifier = Modifier.weight(2f))
+        }
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            Image(
+                painter = rememberImagePainter(data = imagePath + info.poster_path),
+                contentDescription = info.title, Modifier.padding(20.dp)
+            )
+            Steppers(
+                info = info,
+                steppers = steppers,
+                clickStepper = { id, action -> clickStepper.invoke(id, action) })
+            Text(text = info.overview, Modifier.padding(20.dp), textAlign = TextAlign.Center)
         }
     }
 }
