@@ -79,15 +79,32 @@ fun MovieList(
                     Modifier
                         .fillMaxWidth()
                         .clickable { checkoutNav.invoke() }
-                        .background(color = Color.Black, shape = RoundedCornerShape(20.dp))
+                        .background(color = Color.Black, shape = RoundedCornerShape(20.dp)),
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
+                    Column(
+                        Modifier
+                            .padding(start = 20.dp)
+                            .weight(1.6f)
+                            .width(30.dp)
+                            .height(30.dp)
+                            .background(color = Color.White, shape = RoundedCornerShape(20.dp)),
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Text(
+                            text = steppers.values.sum().toString(),
+                            textAlign = TextAlign.Center, color = Color.Black
+                        )
+                    }
                     Text(
                         text = "Checkout",
                         Modifier
-                            .padding(20.dp)
-                            .fillMaxWidth(),
+                            .weight(8f)
+                            .padding(vertical = 20.dp),
                         textAlign = TextAlign.Center, color = Color.White
                     )
+                    Box(modifier = Modifier.weight(1.5f))
                 }
             }
     }
