@@ -15,8 +15,4 @@ interface Dao {
 
     @Insert(onConflict = REPLACE)
     suspend fun insertStep(vararg step: Steppers)
-
-    @Query("DELETE FROM steppers")
-    suspend fun delete()
-
 }
