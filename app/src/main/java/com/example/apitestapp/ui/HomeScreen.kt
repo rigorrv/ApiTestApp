@@ -1,5 +1,6 @@
 package com.example.apitestapp.ui
 
+import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -52,7 +53,10 @@ fun HomeScreen(
                         steppers,
                         clickStepper,
                         nav = { navController.popBackStack() },
-                        payment = { navController.navigate(ComposeNavigation.Payment.route) })
+                        payment = {
+                            Log.d("TAG", "youPayFor: $steppers")
+                            navController.navigate(ComposeNavigation.Payment.route)
+                        })
                 }
                 composable(ComposeNavigation.Payment.route) {
                     Payment(info,steppers, clickStepper) { navController.popBackStack() }
