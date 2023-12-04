@@ -30,7 +30,7 @@ class MainActivity : ComponentActivity() {
                     .fillMaxHeight()
                     .fillMaxWidth()
             ) {
-                Button(onClick = { viewModel.insertStepper((1..100).random(), "AddStepper") }) {
+                Button(onClick = { viewModel.insertStepper((1..20).random(), "AddStepper") }) {
                     Text(text = "Insert Steppers")
                 }
                 LazyColumn(content = {
