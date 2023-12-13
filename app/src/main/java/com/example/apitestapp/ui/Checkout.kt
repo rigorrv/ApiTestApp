@@ -7,10 +7,14 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
@@ -23,6 +27,7 @@ import com.example.apitestapp.model.Result
 import com.example.apitestapp.utilities.ApplicationConstants.RemoveAllSteppers
 import com.example.apitestapp.utilities.ApplicationConstants.thumbPath
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Checkout(
     info: List<Result>,
@@ -42,20 +47,20 @@ fun Checkout(
             .fillMaxWidth()
             .fillMaxHeight()
     ) {
-        Row(
-            Modifier
-                .fillMaxWidth()
-                .padding(20.dp)
-        ) {
-            Image(
-                imageVector = Icons.Default.ArrowBack,
-                contentDescription = "Back",
-                Modifier
-                    .weight(2f)
-                    .clickable { nav.invoke() })
-            Text(text = "Checkout", Modifier.weight(8f), textAlign = TextAlign.Center)
-            Box(modifier = Modifier.weight(2f))
-        }
+        CenterAlignedTopAppBar(
+            title = { Text("Checkout") },
+            Modifier.background(color = Color.White),
+            navigationIcon = {
+                IconButton(onClick = {
+                    nav.invoke()
+                }) {
+                    Icon(
+                        imageVector = Icons.Default.ArrowBack,
+                        contentDescription = "Back Button"
+                    )
+                }
+            }
+        )
         LazyColumn(
             Modifier
                 .weight(8f)

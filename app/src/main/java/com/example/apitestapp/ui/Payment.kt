@@ -1,22 +1,28 @@
 package com.example.apitestapp.ui
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberImagePainter
 import com.example.apitestapp.model.Result
 import com.example.apitestapp.utilities.ApplicationConstants
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Payment(
     info: List<Result>,
@@ -28,23 +34,21 @@ fun Payment(
             .fillMaxWidth()
             .fillMaxHeight(), horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Row(
-            Modifier
-                .fillMaxWidth()
-                .padding(20.dp)
-        ) {
-            Image(
-                imageVector = Icons.Default.ArrowBack,
-                contentDescription = "Back",
-                Modifier
-                    .weight(2f)
-                    .clickable {
-                        clickSteppers.invoke(0, ApplicationConstants.DeletSteppers)
-                        nav.invoke()
-                    })
-            Text(text = "Payment", Modifier.weight(8f), textAlign = TextAlign.Center)
-            Box(modifier = Modifier.weight(2f))
-        }
+        CenterAlignedTopAppBar(
+            title = { Text("Payment") },
+            Modifier.background(color = Color.White),
+            navigationIcon = {
+                IconButton(onClick = {
+                    clickSteppers.invoke(0, ApplicationConstants.DeletSteppers)
+                    nav.invoke()
+                }) {
+                    Icon(
+                        imageVector = Icons.Default.ArrowBack,
+                        contentDescription = "Back Button"
+                    )
+                }
+            }
+        )
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Text(text = "You Paid For", textAlign = TextAlign.Center)
             LazyColumn(
