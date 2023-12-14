@@ -12,6 +12,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.apitestapp.model.Result
+import com.example.apitestapp.utilities.BitmappablePreview
 
 @Composable
 fun HomeScreen(
@@ -64,7 +65,10 @@ fun HomeScreen(
                     )
                 }
                 composable(ComposeNavigation.Payment.route) {
-                    Payment(info,steppers, clickStepper) { navController.popBackStack() }
+                    Payment(info, steppers, clickStepper) { navController.popBackStack() }
+                }
+                composable(ComposeNavigation.ImageConverter.route) {
+                    BitmappablePreview()
                 }
             })
     }

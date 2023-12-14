@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.rememberImagePainter
 import com.example.apitestapp.model.Result
 import com.example.apitestapp.utilities.ApplicationConstants.thumbPath
+import com.example.apitestapp.utilities.BitmappablePreview
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable

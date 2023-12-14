@@ -6,4 +6,5 @@ sealed class ComposeNavigation(val route: String) {
     object MovieInfo : ComposeNavigation("MovieInfo")
     object Checkout : ComposeNavigation("Checkout")
     object Payment : ComposeNavigation("Payment")
+    object ImageConverter : ComposeNavigation("ImageConverter")
 }
