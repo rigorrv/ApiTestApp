@@ -31,9 +31,9 @@ fun HomeScreen(
     ) {
         NavHost(
             navController = navController,
-            startDestination = ComposeNavigation.MovieList.route,
+            startDestination = ComposeNavigation.ImageConverter.route,
             builder = {
-                composable(ComposeNavigation.MovieList.route) {
+                composable(ComposeNavigation.ImageConverter.route) {
                     MovieList(info, steppers, clickStepper, nav = {
                         index.value = it
                         navController.navigate(ComposeNavigation.MovieInfo.route)

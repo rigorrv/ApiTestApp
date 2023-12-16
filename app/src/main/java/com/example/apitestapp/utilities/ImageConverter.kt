@@ -11,13 +11,13 @@ import android.view.PixelCopy
 import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Rect
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.boundsInWindow
 import androidx.compose.ui.layout.onGloballyPositioned
@@ -44,25 +44,6 @@ private class BitmappableScopeImpl(
     override suspend fun convertContentToBitmap() = view.clipContent(bounds)
 }
 
-@Composable
-fun Bitmappable(
-    modifier: Modifier = Modifier,
-    content: @Composable BitmappableScope.() -> Unit
-) {
-    var contentBounds by remember {
-        mutableStateOf<Rect?>(null)
-    }
-
-    Box(
-        modifier = modifier
-            .onGloballyPositioned {
-                contentBounds = it.boundsInWindow()
-            }
-    ) {
-        val view = LocalView.current
-        BitmappableScopeImpl(view, contentBounds ?: Rect.Zero).content()
-    }
-}
 
 @Stable
 fun Context.getActivity(): Activity? =
@@ -98,49 +79,61 @@ fun View.clipContent(
     return bitmap
 }
 
+
+@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 fun BitmappablePreview() {
-    var bitmap by remember {
-        mutableStateOf<Bitmap?>(null)
-    }
-
-    DisposableEffect(Unit) {
-        onDispose {
-            bitmap?.recycle()
-        }
-    }
-
-    var runConverter by remember {
-        mutableStateOf(false)
-    }
     Column(
         modifier = Modifier.padding(50.dp)
     ) {
-        Bitmappable(
-            modifier = Modifier
-                .clickable(
-                    indication = null,
-                    interactionSource = remember { MutableInteractionSource() }
-                ) {
-                    runConverter = true
+        Bitmappable()
+    }
+}
+
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Composable
+fun Bitmappable(
+    modifier: Modifier = Modifier,
+) {
+    var contentBounds by remember { mutableStateOf<Rect?>(null) }
+    var bitmap by remember { mutableStateOf<Bitmap?>(null) }
+    val view = LocalView.current
+    Column(Modifier.background(color = Color.Gray)) {
+        Box(
+            modifier = modifier
+                .onGloballyPositioned {
+                    contentBounds = it.boundsInWindow()
                 }
         ) {
-            LaunchedEffect(runConverter) {
-                if (runConverter) {
-                    bitmap = convertContentToBitmap()
+            DisposableEffect(Unit) {
+                onDispose {
+                    bitmap?.recycle()
                 }
             }
-            Image(painter = painterResource(id = R.drawable.coke), contentDescription = "")
+            LaunchedEffect(key1 = 1) {
+                bitmap = contentBounds?.let { view.clipContent(it) }
+                BitmappableScopeImpl(view, contentBounds ?: Rect.Zero)
+            }
+            if (bitmap == null)
+                Image(
+                    painter = painterResource(id = R.drawable.coke),
+                    contentDescription = "",
+                    Modifier
+                        .width(300.dp)
+                        .height(300.dp)
+                )
         }
-
-        Spacer(Modifier.height(16.dp))
-
-        Box {
+        Box(Modifier.background(color = Color.Gray)) {
             if (bitmap != null) {
-                Image(bitmap = bitmap!!.asImageBitmap(), contentDescription = null)
+                Image(
+                    bitmap = bitmap!!.asImageBitmap(),
+                    contentDescription = null,
+                    Modifier.size(300.dp)
+                )
             } else {
-                Box(Modifier.size(100.dp)) {
+                Box(Modifier.size(10.dp)) {
                     Text(text = "NO CONTENT", modifier = Modifier.size(100.dp))
                 }
             }
