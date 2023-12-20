@@ -48,7 +48,7 @@ fun BitmapPreview(url: String? = null) {
         Image(
             painter = painterResource(id = R.drawable.preload),
             contentDescription = "preload",
-            modifier = Modifier.size(50.dp)
+            modifier = Modifier.size(200.dp),
         )
     } else {
         bitmap?.asImageBitmap()?.let {
