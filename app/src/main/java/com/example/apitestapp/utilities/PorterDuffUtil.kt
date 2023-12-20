@@ -1,4 +1,4 @@
-package com.sei.android.sevennowdelivery.utility
+package com.example.apitestapp.utilities
 
 import android.content.Context
 import android.graphics.Bitmap

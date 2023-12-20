@@ -1,7 +1,8 @@
 package com.example.apitestapp.ui
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -16,11 +17,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import coil.compose.rememberImagePainter
 import com.example.apitestapp.model.Result
-import com.example.apitestapp.utilities.ApplicationConstants.thumbPath
-import com.example.apitestapp.utilities.BitmappablePreview
+import com.example.apitestapp.utilities.ApplicationConstants.productImage
+import com.example.apitestapp.utilities.BitmapPreview
 
+@RequiresApi(Build.VERSION_CODES.Q)
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun MovieList(
@@ -46,13 +47,8 @@ fun MovieList(
                         Column(Modifier.clickable {
                             nav.invoke(index)
                         }, horizontalAlignment = Alignment.CenterHorizontally) {
-                            Image(
-                                painter = rememberImagePainter(data = thumbPath + item.poster_path),
-                                contentDescription = item.title,
-                                Modifier
-                                    .width(200.dp)
-                                    .height(200.dp)
-                            )
+                            //BitmapPreview(thumbPath + item.poster_path) <== MovieDB Images
+                            BitmapPreview(productImage) //Product Remove Background
                             Text(
                                 text = item.title,
                                 Modifier.padding(20.dp),
