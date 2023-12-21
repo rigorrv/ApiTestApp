@@ -1,5 +1,6 @@
 package com.example.apitestapp.ui
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -30,12 +31,13 @@ import com.example.apitestapp.utilities.ApplicationConstants.thumbPath
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Checkout(
-    info: List<Result>,
+    cart: Set<Result>?,
     steppers: MutableMap<Int, Int>,
     clickStepper: (id: Int, action: String) -> Unit,
     nav: () -> Unit,
     payment: () -> Unit,
-    clickInfo: (int: Int) -> Unit
+    clickInfo: (int: Int) -> Unit,
+    addCart: (movie: Result) -> Unit
 ) {
     if (steppers.isNullOrEmpty()) {
         LaunchedEffect(key1 = 1) {
@@ -61,13 +63,14 @@ fun Checkout(
                 }
             }
         )
-        LazyColumn(
-            Modifier
-                .weight(8f)
-                .padding(20.dp),
-            content = {
-                itemsIndexed(info) { index, item ->
-                    if (steppers.containsKey(item.id)) {
+        Log.d("TAG", "Checkout: $cart")
+        cart?.let { cart ->
+            LazyColumn(
+                Modifier
+                    .weight(8f)
+                    .padding(20.dp),
+                content = {
+                    itemsIndexed(cart.toList()) { index, item ->
                         Row(
                             Modifier
                                 .fillMaxWidth(),
@@ -93,7 +96,13 @@ fun Checkout(
                             Steppers(
                                 item = item,
                                 steppers = steppers,
-                                clickStepper = { id, action -> clickStepper.invoke(id, action) })
+                                clickStepper = { id, action ->
+                                    clickStepper.invoke(
+                                        id,
+                                        action
+                                    )
+                                },
+                                addCart = { item -> addCart.invoke(item) })
                             Image(
                                 imageVector = Icons.Default.Delete,
                                 contentDescription = "Delet",
@@ -106,8 +115,8 @@ fun Checkout(
                                     })
                         }
                     }
-                }
-            })
+                })
+        }
         Column(
             Modifier
                 .weight(1f)

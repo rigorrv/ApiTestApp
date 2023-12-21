@@ -23,9 +23,11 @@ import com.example.apitestapp.utilities.BitmapPreview
 @Composable
 fun HomeScreen(
     info: List<Result>,
+    cart: Set<Result>?,
     steppers: MutableMap<Int, Int>,
     clickStepper: (id: Int, action: String) -> Unit,
-    getMovie: (movie: String?) -> Unit
+    getMovie: (movie: String?) -> Unit,
+    addCart: (movie: Result) -> Unit
 ) {
     val navController = rememberNavController()
     val index = remember {
@@ -49,18 +51,21 @@ fun HomeScreen(
                         checkoutNav = { navController.navigate(ComposeNavigation.Checkout.route) },
                         getMovie = { movie: String? ->
                             getMovie.invoke(movie)
-                        })
+                        },
+                        addCart = { item -> addCart.invoke(item) })
                 }
                 composable(ComposeNavigation.MovieInfo.route) {
                     MovieInfo(
                         info[index.value],
                         steppers,
                         clickStepper,
-                    ) { navController.popBackStack() }
+                        addCart = { item -> addCart.invoke(item) },
+                        nav = { navController.popBackStack() }
+                    )
                 }
                 composable(ComposeNavigation.Checkout.route) {
                     Checkout(
-                        info,
+                        cart,
                         steppers,
                         clickStepper,
                         nav = { navController.popBackStack() },
@@ -71,7 +76,7 @@ fun HomeScreen(
                         clickInfo = {
                             index.value = it
                             navController.navigate(ComposeNavigation.MovieInfo.route)
-                        }
+                        }, addCart = { item -> addCart.invoke(item) }
                     )
                 }
                 composable(ComposeNavigation.Payment.route) {

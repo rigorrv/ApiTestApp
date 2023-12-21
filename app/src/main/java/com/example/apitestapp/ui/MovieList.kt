@@ -1,7 +1,6 @@
 package com.example.apitestapp.ui
 
 import android.os.Build
-import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -42,7 +41,8 @@ fun MovieList(
     clickStepper: (id: Int, action: String) -> Unit,
     nav: (int: Int) -> Unit,
     checkoutNav: () -> Unit,
-    getMovie: (movie: String?) -> Unit
+    getMovie: (movie: String?) -> Unit,
+    addCart: (movie: Result) -> Unit
 ) {
     Column(
         Modifier
@@ -122,7 +122,11 @@ fun MovieList(
                                 .padding(20.dp),
                             contentAlignment = Alignment.TopEnd
                         ) {
-                            Steppers(item, steppers, clickStepper)
+                            Steppers(
+                                item,
+                                steppers,
+                                clickStepper,
+                                addCart = { item -> addCart.invoke(item) })
                         }
                     }
                 }

@@ -23,7 +23,8 @@ import com.example.apitestapp.utilities.ApplicationConstants.RemoveSteppers
 fun Steppers(
     item: Result,
     steppers: MutableMap<Int, Int>,
-    clickStepper: (id: Int, action: String) -> Unit
+    clickStepper: (id: Int, action: String) -> Unit,
+    addCart: (movie: Result) -> Unit
 ) {
     Row(
         Modifier.background(
@@ -46,6 +47,7 @@ fun Steppers(
         }
         Image(painter = painterResource(id = R.drawable.add), contentDescription = "Add",
             Modifier.clickable {
+                addCart.invoke(item)
                 clickStepper.invoke(item.id, AddSteppers)
             }
         )

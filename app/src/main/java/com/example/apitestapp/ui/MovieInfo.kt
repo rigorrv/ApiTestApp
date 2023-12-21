@@ -2,8 +2,10 @@ package com.example.apitestapp.ui
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Text
@@ -27,7 +29,8 @@ fun MovieInfo(
     info: Result,
     steppers: MutableMap<Int, Int>,
     clickStepper: (id: Int, action: String) -> Unit,
-    nav: () -> Unit
+    nav: () -> Unit,
+    addCart: (movie: Result) -> Unit
 ) {
     Column(
         Modifier
@@ -57,7 +60,8 @@ fun MovieInfo(
             Steppers(
                 item = info,
                 steppers = steppers,
-                clickStepper = { id, action -> clickStepper.invoke(id, action) })
+                clickStepper = { id, action -> clickStepper.invoke(id, action) },
+                addCart = { item -> addCart.invoke(item) })
             Text(text = info.overview, Modifier.padding(20.dp), textAlign = TextAlign.Center)
         }
     }

@@ -1,6 +1,7 @@
 package com.example.apitestapp.repository
 
 import com.example.apitestapp.api.Api
+import com.example.apitestapp.model.Cart
 import com.example.apitestapp.model.MovieDB
 import com.example.apitestapp.model.Steppers
 import com.example.apitestapp.room.Dao
@@ -18,6 +19,10 @@ class Repository @Inject constructor(private val api: Api, private val dao: Dao)
     override suspend fun getSteppers(): Steppers? = dao.getSteppers()
 
     override suspend fun insertSteppers(steppers: Steppers) = dao.insertStep(steppers)
+
+    override suspend fun getCart(): Cart? = dao.getCart()
+
+    override suspend fun insertCart(cart: Cart) = dao.insertCart(cart)
 
 
 }
