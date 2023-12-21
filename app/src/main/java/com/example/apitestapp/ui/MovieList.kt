@@ -4,21 +4,32 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.Icon
 import androidx.compose.material.Text
+import androidx.compose.material.TextField
+import androidx.compose.material.TextFieldDefaults
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.input.KeyboardCapitalization
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.apitestapp.model.Result
-import com.example.apitestapp.utilities.ApplicationConstants.productImage
+import com.example.apitestapp.utilities.ApplicationConstants.thumbPath
 import com.example.apitestapp.utilities.BitmapPreview
 
 @RequiresApi(Build.VERSION_CODES.Q)
@@ -36,6 +47,52 @@ fun MovieList(
             .fillMaxHeight()
             .fillMaxWidth()
     ) {
+        val textSearch = remember {
+            mutableStateOf("")
+        }
+        Row(
+            Modifier.padding(start = 20.dp, end = 20.dp, top = 20.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            TextField(
+                value = textSearch.value,
+                onValueChange = {
+                    textSearch.value = it
+                },
+                Modifier
+                    .border(
+                        width = 1.dp,
+                        color = Color.Gray,
+                        RoundedCornerShape(10.dp)
+                    )
+                    .weight(8f),
+                placeholder = { Text(text = "SearchMovie") },
+                keyboardOptions = KeyboardOptions(
+                    capitalization = KeyboardCapitalization.None,
+                    autoCorrect = true,
+                    keyboardType = KeyboardType.Text,
+                ),
+                singleLine = true,
+                leadingIcon = {
+                    Icon(Icons.Filled.AccountCircle, contentDescription = "")
+                },
+                colors = TextFieldDefaults.textFieldColors(
+                    backgroundColor = Color.White,
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent
+                ),
+                shape = RoundedCornerShape(8.dp),
+            )
+            Text(
+                text = "Cancel",
+                Modifier
+                    .weight(2f)
+                    .clickable {
+                        textSearch.value = ""
+                    },
+                textAlign = TextAlign.Center
+            )
+        }
         LazyVerticalGrid(
             GridCells.Fixed(2),
             Modifier
@@ -47,8 +104,8 @@ fun MovieList(
                         Column(Modifier.clickable {
                             nav.invoke(index)
                         }, horizontalAlignment = Alignment.CenterHorizontally) {
-                            //BitmapPreview(thumbPath + item.poster_path) <== MovieDB Images
-                            BitmapPreview(productImage) //Product Remove Background
+                            BitmapPreview(thumbPath + item.poster_path) //<== MovieDB Images
+//                            BitmapPreview(productImage) //Product Remove Background
                             Text(
                                 text = item.title,
                                 Modifier.padding(20.dp),

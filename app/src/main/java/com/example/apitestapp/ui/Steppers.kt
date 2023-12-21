@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -24,7 +25,13 @@ fun Steppers(
     steppers: MutableMap<Int, Int>,
     clickStepper: (id: Int, action: String) -> Unit
 ) {
-    Row(Modifier.background(color = Color.Black, shape = RoundedCornerShape(20.dp))) {
+    Row(
+        Modifier.background(
+            color = Color.Black,
+            shape = RoundedCornerShape(20.dp)
+        ),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
         if (steppers.containsKey(item.id)) {
             Image(
                 painter = painterResource(id = R.drawable.remove),
