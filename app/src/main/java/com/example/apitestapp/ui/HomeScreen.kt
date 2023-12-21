@@ -24,7 +24,8 @@ import com.example.apitestapp.utilities.BitmapPreview
 fun HomeScreen(
     info: List<Result>,
     steppers: MutableMap<Int, Int>,
-    clickStepper: (id: Int, action: String) -> Unit
+    clickStepper: (id: Int, action: String) -> Unit,
+    getMovie: (movie: String?) -> Unit
 ) {
     val navController = rememberNavController()
     val index = remember {
@@ -44,9 +45,11 @@ fun HomeScreen(
                     MovieList(info, steppers, clickStepper, nav = {
                         index.value = it
                         navController.navigate(ComposeNavigation.MovieInfo.route)
-                    }) {
-                        navController.navigate(ComposeNavigation.Checkout.route)
-                    }
+                    },
+                        checkoutNav = { navController.navigate(ComposeNavigation.Checkout.route) },
+                        getMovie = { movie: String? ->
+                            getMovie.invoke(movie)
+                        })
                 }
                 composable(ComposeNavigation.MovieInfo.route) {
                     MovieInfo(

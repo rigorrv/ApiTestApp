@@ -2,7 +2,7 @@ package com.example.apitestapp.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.apitestapp.api.Repository
+import com.example.apitestapp.repository.Repository
 import com.example.apitestapp.model.Steppers
 import com.example.apitestapp.utilities.ApplicationConstants
 import dagger.hilt.android.lifecycle.HiltViewModel

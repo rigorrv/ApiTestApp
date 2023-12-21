@@ -2,6 +2,7 @@ package com.example.apitestapp
 
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.RequiresApi
@@ -39,9 +40,14 @@ class MainActivity : ComponentActivity() {
                         .fillMaxHeight()
                         .fillMaxWidth()
                 ) {
-                    HomeScreen(info = info, steppers = steppers, clickStepper = { id, action ->
-                        steppersViewModel.insertStepper(id, action)
-                    })
+                    HomeScreen(info = info,
+                        steppers = steppers,
+                        clickStepper = { id, action ->
+                            steppersViewModel.insertStepper(id, action)
+                        },
+                        getMovie = { movie ->
+                            viewModel.getMovies(movie)
+                        })
                 }
             }
         }

@@ -1,6 +1,7 @@
 package com.example.apitestapp.ui
 
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -40,7 +41,8 @@ fun MovieList(
     steppers: MutableMap<Int, Int>,
     clickStepper: (id: Int, action: String) -> Unit,
     nav: (int: Int) -> Unit,
-    checkoutNav: () -> Unit
+    checkoutNav: () -> Unit,
+    getMovie: (movie: String?) -> Unit
 ) {
     Column(
         Modifier
@@ -58,6 +60,7 @@ fun MovieList(
                 value = textSearch.value,
                 onValueChange = {
                     textSearch.value = it
+                    getMovie.invoke(it)
                 },
                 Modifier
                     .border(
@@ -89,6 +92,7 @@ fun MovieList(
                     .weight(2f)
                     .clickable {
                         textSearch.value = ""
+                        getMovie.invoke(null)
                     },
                 textAlign = TextAlign.Center
             )
