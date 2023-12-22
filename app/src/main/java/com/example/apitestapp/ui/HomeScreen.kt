@@ -82,7 +82,10 @@ fun HomeScreen(
                                 result,
                                 action
                             )
-                        }) { navController.popBackStack() }
+                        }) {
+                        navController.popBackStack()
+                        getMovie.invoke(null)
+                    }
                 }
                 composable(ComposeNavigation.ImageConverter.route) {
                     BitmapPreview(productImage)
