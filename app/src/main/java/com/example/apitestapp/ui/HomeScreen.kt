@@ -42,7 +42,8 @@ fun HomeScreen(
             builder = {
                 composable(ComposeNavigation.MovieList.route) {
                     MovieList(
-                        info, cart,
+                        info,
+                        cart,
                         nav = {
                             index.value = it
                             navController.navigate(ComposeNavigation.MovieInfo.route)
