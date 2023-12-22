@@ -27,10 +27,12 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.example.apitestapp.R
 import com.example.apitestapp.model.Result
 import com.example.apitestapp.utilities.ApplicationConstants.thumbPath
 import com.example.apitestapp.utilities.BitmapPreview
@@ -76,7 +78,7 @@ fun MovieList(
                         RoundedCornerShape(10.dp)
                     )
                     .weight(8f),
-                placeholder = { Text(text = "SearchMovie") },
+                placeholder = { Text(text = stringResource(R.string.search_movie)) },
                 keyboardOptions = KeyboardOptions(
                     capitalization = KeyboardCapitalization.None,
                     autoCorrect = true,
@@ -84,7 +86,10 @@ fun MovieList(
                 ),
                 singleLine = true,
                 leadingIcon = {
-                    Icon(Icons.Filled.AccountCircle, contentDescription = "")
+                    Icon(
+                        Icons.Filled.AccountCircle,
+                        contentDescription = stringResource(R.string.search_icon)
+                    )
                 },
                 colors = TextFieldDefaults.textFieldColors(
                     backgroundColor = Color.White,
@@ -172,7 +177,7 @@ fun MovieList(
                         )
                     }
                     Text(
-                        text = "Checkout",
+                        text = stringResource(R.string.checkout),
                         Modifier
                             .weight(8f)
                             .padding(vertical = 20.dp),

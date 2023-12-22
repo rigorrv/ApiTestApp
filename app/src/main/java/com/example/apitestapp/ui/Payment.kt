@@ -16,9 +16,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberImagePainter
+import com.example.apitestapp.R
 import com.example.apitestapp.model.Result
 import com.example.apitestapp.utilities.ApplicationConstants
 import com.example.apitestapp.utilities.ApplicationConstants.ClearCart
@@ -36,7 +38,7 @@ fun Payment(
             .fillMaxHeight(), horizontalAlignment = Alignment.CenterHorizontally
     ) {
         CenterAlignedTopAppBar(
-            title = { Text("Payment") },
+            title = { Text(stringResource(R.string.payment)) },
             Modifier.background(color = Color.White),
             navigationIcon = {
                 IconButton(onClick = {
@@ -45,7 +47,7 @@ fun Payment(
                 }) {
                     Icon(
                         imageVector = Icons.Default.ArrowBack,
-                        contentDescription = "Back Button"
+                        contentDescription = stringResource(R.string.back_buton)
                     )
                 }
             }

@@ -20,9 +20,11 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberImagePainter
+import com.example.apitestapp.R
 import com.example.apitestapp.model.Result
 import com.example.apitestapp.utilities.ApplicationConstants.DeleteCart
 import com.example.apitestapp.utilities.ApplicationConstants.thumbPath
@@ -47,7 +49,7 @@ fun Checkout(
             .fillMaxHeight()
     ) {
         CenterAlignedTopAppBar(
-            title = { Text("Checkout") },
+            title = { Text(stringResource(R.string.checkout)) },
             Modifier.background(color = Color.White),
             navigationIcon = {
                 IconButton(onClick = {
@@ -55,7 +57,7 @@ fun Checkout(
                 }) {
                     Icon(
                         imageVector = Icons.Default.ArrowBack,
-                        contentDescription = "Back Button"
+                        contentDescription = stringResource(R.string.back_buton)
                     )
                 }
             }
@@ -95,7 +97,7 @@ fun Checkout(
                             ) { item: Result?, action: String -> addCart.invoke(item, action) }
                             Image(
                                 imageVector = Icons.Default.Delete,
-                                contentDescription = "Delet",
+                                contentDescription = stringResource(R.string.delet),
                                 Modifier
                                     .padding(start = 20.dp)
                                     .clickable {
@@ -119,7 +121,7 @@ fun Checkout(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "Payment",
+                    text = stringResource(R.string.payment),
                     Modifier
                         .fillMaxWidth()
                         .padding(20.dp),
