@@ -51,7 +51,6 @@ fun MovieList(
     if (listState.isScrollInProgress) {
         keyboardController?.hide()
     }
-
     Column(
         Modifier
             .fillMaxHeight()
