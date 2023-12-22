@@ -21,9 +21,9 @@ import com.example.apitestapp.utilities.ApplicationConstants.RemoveCart
 
 @Composable
 fun Steppers(
-    item: Result,
-    cart: MutableMap<Result, Int>?,
-    addCart: (Result, String) -> Unit
+    item: Result?,
+    cart: MutableMap<Result?, Int>?,
+    addCart: (Result?, String) -> Unit
 ) {
     Row(
         Modifier.background(
@@ -41,7 +41,7 @@ fun Steppers(
                 }
             )
             Text(
-                text = cart.filterKeys { it.id == item.id }.values.joinToString(),
+                text = cart.filterKeys { it?.id == item?.id }.values.joinToString(),
                 Modifier.width(18.dp),
                 color = Color.White,
                 textAlign = TextAlign.Center

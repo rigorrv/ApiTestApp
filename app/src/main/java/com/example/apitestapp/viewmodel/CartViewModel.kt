@@ -18,23 +18,21 @@ import javax.inject.Inject
 @HiltViewModel
 class CartViewModel @Inject constructor(private val repository: Repository) : ViewModel() {
 
-    private val _cartStateFlow = MutableStateFlow<MutableMap<Result, Int>?>(null)
-    val cartStateFlow: StateFlow<MutableMap<Result, Int>?> = _cartStateFlow
-    var cart = mutableListOf<Result>()
+    private val _cartStateFlow = MutableStateFlow<MutableMap<Result?, Int>>(mutableMapOf())
+    val cartStateFlow: StateFlow<MutableMap<Result?, Int>?> = _cartStateFlow
+    var cart = mutableListOf<Result?>()
 
-    fun insertCart(result: Result?, action: String) {
-        result?.let {
-            viewModelScope.launch {
-                repository.getCart()?.cart?.let { cart = it }
-                when (action) {
-                    AddCart -> cart.add(result)
-                    RemoveCart -> cart.remove(result)
-                    DeleteCart -> while (cart.contains(result)) cart.remove(result)
-                    ClearCart -> cart.clear()
-                }
-                repository.insertCart(Cart(cart = cart))
-                getCart()
+    fun insertCart(result: Result? = null, action: String) {
+        viewModelScope.launch {
+            repository.getCart()?.cart?.let { cart = it }
+            when (action) {
+                AddCart -> cart.add(result)
+                RemoveCart -> cart.remove(result)
+                DeleteCart -> while (cart.contains(result)) cart.remove(result)
+                ClearCart -> cart.clear()
             }
+            repository.insertCart(Cart(cart = cart))
+            getCart()
         }
     }
 
@@ -44,7 +42,7 @@ class CartViewModel @Inject constructor(private val repository: Repository) : Vi
 
     private fun getCart() {
         viewModelScope.launch {
-            repository.getCart()?.cart?.groupingBy { it }?.eachCount()?.toMutableMap().let {
+            repository.getCart()?.cart?.groupingBy { it }?.eachCount()?.toMutableMap()?.let {
                 _cartStateFlow.value = it
             }
         }

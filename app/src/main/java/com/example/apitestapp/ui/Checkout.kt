@@ -30,11 +30,11 @@ import com.example.apitestapp.utilities.ApplicationConstants.thumbPath
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Checkout(
-    cartSteppers: MutableMap<Result, Int>?,
+    cartSteppers: MutableMap<Result?, Int>?,
     nav: () -> Unit,
     payment: () -> Unit,
     clickInfo: (int: Int) -> Unit,
-    addCart: (Result, String) -> Unit
+    addCart: (Result?, String) -> Unit
 ) {
     if (cartSteppers.isNullOrEmpty()) {
         LaunchedEffect(key1 = 1) {
@@ -73,8 +73,8 @@ fun Checkout(
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Image(
-                                painter = rememberImagePainter(data = thumbPath + item.poster_path),
-                                contentDescription = item.title,
+                                painter = rememberImagePainter(data = thumbPath + item?.poster_path),
+                                contentDescription = item?.title,
                                 Modifier
                                     .weight(2f)
                                     .width(100.dp)
@@ -84,7 +84,7 @@ fun Checkout(
                                     }
                             )
                             Text(
-                                text = item.title,
+                                text = item?.title.toString(),
                                 Modifier
                                     .weight(7f)
                                     .padding(20.dp)
@@ -92,7 +92,7 @@ fun Checkout(
                             Steppers(
                                 item = item,
                                 cartSteppers,
-                            ) { item: Result, action: String -> addCart.invoke(item, action) }
+                            ) { item: Result?, action: String -> addCart.invoke(item, action) }
                             Image(
                                 imageVector = Icons.Default.Delete,
                                 contentDescription = "Delet",

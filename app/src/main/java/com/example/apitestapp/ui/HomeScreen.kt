@@ -22,7 +22,7 @@ import com.example.apitestapp.utilities.BitmapPreview
 @Composable
 fun HomeScreen(
     info: List<Result>,
-    cart: MutableMap<Result, Int>?,
+    cart: MutableMap<Result?, Int>?,
     getMovie: (movie: String?) -> Unit,
     addCart: (Result?, String) -> Unit
 ) {
@@ -51,13 +51,13 @@ fun HomeScreen(
                         getMovie = { movie: String? ->
                             getMovie.invoke(movie)
                         },
-                    ) { item: Result, action: String -> addCart.invoke(item, action) }
+                    ) { item: Result?, action: String -> addCart.invoke(item, action) }
                 }
                 composable(ComposeNavigation.MovieInfo.route) {
                     MovieInfo(
                         info[index.value],
                         cart = cart,
-                        addCart = { item: Result, action: String -> addCart.invoke(item, action) },
+                        addCart = { item: Result?, action: String -> addCart.invoke(item, action) },
                         nav = { navController.popBackStack() }
                     )
                 }
@@ -72,11 +72,10 @@ fun HomeScreen(
                             index.value = it
                             navController.navigate(ComposeNavigation.MovieInfo.route)
                         }
-                    ) { item: Result, action: String -> addCart.invoke(item, action) }
+                    ) { item: Result?, action: String -> addCart.invoke(item, action) }
                 }
                 composable(ComposeNavigation.Payment.route) {
                     Payment(
-                        info,
                         cart = cart,
                         addCart = { result: Result?, action: String ->
                             addCart.invoke(

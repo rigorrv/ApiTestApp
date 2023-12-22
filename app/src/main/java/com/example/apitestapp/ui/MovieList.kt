@@ -37,11 +37,11 @@ import com.example.apitestapp.utilities.BitmapPreview
 @Composable
 fun MovieList(
     info: List<Result>,
-    cart: MutableMap<Result, Int>?,
+    cart: MutableMap<Result?, Int>?,
     nav: (int: Int) -> Unit,
     checkoutNav: () -> Unit,
     getMovie: (movie: String?) -> Unit,
-    addCart: (Result, String) -> Unit
+    addCart: (Result?, String) -> Unit
 ) {
     Column(
         Modifier
@@ -124,7 +124,7 @@ fun MovieList(
                             Steppers(
                                 item,
                                 cart,
-                            ) { item: Result, action: String ->
+                            ) { item: Result?, action: String ->
                                 addCart.invoke(
                                     item,
                                     action

@@ -26,8 +26,7 @@ import com.example.apitestapp.utilities.ApplicationConstants.ClearCart
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Payment(
-    info: List<Result>,
-    cart: MutableMap<Result, Int>?,
+    cart: MutableMap<Result?, Int>?,
     addCart: (Result?, String) -> Unit,
     nav: () -> Unit
 ) {
@@ -51,39 +50,41 @@ fun Payment(
                 }
             }
         )
-        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            Text(text = "You Paid For", textAlign = TextAlign.Center)
-            LazyColumn(
-                Modifier
-                    .weight(8f)
-                    .padding(20.dp),
-                content = {
-                    itemsIndexed(info) { index, item ->
-                        if (cart?.keys?.contains(item) == true) {
-                            Row(
-                                Modifier
-                                    .fillMaxWidth()
-                                    .padding(vertical = 5.dp),
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
-                                Image(
-                                    painter = rememberImagePainter(data = ApplicationConstants.thumbPath + item.poster_path),
-                                    contentDescription = item.title,
+        cart?.keys?.toList()?.let { info ->
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                Text(text = "You Paid For", textAlign = TextAlign.Center)
+                LazyColumn(
+                    Modifier
+                        .weight(8f)
+                        .padding(20.dp),
+                    content = {
+                        itemsIndexed(info) { index, item ->
+                            if (cart.keys.contains(item)) {
+                                Row(
                                     Modifier
-                                        .weight(2f)
-                                        .width(100.dp)
-                                        .height(100.dp)
-                                )
-                                Text(
-                                    text = item.title,
-                                    Modifier
-                                        .weight(7f)
-                                        .padding(20.dp)
-                                )
+                                        .fillMaxWidth()
+                                        .padding(vertical = 5.dp),
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Image(
+                                        painter = rememberImagePainter(data = ApplicationConstants.thumbPath + item?.poster_path),
+                                        contentDescription = item?.title,
+                                        Modifier
+                                            .weight(2f)
+                                            .width(100.dp)
+                                            .height(100.dp)
+                                    )
+                                    Text(
+                                        text = item?.title.toString(),
+                                        Modifier
+                                            .weight(7f)
+                                            .padding(20.dp)
+                                    )
+                                }
                             }
                         }
-                    }
-                })
+                    })
+            }
         }
     }
 }

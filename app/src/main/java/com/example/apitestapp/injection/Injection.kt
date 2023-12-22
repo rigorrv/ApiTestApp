@@ -53,7 +53,7 @@ class Injection {
         return Room.databaseBuilder(
             appContext,
             AppDataBase::class.java,
-            "Movies.db"
+            "MovieDB.db"
         ).build()
     }
 }

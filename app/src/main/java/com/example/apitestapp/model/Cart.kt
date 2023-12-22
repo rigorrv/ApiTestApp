@@ -7,5 +7,5 @@ import androidx.room.PrimaryKey
 data class Cart(
     @PrimaryKey
     val id: Int = 0,
-    val cart: MutableList<Result>?
+    val cart: MutableList<Result?>
 )
