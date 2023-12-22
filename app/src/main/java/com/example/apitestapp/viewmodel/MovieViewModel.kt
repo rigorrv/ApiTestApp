@@ -1,6 +1,5 @@
 package com.example.apitestapp.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.apitestapp.model.MovieDB
@@ -23,7 +22,6 @@ class MovieViewModel @Inject constructor(private val repository: Repository) : V
 
     fun getMovies(movie: String?) {
         if (movie.isNullOrEmpty()) {
-            Log.d("TAG", "MovieList: 1 $movie")
             viewModelScope.launch {
                 repository.getMovie().apply {
                     if (this.isSuccessful) {
@@ -32,7 +30,6 @@ class MovieViewModel @Inject constructor(private val repository: Repository) : V
                 }
             }
         } else {
-            Log.d("TAG", "MovieList: 2 $movie")
             viewModelScope.launch {
                 repository.searchMovie(movie).apply {
                     if (this.isSuccessful) {
