@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Icon
@@ -22,8 +23,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
@@ -33,7 +36,7 @@ import com.example.apitestapp.utilities.ApplicationConstants.thumbPath
 import com.example.apitestapp.utilities.BitmapPreview
 
 @RequiresApi(Build.VERSION_CODES.Q)
-@OptIn(ExperimentalFoundationApi::class)
+@OptIn(ExperimentalFoundationApi::class, ExperimentalComposeUiApi::class)
 @Composable
 fun MovieList(
     info: List<Result>,
@@ -43,6 +46,12 @@ fun MovieList(
     getMovie: (movie: String?) -> Unit,
     addCart: (Result?, String) -> Unit
 ) {
+    val keyboardController = LocalSoftwareKeyboardController.current
+    val listState = rememberLazyGridState()
+    if (listState.isScrollInProgress) {
+        keyboardController?.hide()
+    }
+
     Column(
         Modifier
             .fillMaxHeight()
@@ -101,6 +110,7 @@ fun MovieList(
             Modifier
                 .weight(8f)
                 .padding(vertical = 20.dp),
+            state = listState,
             content = {
                 itemsIndexed(info) { index, item ->
                     BoxWithConstraints {
