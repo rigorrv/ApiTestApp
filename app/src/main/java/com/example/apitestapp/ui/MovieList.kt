@@ -37,12 +37,11 @@ import com.example.apitestapp.utilities.BitmapPreview
 @Composable
 fun MovieList(
     info: List<Result>,
-    steppers: MutableMap<Int, Int>,
-    clickStepper: (id: Int, action: String) -> Unit,
+    cart: MutableMap<Result, Int>?,
     nav: (int: Int) -> Unit,
     checkoutNav: () -> Unit,
     getMovie: (movie: String?) -> Unit,
-    addCart: (movie: Result) -> Unit
+    addCart: (Result, String) -> Unit
 ) {
     Column(
         Modifier
@@ -124,14 +123,18 @@ fun MovieList(
                         ) {
                             Steppers(
                                 item,
-                                steppers,
-                                clickStepper,
-                                addCart = { item -> addCart.invoke(item) })
+                                cart,
+                            ) { item: Result, action: String ->
+                                addCart.invoke(
+                                    item,
+                                    action
+                                )
+                            }
                         }
                     }
                 }
             })
-        if (!steppers.isNullOrEmpty())
+        if (!cart.isNullOrEmpty())
             Column(
                 Modifier
                     .padding(horizontal = 20.dp)
@@ -155,7 +158,7 @@ fun MovieList(
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         Text(
-                            text = steppers.values.sum().toString(),
+                            text = cart.values.sum().toString(),
                             textAlign = TextAlign.Center, color = Color.Black
                         )
                     }

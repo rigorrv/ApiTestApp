@@ -1,7 +1,6 @@
 package com.example.apitestapp.ui
 
 import android.os.Build
-import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -23,11 +22,9 @@ import com.example.apitestapp.utilities.BitmapPreview
 @Composable
 fun HomeScreen(
     info: List<Result>,
-    cart: Set<Result>?,
-    steppers: MutableMap<Int, Int>,
-    clickStepper: (id: Int, action: String) -> Unit,
+    cart: MutableMap<Result, Int>?,
     getMovie: (movie: String?) -> Unit,
-    addCart: (movie: Result) -> Unit
+    addCart: (Result?, String) -> Unit
 ) {
     val navController = rememberNavController()
     val index = remember {
@@ -44,43 +41,49 @@ fun HomeScreen(
             modifier = Modifier.background(color = Color.White),
             builder = {
                 composable(ComposeNavigation.MovieList.route) {
-                    MovieList(info, steppers, clickStepper, nav = {
-                        index.value = it
-                        navController.navigate(ComposeNavigation.MovieInfo.route)
-                    },
+                    MovieList(
+                        info, cart,
+                        nav = {
+                            index.value = it
+                            navController.navigate(ComposeNavigation.MovieInfo.route)
+                        },
                         checkoutNav = { navController.navigate(ComposeNavigation.Checkout.route) },
                         getMovie = { movie: String? ->
                             getMovie.invoke(movie)
                         },
-                        addCart = { item -> addCart.invoke(item) })
+                    ) { item: Result, action: String -> addCart.invoke(item, action) }
                 }
                 composable(ComposeNavigation.MovieInfo.route) {
                     MovieInfo(
                         info[index.value],
-                        steppers,
-                        clickStepper,
-                        addCart = { item -> addCart.invoke(item) },
+                        cart = cart,
+                        addCart = { item: Result, action: String -> addCart.invoke(item, action) },
                         nav = { navController.popBackStack() }
                     )
                 }
                 composable(ComposeNavigation.Checkout.route) {
                     Checkout(
                         cart,
-                        steppers,
-                        clickStepper,
                         nav = { navController.popBackStack() },
                         payment = {
-                            Log.d("TAG", "youPayFor: $steppers")
                             navController.navigate(ComposeNavigation.Payment.route)
                         },
                         clickInfo = {
                             index.value = it
                             navController.navigate(ComposeNavigation.MovieInfo.route)
-                        }, addCart = { item -> addCart.invoke(item) }
-                    )
+                        }
+                    ) { item: Result, action: String -> addCart.invoke(item, action) }
                 }
                 composable(ComposeNavigation.Payment.route) {
-                    Payment(info, steppers, clickStepper) { navController.popBackStack() }
+                    Payment(
+                        info,
+                        cart = cart,
+                        addCart = { result: Result?, action: String ->
+                            addCart.invoke(
+                                result,
+                                action
+                            )
+                        }) { navController.popBackStack() }
                 }
                 composable(ComposeNavigation.ImageConverter.route) {
                     BitmapPreview(productImage)

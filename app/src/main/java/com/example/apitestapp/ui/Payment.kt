@@ -21,13 +21,15 @@ import androidx.compose.ui.unit.dp
 import coil.compose.rememberImagePainter
 import com.example.apitestapp.model.Result
 import com.example.apitestapp.utilities.ApplicationConstants
+import com.example.apitestapp.utilities.ApplicationConstants.ClearCart
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Payment(
     info: List<Result>,
-    steppers: MutableMap<Int, Int>,
-    clickSteppers: (id: Int, action: String) -> Unit, nav: () -> Unit
+    cart: MutableMap<Result, Int>?,
+    addCart: (Result?, String) -> Unit,
+    nav: () -> Unit
 ) {
     Column(
         Modifier
@@ -39,7 +41,7 @@ fun Payment(
             Modifier.background(color = Color.White),
             navigationIcon = {
                 IconButton(onClick = {
-                    clickSteppers.invoke(0, ApplicationConstants.DeletSteppers)
+                    addCart.invoke(null, ClearCart)
                     nav.invoke()
                 }) {
                     Icon(
@@ -57,7 +59,7 @@ fun Payment(
                     .padding(20.dp),
                 content = {
                     itemsIndexed(info) { index, item ->
-                        if (steppers.containsKey(item.id)) {
+                        if (cart?.keys?.contains(item) == true) {
                             Row(
                                 Modifier
                                     .fillMaxWidth()

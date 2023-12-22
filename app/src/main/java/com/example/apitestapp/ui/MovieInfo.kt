@@ -27,10 +27,9 @@ import com.example.apitestapp.utilities.ApplicationConstants.imagePath
 @Composable
 fun MovieInfo(
     info: Result,
-    steppers: MutableMap<Int, Int>,
-    clickStepper: (id: Int, action: String) -> Unit,
+    cart: MutableMap<Result, Int>?,
     nav: () -> Unit,
-    addCart: (movie: Result) -> Unit
+    addCart: (Result, String) -> Unit
 ) {
     Column(
         Modifier
@@ -59,9 +58,8 @@ fun MovieInfo(
             )
             Steppers(
                 item = info,
-                steppers = steppers,
-                clickStepper = { id, action -> clickStepper.invoke(id, action) },
-                addCart = { item -> addCart.invoke(item) })
+                cart,
+            ) { item: Result, action: String -> addCart.invoke(item,action) }
             Text(text = info.overview, Modifier.padding(20.dp), textAlign = TextAlign.Center)
         }
     }

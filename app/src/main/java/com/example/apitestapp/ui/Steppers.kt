@@ -16,15 +16,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.apitestapp.R
 import com.example.apitestapp.model.Result
-import com.example.apitestapp.utilities.ApplicationConstants.AddSteppers
-import com.example.apitestapp.utilities.ApplicationConstants.RemoveSteppers
+import com.example.apitestapp.utilities.ApplicationConstants.AddCart
+import com.example.apitestapp.utilities.ApplicationConstants.RemoveCart
 
 @Composable
 fun Steppers(
     item: Result,
-    steppers: MutableMap<Int, Int>,
-    clickStepper: (id: Int, action: String) -> Unit,
-    addCart: (movie: Result) -> Unit
+    cart: MutableMap<Result, Int>?,
+    addCart: (Result, String) -> Unit
 ) {
     Row(
         Modifier.background(
@@ -33,13 +32,16 @@ fun Steppers(
         ),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        if (steppers.containsKey(item.id)) {
+        if (cart?.contains(item) == true) {
             Image(
                 painter = painterResource(id = R.drawable.remove),
                 contentDescription = "Remove",
-                Modifier.clickable { clickStepper.invoke(item.id, RemoveSteppers) })
+                Modifier.clickable {
+                    addCart.invoke(item, RemoveCart)
+                }
+            )
             Text(
-                text = steppers.filterKeys { it == item.id }.values.joinToString(),
+                text = cart.filterKeys { it.id == item.id }.values.joinToString(),
                 Modifier.width(18.dp),
                 color = Color.White,
                 textAlign = TextAlign.Center
@@ -47,8 +49,7 @@ fun Steppers(
         }
         Image(painter = painterResource(id = R.drawable.add), contentDescription = "Add",
             Modifier.clickable {
-                addCart.invoke(item)
-                clickStepper.invoke(item.id, AddSteppers)
+                addCart.invoke(item, AddCart)
             }
         )
     }

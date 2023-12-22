@@ -1,6 +1,5 @@
 package com.example.apitestapp.ui
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -25,21 +24,19 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberImagePainter
 import com.example.apitestapp.model.Result
-import com.example.apitestapp.utilities.ApplicationConstants.RemoveAllSteppers
+import com.example.apitestapp.utilities.ApplicationConstants.DeleteCart
 import com.example.apitestapp.utilities.ApplicationConstants.thumbPath
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Checkout(
-    cart: Set<Result>?,
-    steppers: MutableMap<Int, Int>,
-    clickStepper: (id: Int, action: String) -> Unit,
+    cartSteppers: MutableMap<Result, Int>?,
     nav: () -> Unit,
     payment: () -> Unit,
     clickInfo: (int: Int) -> Unit,
-    addCart: (movie: Result) -> Unit
+    addCart: (Result, String) -> Unit
 ) {
-    if (steppers.isNullOrEmpty()) {
+    if (cartSteppers.isNullOrEmpty()) {
         LaunchedEffect(key1 = 1) {
             nav.invoke()
         }
@@ -63,8 +60,7 @@ fun Checkout(
                 }
             }
         )
-        Log.d("TAG", "Checkout: $cart")
-        cart?.let { cart ->
+        cartSteppers?.keys?.let { cart ->
             LazyColumn(
                 Modifier
                     .weight(8f)
@@ -95,22 +91,16 @@ fun Checkout(
                             )
                             Steppers(
                                 item = item,
-                                steppers = steppers,
-                                clickStepper = { id, action ->
-                                    clickStepper.invoke(
-                                        id,
-                                        action
-                                    )
-                                },
-                                addCart = { item -> addCart.invoke(item) })
+                                cartSteppers,
+                            ) { item: Result, action: String -> addCart.invoke(item, action) }
                             Image(
                                 imageVector = Icons.Default.Delete,
                                 contentDescription = "Delet",
                                 Modifier
                                     .padding(start = 20.dp)
                                     .clickable {
-                                        clickStepper.invoke(
-                                            item.id, RemoveAllSteppers
+                                        addCart.invoke(
+                                            item, DeleteCart
                                         )
                                     })
                         }

@@ -14,5 +14,10 @@ object ApplicationConstants {
     const val AddSteppers = "ADD"
     const val RemoveSteppers = "Remove"
     const val RemoveAllSteppers = "RemoveAll"
-    const val DeletSteppers = "Delet"
+    const val DeleteSteppers = "Delet"
+    const val AddCart  = "AddCart"
+    const val RemoveCart  = "RemoveCart"
+    const val DeleteCart  = "DeleteCart"
+    const val ClearCart  = "ClearCart"
+
 }
