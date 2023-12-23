@@ -10,6 +10,6 @@ import com.example.apitestapp.model.CartConverter
 @TypeConverters(
     CartConverter::class
 )
-abstract class AppDataBase : RoomDatabase() {
+abstract class DB : RoomDatabase() {
     abstract fun getDao(): Dao
 }

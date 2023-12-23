@@ -1,8 +1,6 @@
 package com.example.apitestapp.ui
 
-import android.os.Build
-import androidx.annotation.RequiresApi
-import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -32,159 +30,134 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import coil.compose.rememberImagePainter
 import com.example.apitestapp.R
 import com.example.apitestapp.model.Result
 import com.example.apitestapp.utilities.ApplicationConstants.thumbPath
-import com.example.apitestapp.utilities.BitmapPreview
 
-@RequiresApi(Build.VERSION_CODES.Q)
-@OptIn(ExperimentalFoundationApi::class, ExperimentalComposeUiApi::class)
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun MovieList(
     info: List<Result>,
-    cart: MutableMap<Result?, Int>?,
-    nav: (int: Int) -> Unit,
-    checkoutNav: () -> Unit,
-    getMovie: (movie: String?) -> Unit,
-    addCart: (Result?, String) -> Unit
+    cart: MutableMap<Result?, Int>,
+    addCart: (Result, String) -> Unit,
+    searchMovie: (String) -> Unit,
+    nav: (Int) -> Unit,
+    payment: () -> Unit
 ) {
-    val keyboardController = LocalSoftwareKeyboardController.current
-    val listState = rememberLazyGridState()
-    if (listState.isScrollInProgress) {
-        keyboardController?.hide()
+    val scrollState = rememberLazyGridState()
+    val keyboard = LocalSoftwareKeyboardController.current
+    if (scrollState.isScrollInProgress) {
+        keyboard?.hide()
+    }
+    val search = remember {
+        mutableStateOf("")
     }
     Column(
         Modifier
-            .fillMaxHeight()
             .fillMaxWidth()
+            .fillMaxHeight(), horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        val textSearch = remember {
-            mutableStateOf("")
-        }
-        Row(
-            Modifier.padding(start = 20.dp, end = 20.dp, top = 20.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            TextField(
-                value = textSearch.value,
-                onValueChange = {
-                    textSearch.value = it
-                    getMovie.invoke(it)
-                },
+        Column(Modifier.weight(8f)) {
+            Row(
                 Modifier
-                    .border(
-                        width = 1.dp,
-                        color = Color.Gray,
-                        RoundedCornerShape(10.dp)
-                    )
-                    .weight(8f),
-                placeholder = { Text(text = stringResource(R.string.search_movie)) },
-                keyboardOptions = KeyboardOptions(
-                    capitalization = KeyboardCapitalization.None,
-                    autoCorrect = true,
-                    keyboardType = KeyboardType.Text,
-                ),
-                singleLine = true,
-                leadingIcon = {
-                    Icon(
-                        Icons.Filled.AccountCircle,
-                        contentDescription = stringResource(R.string.search_icon)
-                    )
-                },
-                colors = TextFieldDefaults.textFieldColors(
-                    backgroundColor = Color.White,
-                    focusedIndicatorColor = Color.Transparent,
-                    unfocusedIndicatorColor = Color.Transparent
-                ),
-                shape = RoundedCornerShape(8.dp),
-            )
-            Text(
-                text = "Cancel",
-                Modifier
-                    .weight(2f)
-                    .clickable {
-                        textSearch.value = ""
-                        getMovie.invoke(null)
+                    .fillMaxWidth()
+                    .padding(20.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                TextField(
+                    value = search.value,
+                    onValueChange = {
+                        search.value = it
+                        searchMovie.invoke(it)
                     },
-                textAlign = TextAlign.Center
-            )
-        }
-        LazyVerticalGrid(
-            GridCells.Fixed(2),
-            Modifier
-                .weight(8f)
-                .padding(vertical = 20.dp),
-            state = listState,
-            content = {
-                itemsIndexed(info) { index, item ->
-                    BoxWithConstraints {
-                        Column(Modifier.clickable {
-                            nav.invoke(index)
-                        }, horizontalAlignment = Alignment.CenterHorizontally) {
-                            BitmapPreview(thumbPath + item.poster_path) //<== MovieDB Images
-//                            BitmapPreview(productImage) //Product Remove Background
-                            Text(
-                                text = item.title,
-                                Modifier.padding(20.dp),
-                                textAlign = TextAlign.Center
-                            )
-                        }
-                        Box(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(20.dp),
-                            contentAlignment = Alignment.TopEnd
-                        ) {
-                            Steppers(
-                                item,
-                                cart,
-                            ) { item: Result?, action: String ->
+                    Modifier
+                        .border(
+                            width = 1.dp,
+                            color = Color.Gray,
+                            RoundedCornerShape(10.dp)
+                        )
+                        .weight(8f),
+                    placeholder = { Text(text = stringResource(R.string.search_movie)) },
+                    keyboardOptions = KeyboardOptions(
+                        capitalization = KeyboardCapitalization.None,
+                        autoCorrect = true,
+                        keyboardType = KeyboardType.Text,
+                    ),
+                    singleLine = true,
+                    leadingIcon = {
+                        Icon(
+                            Icons.Filled.AccountCircle,
+                            contentDescription = stringResource(R.string.search_icon)
+                        )
+                    },
+                    colors = TextFieldDefaults.textFieldColors(
+                        backgroundColor = Color.White,
+                        focusedIndicatorColor = Color.Transparent,
+                        unfocusedIndicatorColor = Color.Transparent
+                    ),
+                    shape = RoundedCornerShape(8.dp),
+                )
+                Text(
+                    text = stringResource(id = R.string.cancel),
+                    Modifier
+                        .weight(2f)
+                        .clickable {
+                            search.value = ""
+                            searchMovie.invoke("")
+                        },
+                    textAlign = TextAlign.Center
+                )
+            }
+            LazyVerticalGrid(columns = GridCells.Fixed(2),
+                state = scrollState,
+                content = {
+                    itemsIndexed(info) { index, item ->
+                        BoxWithConstraints(contentAlignment = Alignment.TopEnd) {
+                            Column(
+                                Modifier
+                                    .clickable { nav.invoke(index) },
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
+                                Image(
+                                    painter = rememberImagePainter(data = thumbPath + item.poster_path),
+                                    contentDescription = item.title,
+                                    Modifier
+                                        .width(200.dp)
+                                        .height(200.dp)
+                                        .padding(10.dp)
+                                )
+                                Text(text = item.title.toString(), textAlign = TextAlign.Center)
+                            }
+                            Steppers(item, cart) { movie: Result, action: String ->
                                 addCart.invoke(
-                                    item,
+                                    movie,
                                     action
                                 )
                             }
                         }
                     }
-                }
-            })
-        if (!cart.isNullOrEmpty())
-            Column(
-                Modifier
-                    .padding(horizontal = 20.dp)
-                    .weight(1f)
-            ) {
+                })
+        }
+        if (!cart.isNullOrEmpty()) {
+            Column(Modifier.weight(1f)) {
                 Row(
                     Modifier
                         .fillMaxWidth()
-                        .clickable { checkoutNav.invoke() }
-                        .background(color = Color.Black, shape = RoundedCornerShape(20.dp)),
-                    verticalAlignment = Alignment.CenterVertically
+                        .padding(horizontal = 20.dp)
+                        .background(color = Color.Black, shape = RoundedCornerShape(20.dp))
+                        .clickable { payment.invoke() }
                 ) {
-                    Column(
-                        Modifier
-                            .padding(start = 20.dp)
-                            .weight(1.6f)
-                            .width(30.dp)
-                            .height(30.dp)
-                            .background(color = Color.White, shape = RoundedCornerShape(20.dp)),
-                        verticalArrangement = Arrangement.Center,
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        Text(
-                            text = cart.values.sum().toString(),
-                            textAlign = TextAlign.Center, color = Color.Black
-                        )
-                    }
                     Text(
-                        text = stringResource(R.string.checkout),
+                        text = stringResource(id = R.string.checkout),
                         Modifier
-                            .weight(8f)
-                            .padding(vertical = 20.dp),
-                        textAlign = TextAlign.Center, color = Color.White
+                            .fillMaxWidth()
+                            .padding(20.dp),
+                        color = Color.White,
+                        textAlign = TextAlign.Center
                     )
-                    Box(modifier = Modifier.weight(1.5f))
                 }
             }
+        }
     }
 }

@@ -6,16 +6,15 @@ import com.google.gson.reflect.TypeToken
 
 class CartConverter {
 
-
     @TypeConverter
-    fun stringToVideo(string: String?): MutableList<Result>? {
+    fun stringToLis(string: String?): MutableList<Result?>? {
         val type = object : TypeToken<MutableList<Result?>?>() {}.type
         return Gson().fromJson(string, type)
     }
 
     @TypeConverter
-    fun videoToString(video: MutableList<Result?>?): String? {
+    fun listToString(mutableList: MutableList<Result?>?): String? {
         val type = object : TypeToken<MutableList<Result?>?>() {}.type
-        return Gson().toJson(video, type)
+        return Gson().toJson(mutableList, type)
     }
 }

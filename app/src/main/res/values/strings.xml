@@ -8,4 +8,5 @@
     <string name="back_buton">Back Button</string>
     <string name="remove">Remove</string>
     <string name="add">Add</string>
+    <string name="cancel">Cancel</string>
 </resources>

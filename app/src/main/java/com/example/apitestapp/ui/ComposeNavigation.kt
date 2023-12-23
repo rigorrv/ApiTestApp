@@ -1,10 +1,13 @@
 package com.example.apitestapp.ui
 
-sealed class ComposeNavigation(val route: String) {
+import com.example.apitestapp.utilities.ApplicationConstants.Checkout
+import com.example.apitestapp.utilities.ApplicationConstants.MovieInfo
+import com.example.apitestapp.utilities.ApplicationConstants.MovieList
+import com.example.apitestapp.utilities.ApplicationConstants.Payment
 
-    object MovieList : ComposeNavigation("MovieList")
-    object MovieInfo : ComposeNavigation("MovieInfo")
-    object Checkout : ComposeNavigation("Checkout")
-    object Payment : ComposeNavigation("Payment")
-    object ImageConverter : ComposeNavigation("ImageConverter")
+sealed class ComposeNavigation(val route: String) {
+    object MovieListNav : ComposeNavigation(MovieList)
+    object MovieInfoNav : ComposeNavigation(MovieInfo)
+    object CheckoutNav : ComposeNavigation(Checkout)
+    object PaymentNav : ComposeNavigation(Payment)
 }

@@ -13,27 +13,27 @@ import javax.inject.Inject
 @HiltViewModel
 class MovieViewModel @Inject constructor(private val repository: Repository) : ViewModel() {
 
-    private val _moviesStateFlow = MutableStateFlow<MovieDB?>(MovieDB())
-    val moviesStateFlow: StateFlow<MovieDB?> = _moviesStateFlow
+    private val _movieStateFlow = MutableStateFlow<MovieDB?>(null)
+    val movieStateFlow: StateFlow<MovieDB?> = _movieStateFlow
 
     init {
-        getMovies(null)
+        getMovie(null)
     }
 
-    fun getMovies(movie: String?) {
-        if (movie.isNullOrEmpty()) {
+    fun getMovie(search: String?) {
+        if (search.isNullOrEmpty()) {
             viewModelScope.launch {
                 repository.getMovie().apply {
                     if (this.isSuccessful) {
-                        _moviesStateFlow.value = this.body()
+                        _movieStateFlow.value = this.body()
                     }
                 }
             }
         } else {
             viewModelScope.launch {
-                repository.searchMovie(movie).apply {
+                repository.searchMovie(search).apply {
                     if (this.isSuccessful) {
-                        _moviesStateFlow.value = this.body()
+                        _movieStateFlow.value = this.body()
                     }
                 }
             }

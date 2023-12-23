@@ -1,15 +1,9 @@
 package com.example.apitestapp
 
-import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.annotation.RequiresApi
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.collectAsState
-import androidx.compose.ui.Modifier
 import androidx.lifecycle.ViewModelProvider
 import com.example.apitestapp.model.Result
 import com.example.apitestapp.ui.HomeScreen
@@ -20,7 +14,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
-    private val viewModel: MovieViewModel by lazy {
+    private val movieViewModel: MovieViewModel by lazy {
         ViewModelProvider(this)[MovieViewModel::class.java]
     }
 
@@ -28,26 +22,23 @@ class MainActivity : ComponentActivity() {
         ViewModelProvider(this)[CartViewModel::class.java]
     }
 
-    @RequiresApi(Build.VERSION_CODES.Q)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            val info = viewModel.moviesStateFlow.collectAsState().value?.results
+            val info = movieViewModel.movieStateFlow.collectAsState().value?.results
             val cart = cartViewModel.cartStateFlow.collectAsState().value
             info?.let {
-                Column(
-                    Modifier
-                        .fillMaxHeight()
-                        .fillMaxWidth()
-                ) {
-                    HomeScreen(
-                        info = info,
-                        cart = cart,
-                        getMovie = { movie ->
-                            viewModel.getMovies(movie)
-                        }
-                    ) { item: Result?, action: String -> cartViewModel.insertCart(item, action) }
-                }
+                HomeScreen(
+                    info,
+                    cart,
+                    addCart = { movie: Result?, action: String ->
+                        cartViewModel.addCart(
+                            movie,
+                            action
+                        )
+                    },
+                    searchMovie = { search: String -> movieViewModel.getMovie(search) }
+                )
             }
         }
     }

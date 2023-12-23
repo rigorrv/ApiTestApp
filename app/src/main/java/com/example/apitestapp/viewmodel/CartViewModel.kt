@@ -19,19 +19,19 @@ import javax.inject.Inject
 class CartViewModel @Inject constructor(private val repository: Repository) : ViewModel() {
 
     private val _cartStateFlow = MutableStateFlow<MutableMap<Result?, Int>>(mutableMapOf())
-    val cartStateFlow: StateFlow<MutableMap<Result?, Int>?> = _cartStateFlow
-    var cart = mutableListOf<Result?>()
+    val cartStateFlow: StateFlow<MutableMap<Result?, Int>> = _cartStateFlow
+    var movieId = mutableListOf<Result?>()
 
-    fun insertCart(result: Result? = null, action: String) {
+    fun addCart(movie: Result?, action: String) {
         viewModelScope.launch {
-            repository.getCart()?.cart?.let { cart = it }
+            repository.getCart()?.cart?.let { movieId = it }
             when (action) {
-                AddCart -> cart.add(result)
-                RemoveCart -> cart.remove(result)
-                DeleteCart -> while (cart.contains(result)) cart.remove(result)
-                ClearCart -> cart.clear()
+                AddCart -> movieId.add(movie)
+                RemoveCart -> movieId.remove(movie)
+                DeleteCart -> while (movieId.contains(movie)) movieId.remove(movie)
+                ClearCart -> movieId.clear()
             }
-            repository.insertCart(Cart(cart = cart))
+            repository.insertCart(Cart(cart = movieId))
             getCart()
         }
     }

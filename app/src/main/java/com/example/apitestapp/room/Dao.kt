@@ -6,14 +6,13 @@ import androidx.room.OnConflictStrategy.Companion.REPLACE
 import androidx.room.Query
 import com.example.apitestapp.model.Cart
 
-
 @Dao
 interface Dao {
+
 
     @Query("SELECT * FROM Cart")
     suspend fun getCart(): Cart?
 
     @Insert(onConflict = REPLACE)
-    suspend fun insertCart(vararg step: Cart)
-
+    suspend fun insertCart(vararg cart: Cart)
 }

@@ -2,17 +2,12 @@ package com.example.apitestapp.ui
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.Text
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material3.CenterAlignedTopAppBar
-import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -28,10 +23,11 @@ import com.example.apitestapp.utilities.ApplicationConstants.imagePath
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MovieInfo(
-    info: Result,
-    cart: MutableMap<Result?, Int>?,
-    nav: () -> Unit,
-    addCart: (Result?, String) -> Unit
+    item: Result,
+    cart: MutableMap<Result?, Int>,
+    addCart: (Result, String) -> Unit,
+    nav: () -> Boolean,
+    navCheckout: () -> Unit
 ) {
     Column(
         Modifier
@@ -39,30 +35,62 @@ fun MovieInfo(
             .fillMaxHeight()
     ) {
         CenterAlignedTopAppBar(
-            title = { Text(info.title) },
-            Modifier.background(color = Color.White),
+            title = {
+                Text(text = stringResource(id = R.string.checkout), Modifier.padding(10.dp))
+            },
+            Modifier
+                .weight(1f)
+                .padding(top = 20.dp),
             navigationIcon = {
-                IconButton(onClick = {
-                    nav.invoke()
-                }) {
+                IconButton(onClick = { nav.invoke() }) {
                     Icon(
                         imageVector = Icons.Default.ArrowBack,
-                        contentDescription = stringResource(R.string.back_buton)
+                        contentDescription = stringResource(id = R.string.back_buton)
                     )
                 }
-            }
+            },
         )
-        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        Column(
+            Modifier
+                .weight(7f)
+                .fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
             Image(
-                painter = rememberImagePainter(data = imagePath + info.poster_path),
-                contentDescription = info.title,
+                painter = rememberImagePainter(data = imagePath + item.poster_path),
+                contentDescription = item.title,
                 Modifier.padding(20.dp)
             )
             Steppers(
-                item = info,
-                cart,
-            ) { item: Result?, action: String -> addCart.invoke(item,action) }
-            Text(text = info.overview, Modifier.padding(20.dp), textAlign = TextAlign.Center)
+                item = item,
+                cart = cart,
+                addCart =
+                { movie: Result, action: String -> addCart.invoke(movie, action) })
+            Text(
+                text = item.overview.toString(),
+                Modifier
+                    .fillMaxWidth()
+                    .padding(20.dp),
+                textAlign = TextAlign.Center
+            )
+        }
+        Column(Modifier.weight(1f)) {
+            Row(
+                Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 20.dp)
+                    .background(color = Color.Black, shape = RoundedCornerShape(20.dp))
+            ) {
+                Text(
+                    text = stringResource(id = R.string.checkout),
+                    Modifier
+                        .padding(20.dp)
+                        .fillMaxWidth()
+                        .clickable { navCheckout.invoke() },
+                    color = Color.White,
+                    textAlign = TextAlign.Center
+                )
+            }
         }
     }
 }
