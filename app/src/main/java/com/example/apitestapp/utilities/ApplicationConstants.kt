@@ -10,7 +10,7 @@ object ApplicationConstants {
     const val baseUrl = "https://api.themoviedb.org"
     const val endPoint = "/3/discover/movie"
     const val searchEndPoint = "/3/search/movie"
-    const val movieInfo = "3/movie/343611"
+    const val movieInfo = "3/movie/{movieId}"
     const val thumbPath = "http://image.tmdb.org/t/p/w200/"
     const val imagePath = "http://image.tmdb.org/t/p/w500/"
     const val AddCart = "AddCart"

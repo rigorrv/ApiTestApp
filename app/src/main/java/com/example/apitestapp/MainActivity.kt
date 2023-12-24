@@ -5,7 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.collectAsState
 import androidx.lifecycle.ViewModelProvider
-import com.example.apitestapp.model.Result
+import com.example.apitestapp.model.content.Result
 import com.example.apitestapp.ui.HomeScreen
 import com.example.apitestapp.viewmodel.CartViewModel
 import com.example.apitestapp.viewmodel.MovieViewModel
@@ -27,17 +27,22 @@ class MainActivity : ComponentActivity() {
         setContent {
             val info = movieViewModel.movieStateFlow.collectAsState().value?.results
             val cart = cartViewModel.cartStateFlow.collectAsState().value
+            val movieInfo = movieViewModel.movieInStateFlow.collectAsState().value
             info?.let {
                 HomeScreen(
                     info,
                     cart,
+                    movieInfo,
+                    searchMovie = { movie: String? -> movieViewModel.getMovie(movie) },
                     addCart = { movie: Result?, action: String ->
                         cartViewModel.addCart(
                             movie,
                             action
                         )
                     },
-                    searchMovie = { search: String -> movieViewModel.getMovie(search) }
+                    getMovieInfo = { movieId: Int? ->
+                        movieViewModel.movieInfo(movieId)
+                    }
                 )
             }
         }

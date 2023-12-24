@@ -12,12 +12,13 @@ import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Icon
-import androidx.compose.material.Text
-import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -32,129 +33,156 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberImagePainter
 import com.example.apitestapp.R
-import com.example.apitestapp.model.Result
+import com.example.apitestapp.model.content.Result
 import com.example.apitestapp.utilities.ApplicationConstants.thumbPath
 
-@OptIn(ExperimentalComposeUiApi::class)
+@OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun MovieList(
     info: List<Result>,
     cart: MutableMap<Result?, Int>,
-    addCart: (Result, String) -> Unit,
+    movieInfo: Result?,
     searchMovie: (String) -> Unit,
-    nav: (Int) -> Unit,
-    payment: () -> Unit
+    addCart: (Result?, String) -> Unit,
+    getMovieInfo: (Int) -> Unit,
+    checkout: () -> Unit,
+    lastSearch: MutableState<String>
 ) {
     val scrollState = rememberLazyGridState()
-    val keyboard = LocalSoftwareKeyboardController.current
+    val keyBoard = LocalSoftwareKeyboardController.current
     if (scrollState.isScrollInProgress) {
-        keyboard?.hide()
+        keyBoard?.hide()
     }
     val search = remember {
         mutableStateOf("")
     }
+    if (!lastSearch.value.isNullOrEmpty()) {
+        search.value = lastSearch.value
+    }
     Column(
         Modifier
             .fillMaxWidth()
-            .fillMaxHeight(), horizontalAlignment = Alignment.CenterHorizontally
+            .fillMaxHeight(),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Column(Modifier.weight(8f)) {
-            Row(
+        Row(
+            Modifier
+                .fillMaxWidth()
+                .padding(20.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            androidx.compose.material.TextField(
+                value = search.value,
+                onValueChange = {
+                    search.value = it
+                    searchMovie.invoke(it)
+                },
                 Modifier
-                    .fillMaxWidth()
-                    .padding(20.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                TextField(
-                    value = search.value,
-                    onValueChange = {
-                        search.value = it
-                        searchMovie.invoke(it)
-                    },
-                    Modifier
-                        .border(
-                            width = 1.dp,
-                            color = Color.Gray,
-                            RoundedCornerShape(10.dp)
-                        )
-                        .weight(8f),
-                    placeholder = { Text(text = stringResource(R.string.search_movie)) },
-                    keyboardOptions = KeyboardOptions(
-                        capitalization = KeyboardCapitalization.None,
-                        autoCorrect = true,
-                        keyboardType = KeyboardType.Text,
+                    .border(
+                        width = 1.dp,
+                        color = Color.Gray,
+                        RoundedCornerShape(10.dp)
                     ),
-                    singleLine = true,
-                    leadingIcon = {
-                        Icon(
-                            Icons.Filled.AccountCircle,
-                            contentDescription = stringResource(R.string.search_icon)
+                placeholder = { androidx.compose.material.Text(text = stringResource(R.string.search_movie)) },
+                keyboardOptions = KeyboardOptions(
+                    capitalization = KeyboardCapitalization.None,
+                    autoCorrect = true,
+                    keyboardType = KeyboardType.Text,
+                ),
+                singleLine = true,
+                leadingIcon = {
+                    Icon(
+                        Icons.Filled.AccountCircle,
+                        contentDescription = stringResource(R.string.search_icon)
+                    )
+                },
+                colors = TextFieldDefaults.textFieldColors(
+                    backgroundColor = Color.White,
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent
+                ),
+                shape = RoundedCornerShape(8.dp),
+            )
+            Text(
+                text = stringResource(id = R.string.cancel),
+                Modifier
+                    .weight(2f)
+                    .clickable {
+                        search.value = ""
+                        searchMovie.invoke("")
+                        keyBoard?.hide()
+                    }, textAlign = TextAlign.Center
+            )
+        }
+        LazyVerticalGrid(
+            columns = GridCells.Fixed(2),
+            Modifier.weight(8f),
+            state = scrollState,
+            content = {
+                itemsIndexed(info) { index, item ->
+                    BoxWithConstraints(contentAlignment = Alignment.TopEnd) {
+                        Column(
+                            Modifier
+                                .padding(10.dp)
+                                .clickable {
+                                    item.id?.let {
+                                        getMovieInfo.invoke(it)
+                                    }
+                                },
+                            horizontalAlignment = Alignment.CenterHorizontally
                         )
-                    },
-                    colors = TextFieldDefaults.textFieldColors(
-                        backgroundColor = Color.White,
-                        focusedIndicatorColor = Color.Transparent,
-                        unfocusedIndicatorColor = Color.Transparent
-                    ),
-                    shape = RoundedCornerShape(8.dp),
-                )
-                Text(
-                    text = stringResource(id = R.string.cancel),
-                    Modifier
-                        .weight(2f)
-                        .clickable {
-                            search.value = ""
-                            searchMovie.invoke("")
-                        },
-                    textAlign = TextAlign.Center
-                )
-            }
-            LazyVerticalGrid(columns = GridCells.Fixed(2),
-                state = scrollState,
-                content = {
-                    itemsIndexed(info) { index, item ->
-                        BoxWithConstraints(contentAlignment = Alignment.TopEnd) {
-                            Column(
+                        {
+                            Image(
+                                painter = rememberImagePainter(data = thumbPath + item.poster_path),
+                                contentDescription = item.title,
                                 Modifier
-                                    .clickable { nav.invoke(index) },
-                                horizontalAlignment = Alignment.CenterHorizontally
-                            ) {
-                                Image(
-                                    painter = rememberImagePainter(data = thumbPath + item.poster_path),
-                                    contentDescription = item.title,
-                                    Modifier
-                                        .width(200.dp)
-                                        .height(200.dp)
-                                        .padding(10.dp)
-                                )
-                                Text(text = item.title.toString(), textAlign = TextAlign.Center)
-                            }
-                            Steppers(item, cart) { movie: Result, action: String ->
+                                    .width(200.dp)
+                                    .height(200.dp)
+                            )
+                            Text(
+                                text = item.title.toString(),
+                                Modifier
+                                    .fillMaxWidth()
+                                    .padding(10.dp),
+                                textAlign = TextAlign.Center
+                            )
+                        }
+                        Steppers(
+                            item,
+                            cart,
+                            addCart = { movie: Result?, action: String ->
                                 addCart.invoke(
                                     movie,
                                     action
                                 )
-                            }
-                        }
+                                keyBoard?.hide()
+                            })
                     }
-                })
-        }
+                }
+            }
+        )
         if (!cart.isNullOrEmpty()) {
-            Column(Modifier.weight(1f)) {
+            Column(
+                Modifier
+                    .fillMaxWidth()
+                    .weight(1.5f)
+            ) {
                 Row(
                     Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 20.dp)
-                        .background(color = Color.Black, shape = RoundedCornerShape(20.dp))
-                        .clickable { payment.invoke() }
+                        .padding(20.dp)
+                        .background(color = Color.Black, RoundedCornerShape(20.dp))
+                        .clickable {
+                            checkout.invoke()
+                        }
                 ) {
                     Text(
                         text = stringResource(id = R.string.checkout),
                         Modifier
                             .fillMaxWidth()
                             .padding(20.dp),
-                        color = Color.White,
-                        textAlign = TextAlign.Center
+                        textAlign = TextAlign.Center,
+                        color = Color.White
                     )
                 }
             }

@@ -1,4 +1,4 @@
-package com.example.apitestapp.model.info
+package com.example.apitestapp.model.movieinfo
 
 data class Result(
     val id: String,

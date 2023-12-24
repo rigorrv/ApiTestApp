@@ -1,13 +1,14 @@
-package com.example.apitestapp.model
+package com.example.apitestapp.model.cart
 
 import androidx.room.TypeConverter
+import com.example.apitestapp.model.content.Result
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
 class CartConverter {
 
     @TypeConverter
-    fun stringToLis(string: String?): MutableList<Result?>? {
+    fun stringToList(string: String?): MutableList<Result?>? {
         val type = object : TypeToken<MutableList<Result?>?>() {}.type
         return Gson().fromJson(string, type)
     }

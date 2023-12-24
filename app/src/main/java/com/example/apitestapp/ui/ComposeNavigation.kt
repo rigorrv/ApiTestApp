@@ -6,6 +6,7 @@ import com.example.apitestapp.utilities.ApplicationConstants.MovieList
 import com.example.apitestapp.utilities.ApplicationConstants.Payment
 
 sealed class ComposeNavigation(val route: String) {
+
     object MovieListNav : ComposeNavigation(MovieList)
     object MovieInfoNav : ComposeNavigation(MovieInfo)
     object CheckoutNav : ComposeNavigation(Checkout)

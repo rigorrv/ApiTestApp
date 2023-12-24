@@ -2,8 +2,8 @@ package com.example.apitestapp.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.apitestapp.model.Cart
-import com.example.apitestapp.model.Result
+import com.example.apitestapp.model.cart.Cart
+import com.example.apitestapp.model.content.Result
 import com.example.apitestapp.repository.Repository
 import com.example.apitestapp.utilities.ApplicationConstants.AddCart
 import com.example.apitestapp.utilities.ApplicationConstants.ClearCart
@@ -20,7 +20,7 @@ class CartViewModel @Inject constructor(private val repository: Repository) : Vi
 
     private val _cartStateFlow = MutableStateFlow<MutableMap<Result?, Int>>(mutableMapOf())
     val cartStateFlow: StateFlow<MutableMap<Result?, Int>> = _cartStateFlow
-    var movieId = mutableListOf<Result?>()
+    private var movieId = mutableListOf<Result?>()
 
     fun addCart(movie: Result?, action: String) {
         viewModelScope.launch {

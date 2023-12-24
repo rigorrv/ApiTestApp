@@ -1,4 +1,4 @@
-package com.example.apitestapp.model.info
+package com.example.apitestapp.model.movieinfo
 
 data class ProductionCountry(
     val iso_3166_1: String,

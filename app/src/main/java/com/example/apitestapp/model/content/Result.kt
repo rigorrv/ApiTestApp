@@ -1,9 +1,7 @@
-package com.example.apitestapp.model
+package com.example.apitestapp.model.content
 
 data class Result(
     val adult: Boolean? = null,
-    val backdrop_path: String? = null,
-    val genre_ids: List<Int>? = null,
     val id: Int? = null,
     val original_language: String? = null,
     val original_title: String? = null,
@@ -13,6 +11,4 @@ data class Result(
     val release_date: String? = null,
     val title: String? = null,
     val video: Boolean? = null,
-    val vote_average: Double? = null,
-    val vote_count: Int? = null
 )

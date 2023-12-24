@@ -1,4 +1,4 @@
-package com.example.apitestapp.model
+package com.example.apitestapp.model.content
 
 data class MovieDB(
     val page: Int? = null,

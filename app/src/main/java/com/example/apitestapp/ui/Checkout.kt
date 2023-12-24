@@ -12,6 +12,7 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
@@ -21,7 +22,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberImagePainter
 import com.example.apitestapp.R
-import com.example.apitestapp.model.Result
+import com.example.apitestapp.model.content.Result
 import com.example.apitestapp.utilities.ApplicationConstants.DeleteCart
 import com.example.apitestapp.utilities.ApplicationConstants.thumbPath
 
@@ -29,71 +30,81 @@ import com.example.apitestapp.utilities.ApplicationConstants.thumbPath
 @Composable
 fun Checkout(
     cart: MutableMap<Result?, Int>,
-    addCart: (Result?, String) -> Unit,
+    addCart: (movie: Result?, action: String) -> Unit,
     nav: () -> Boolean,
-    payment: () -> Unit,
-    infoNav: (int: Int) -> Unit
+    getMovieInfo: (Int?) -> Unit,
+    payment: () -> Unit
 ) {
-    Column(
-        Modifier
-            .fillMaxWidth()
-            .fillMaxHeight(),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        CenterAlignedTopAppBar(
-            title = { Text(text = stringResource(id = R.string.checkout)) },
-            Modifier.weight(1f),
-            navigationIcon = {
-                IconButton(
-                    onClick = {
-                        nav.invoke()
-                    }) {
-                    Icon(
-                        imageVector = Icons.Default.ArrowBack,
-                        contentDescription = stringResource(id = R.string.back_buton)
+    if (cart.isNullOrEmpty()) {
+        LaunchedEffect(key1 = 1) {
+            nav.invoke()
+        }
+    }
+    cart.keys.toList().let { info ->
+        Column(
+            Modifier
+                .fillMaxWidth()
+                .fillMaxHeight(),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            CenterAlignedTopAppBar(
+                title = {
+                    Text(
+                        text = stringResource(id = R.string.checkout),
+                        textAlign = TextAlign.Center
                     )
+                },
+                navigationIcon = {
+                    IconButton(onClick = { nav.invoke() }) {
+                        Icon(
+                            imageVector = Icons.Default.ArrowBack,
+                            contentDescription = stringResource(id = R.string.back_buton)
+                        )
+                    }
                 }
-            },
-        )
-        cart.keys.toList().let { info ->
+            )
             LazyColumn(
                 Modifier.weight(8f),
                 content = {
                     itemsIndexed(info) { index, item ->
                         Row(
-                            Modifier
+                            modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(horizontal = 20.dp, vertical = 10.dp)
-                                .height(100.dp)
-                                .width(100.dp)
                                 .clickable {
-                                    infoNav.invoke(index)
+                                    getMovieInfo.invoke(item?.id)
                                 },
                             verticalAlignment = CenterVertically
                         ) {
                             Image(
                                 painter = rememberImagePainter(data = thumbPath + item?.poster_path),
                                 contentDescription = item?.title,
-                                Modifier.weight(2f)
+                                Modifier
+                                    .height(100.dp)
+                                    .width(100.dp)
+                                    .weight(2f)
                             )
                             Text(
-                                text = item?.title.toString(),
-                                Modifier
-                                    .padding(start = 12.dp)
+                                text = item?.title.toString(), modifier = Modifier
+                                    .padding(12.dp)
                                     .weight(6f)
                             )
                             Steppers(
                                 item = item,
                                 cart = cart,
-                                addCart =
-                                { movie: Result, action: String -> addCart.invoke(movie, action) })
-                            Icon(
+                                addCart = { movie: Result?, action: String ->
+                                    addCart.invoke(
+                                        movie,
+                                        action
+                                    )
+                                })
+                            Image(
                                 imageVector = Icons.Default.Delete,
                                 contentDescription = stringResource(
-                                    id = R.string.delet
+                                    id = R.string.remove
                                 ),
-                                modifier = Modifier
-                                    .padding(start = 12.dp)
+                                Modifier
+                                    .padding(12.dp)
                                     .clickable {
                                         addCart.invoke(item, DeleteCart)
                                     }
@@ -101,25 +112,29 @@ fun Checkout(
                         }
                     }
                 })
-        }
-        Column(Modifier.weight(1f)) {
-            Row(
+            Column(
                 Modifier
                     .fillMaxWidth()
-                    .clickable {
-                        payment.invoke()
-                    }
-                    .padding(horizontal = 20.dp)
-                    .background(color = Color.Black, shape = RoundedCornerShape(20.dp))
+                    .weight(1.5f)
             ) {
-                Text(
-                    text = stringResource(id = R.string.payment),
+                Row(
                     Modifier
                         .fillMaxWidth()
-                        .padding(20.dp),
-                    textAlign = TextAlign.Center,
-                    color = Color.White
-                )
+                        .padding(20.dp)
+                        .background(color = Color.Black, RoundedCornerShape(20.dp))
+                        .clickable {
+                            payment.invoke()
+                        }
+                ) {
+                    Text(
+                        text = stringResource(id = R.string.checkout),
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(20.dp),
+                        textAlign = TextAlign.Center,
+                        color = Color.White
+                    )
+                }
             }
         }
     }

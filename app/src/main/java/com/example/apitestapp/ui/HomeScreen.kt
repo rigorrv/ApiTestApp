@@ -6,18 +6,23 @@ import androidx.compose.runtime.remember
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.apitestapp.model.Result
+import com.example.apitestapp.model.content.Result
 
 @Composable
 fun HomeScreen(
     info: List<Result>,
     cart: MutableMap<Result?, Int>,
+    movieInfo: Result?,
+    searchMovie: (String?) -> Unit,
     addCart: (Result?, String) -> Unit,
-    searchMovie: (search: String) -> Unit
+    getMovieInfo: (Int?) -> Unit
 ) {
     val navController = rememberNavController()
     val index = remember {
         mutableStateOf(0)
+    }
+    val search = remember {
+        mutableStateOf("")
     }
     NavHost(
         navController = navController,
@@ -27,45 +32,54 @@ fun HomeScreen(
                 MovieList(
                     info,
                     cart,
-                    addCart = { movie: Result, action: String ->
-                        addCart.invoke(movie, action)
+                    movieInfo,
+                    searchMovie = { movie: String ->
+                        search.value = movie
+                        searchMovie.invoke(movie)
                     },
-                    searchMovie = { search: String -> searchMovie.invoke(search) },
-                    nav =
-                    { int: Int ->
-                        index.value = int
+                    addCart = { movie: Result?, action: String -> addCart.invoke(movie, action) },
+                    getMovieInfo = { movieId: Int ->
+                        getMovieInfo.invoke(movieId)
                         navController.navigate(ComposeNavigation.MovieInfoNav.route)
                     },
-                    payment = { navController.navigate(ComposeNavigation.CheckoutNav.route) }
+                    checkout = { navController.navigate(ComposeNavigation.CheckoutNav.route) },
+                    search
                 )
             }
             composable(ComposeNavigation.MovieInfoNav.route) {
                 MovieInfo(
-                    info[index.value],
+                    movieInfo,
                     cart,
-                    addCart = { movie: Result, action: String -> addCart.invoke(movie, action) },
-                    nav = { navController.popBackStack() }
-                ) {
-                    navController.navigate(ComposeNavigation.CheckoutNav.route)
-                }
+                    addCart = { movie: Result?, action: String -> addCart.invoke(movie, action) }
+                ) { navController.popBackStack() }
             }
             composable(ComposeNavigation.CheckoutNav.route) {
                 Checkout(
                     cart,
-                    addCart,
-                    payment = { navController.navigate(ComposeNavigation.PaymentNav.route) },
+                    addCart = { movie, action ->
+                        addCart.invoke(
+                            movie,
+                            action
+                        )
+                    },
                     nav = { navController.popBackStack() },
-                    infoNav = { int: Int ->
-                        index.value = int
+                    getMovieInfo = { movieId: Int? ->
+                        getMovieInfo.invoke(movieId)
                         navController.navigate(ComposeNavigation.MovieInfoNav.route)
-                    }
+                    },
+                    payment = { navController.navigate(ComposeNavigation.PaymentNav.route) }
                 )
             }
             composable(ComposeNavigation.PaymentNav.route) {
                 Payment(
                     cart,
-                    addCart = { movie: Result?, action: String -> addCart.invoke(movie, action) }
-                ) { navController.navigate(ComposeNavigation.MovieListNav.route) }
+                    nav = {
+                        search.value = ""
+                        searchMovie.invoke(null)
+                        navController.navigate(ComposeNavigation.MovieListNav.route)
+                    },
+                    addCart = { movie, action -> addCart.invoke(movie, action) }
+                )
             }
         }
     )
