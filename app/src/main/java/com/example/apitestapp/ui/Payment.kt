@@ -64,7 +64,7 @@ fun Payment(
                                 .width(100.dp)
                                 .height(100.dp)
                         )
-                        Text(text = item?.title.toString())
+                        Text(text = item?.title.toString(), Modifier.padding(end = 12.dp))
                     }
                 }
             })

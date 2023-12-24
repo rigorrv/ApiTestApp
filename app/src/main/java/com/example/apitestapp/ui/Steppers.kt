@@ -1,16 +1,15 @@
 package com.example.apitestapp.ui
 
-import android.util.Log
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -29,26 +28,38 @@ fun Steppers(
 ) {
     Row(
         Modifier
-            .height(20.dp)
-            .background(color = Color.Black, shape = RoundedCornerShape(20.dp)),
+            .padding(20.dp)
+            .height(30.dp)
+            .clip(
+                RoundedCornerShape(
+                    20.dp,
+                )
+            )
+            .border(BorderStroke(2.dp, Color.Gray), shape = RoundedCornerShape(20.dp))
+            .background(
+                Color.Black,
+                shape = RoundedCornerShape(20.dp)
+            ),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        if (cart.keys.contains(item)) {
-            Image(painter = painterResource(id = R.drawable.remove),
+        Row(Modifier.padding(5.dp), verticalAlignment = Alignment.CenterVertically) {
+            if (cart.keys.contains(item)) {
+                Image(painter = painterResource(id = R.drawable.remove),
+                    contentDescription = stringResource(
+                        id = R.string.remove
+                    ),
+                    Modifier.clickable { addCart.invoke(item, RemoveCart) })
+                Text(
+                    text = cart.filterKeys { it == item }.values.joinToString(),
+                    color = Color.White,
+                    textAlign = TextAlign.Center
+                )
+            }
+            Image(painter = painterResource(id = R.drawable.add),
                 contentDescription = stringResource(
-                    id = R.string.remove
+                    id = R.string.add
                 ),
-                Modifier.clickable { addCart.invoke(item, RemoveCart) })
-            Text(
-                text = cart.filterKeys { it == item }.values.joinToString(),
-                color = Color.White,
-                textAlign = TextAlign.Center
-            )
+                Modifier.clickable { addCart.invoke(item, AddCart) })
         }
-        Image(painter = painterResource(id = R.drawable.add),
-            contentDescription = stringResource(
-                id = R.string.add
-            ),
-            Modifier.clickable { addCart.invoke(item, AddCart) })
-        }
+    }
 }

@@ -104,7 +104,7 @@ fun Checkout(
                                     id = R.string.remove
                                 ),
                                 Modifier
-                                    .padding(12.dp)
+                                    .padding(end = 12.dp)
                                     .clickable {
                                         addCart.invoke(item, DeleteCart)
                                     }
