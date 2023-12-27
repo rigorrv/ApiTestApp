@@ -13,7 +13,7 @@ import retrofit2.http.Query
 interface Api {
 
     @GET(endPoint)
-    suspend fun getMovie(): Response<MovieDB>
+    suspend fun getMovie(): Response<MovieDB?>
 
     @GET(searchEndPoint)
     suspend fun searchMovie(

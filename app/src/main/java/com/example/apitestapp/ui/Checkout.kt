@@ -33,7 +33,7 @@ fun Checkout(
     addCart: (movie: Result?, action: String) -> Unit,
     nav: () -> Boolean,
     getMovieInfo: (Int?) -> Unit,
-    payment: () -> Unit
+    payment: () -> Unit,
 ) {
     if (cart.isNullOrEmpty()) {
         LaunchedEffect(key1 = 1) {

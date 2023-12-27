@@ -20,17 +20,19 @@ class MovieViewModel @Inject constructor(private val repository: Repository) : V
     private val _movieInfoStateFlow = MutableStateFlow<Result?>(null)
     val movieInStateFlow: StateFlow<Result?> = _movieInfoStateFlow
 
+    val preload = MutableStateFlow<Boolean>(false)
+
     init {
         getMovie(null)
     }
 
     fun getMovie(movie: String?) {
+        preload.value = true
         if (movie.isNullOrEmpty()) {
             viewModelScope.launch {
                 repository.getMovie().apply {
-                    if (this.isSuccessful) {
-                        _movieStateFlow.value = this.body()
-                    }
+                    _movieStateFlow.value = this
+                    preload.value = false
                 }
             }
         } else {
@@ -38,6 +40,7 @@ class MovieViewModel @Inject constructor(private val repository: Repository) : V
                 repository.searchMovie(movie).apply {
                     if (this.isSuccessful) {
                         _movieStateFlow.value = this.body()
+                        preload.value = false
                     }
                 }
             }
@@ -45,10 +48,12 @@ class MovieViewModel @Inject constructor(private val repository: Repository) : V
     }
 
     fun movieInfo(movieID: Int?) {
+        preload.value = true
         viewModelScope.launch {
             repository.movieInfo(movieID).apply {
                 if (this.isSuccessful) {
                     _movieInfoStateFlow.value = this.body()
+                    preload.value = false
                 }
             }
         }

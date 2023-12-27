@@ -28,6 +28,8 @@ class MainActivity : ComponentActivity() {
             val info = movieViewModel.movieStateFlow.collectAsState().value?.results
             val cart = cartViewModel.cartStateFlow.collectAsState().value
             val movieInfo = movieViewModel.movieInStateFlow.collectAsState().value
+            val preload = movieViewModel.preload.collectAsState().value
+
             info?.let {
                 HomeScreen(
                     info,
@@ -42,7 +44,8 @@ class MainActivity : ComponentActivity() {
                     },
                     getMovieInfo = { movieId: Int? ->
                         movieViewModel.movieInfo(movieId)
-                    }
+                    },
+                    preload
                 )
             }
         }

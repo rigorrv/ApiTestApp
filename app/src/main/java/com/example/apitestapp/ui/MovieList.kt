@@ -46,7 +46,7 @@ fun MovieList(
     addCart: (Result?, String) -> Unit,
     getMovieInfo: (Int) -> Unit,
     checkout: () -> Unit,
-    lastSearch: MutableState<String>
+    lastSearch: MutableState<String>,
 ) {
     val scrollState = rememberLazyGridState()
     val keyBoard = LocalSoftwareKeyboardController.current
@@ -78,6 +78,7 @@ fun MovieList(
                     searchMovie.invoke(it)
                 },
                 Modifier
+                    .weight(7f)
                     .border(
                         width = 1.dp,
                         color = Color.Gray,
@@ -106,7 +107,7 @@ fun MovieList(
             Text(
                 text = stringResource(id = R.string.cancel),
                 Modifier
-                    .weight(2f)
+                    .weight(3f)
                     .clickable {
                         search.value = ""
                         searchMovie.invoke("")
