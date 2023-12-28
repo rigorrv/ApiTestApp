@@ -13,6 +13,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.apitestapp.model.content.Result
+import com.example.apitestapp.utilities.ApplicationConstants
 
 @Composable
 fun HomeScreen(
@@ -98,8 +99,8 @@ fun HomeScreen(
                             search.value = ""
                             searchMovie.invoke(null)
                             navController.navigate(ComposeNavigation.MovieListNav.route)
-                        },
-                        addCart = { movie, action -> addCart.invoke(movie, action) },
+                            addCart.invoke(null, ApplicationConstants.ClearCart)
+                        }
                     )
                 }
             }

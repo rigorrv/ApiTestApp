@@ -127,7 +127,7 @@ fun Checkout(
                         }
                 ) {
                     Text(
-                        text = stringResource(id = R.string.checkout),
+                        text = stringResource(id = R.string.payment),
                         Modifier
                             .fillMaxWidth()
                             .padding(20.dp),

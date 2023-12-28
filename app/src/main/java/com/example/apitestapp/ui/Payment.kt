@@ -23,7 +23,6 @@ import com.example.apitestapp.utilities.ApplicationConstants.thumbPath
 @Composable
 fun Payment(
     cart: MutableMap<Result?, Int>, nav: () -> Unit,
-    addCart: (movie: Result?, action: String) -> Unit
 ) {
     Column(
         Modifier
@@ -40,7 +39,6 @@ fun Payment(
             navigationIcon = {
                 IconButton(onClick = {
                     nav.invoke()
-                    addCart.invoke(null, ClearCart)
                 }) {
                     Icon(
                         imageVector = Icons.Default.ArrowBack,
