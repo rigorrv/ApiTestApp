@@ -18,9 +18,6 @@ import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -46,18 +43,12 @@ fun MovieList(
     addCart: (Result?, String) -> Unit,
     getMovieInfo: (Int) -> Unit,
     checkout: () -> Unit,
-    lastSearch: MutableState<String>,
+    lastSearch: String,
 ) {
     val scrollState = rememberLazyGridState()
     val keyBoard = LocalSoftwareKeyboardController.current
     if (scrollState.isScrollInProgress) {
         keyBoard?.hide()
-    }
-    val search = remember {
-        mutableStateOf("")
-    }
-    if (!lastSearch.value.isNullOrEmpty()) {
-        search.value = lastSearch.value
     }
     Column(
         Modifier
@@ -72,9 +63,8 @@ fun MovieList(
             verticalAlignment = Alignment.CenterVertically
         ) {
             androidx.compose.material.TextField(
-                value = search.value,
+                value = lastSearch,
                 onValueChange = {
-                    search.value = it
                     searchMovie.invoke(it)
                 },
                 Modifier
@@ -104,16 +94,17 @@ fun MovieList(
                 ),
                 shape = RoundedCornerShape(8.dp),
             )
-            Text(
-                text = stringResource(id = R.string.cancel),
-                Modifier
-                    .weight(3f)
-                    .clickable {
-                        search.value = ""
-                        searchMovie.invoke("")
-                        keyBoard?.hide()
-                    }, textAlign = TextAlign.Center
-            )
+            if (lastSearch.isNotEmpty()) {
+                Text(
+                    text = stringResource(id = R.string.cancel),
+                    Modifier
+                        .weight(3f)
+                        .clickable {
+                            searchMovie.invoke("")
+                            keyBoard?.hide()
+                        }, textAlign = TextAlign.Center
+                )
+            }
         }
         LazyVerticalGrid(
             columns = GridCells.Fixed(2),

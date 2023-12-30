@@ -59,7 +59,7 @@ fun HomeScreen(
                             navController.navigate(ComposeNavigation.MovieInfoNav.route)
                         },
                         checkout = { navController.navigate(ComposeNavigation.CheckoutNav.route) },
-                        search,
+                        search.value,
                     )
                 }
                 composable(ComposeNavigation.MovieInfoNav.route) {
