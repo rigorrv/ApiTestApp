@@ -30,5 +30,4 @@ class Repository @Inject constructor(private val api: Api, private val dao: Dao)
 
     override suspend fun insertCart(cart: Cart?) = dao.insertCart(cart)
 
-
 }
