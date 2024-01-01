@@ -10,12 +10,6 @@ import com.example.apitestapp.model.content.MovieDB
 @Dao
 interface Dao {
 
-    @Query("SELECT * FROM Content")
-    suspend fun getMovie(): MovieDB?
-
-    @Insert(onConflict = REPLACE)
-    suspend fun insertMovie(vararg movieDB: MovieDB?)
-
     @Query("SELECT * FROM Cart")
     suspend fun getCart(): Cart?
 
