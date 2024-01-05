@@ -30,17 +30,18 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberImagePainter
 import com.example.apitestapp.R
+import com.example.apitestapp.model.content.Content
 import com.example.apitestapp.model.content.Result
 import com.example.apitestapp.utilities.ApplicationConstants.thumbPath
 
 @OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun MovieList(
-    info: List<Result>,
+    info: List<Content>,
     cart: MutableMap<Result?, Int>,
-    movieInfo: Result?,
+    steppers: MutableMap<Int?, Int>,
     searchMovie: (String) -> Unit,
-    addCart: (Result?, String) -> Unit,
+    addCart: (content: Content?, result: Result?, action: String) -> Unit,
     getMovieInfo: (Int) -> Unit,
     checkout: () -> Unit,
     lastSearch: String,
@@ -135,20 +136,27 @@ fun MovieList(
                                 text = item.title.toString(),
                                 Modifier
                                     .fillMaxWidth()
-                                    .padding(10.dp),
-                                textAlign = TextAlign.Center
+                                    .padding(top = 10.dp, start = 20.dp, end = 20.dp),
+                            )
+                            Text(
+                                text = item.vote_average.toString(),
+                                Modifier
+                                    .padding(horizontal = 20.dp)
+                                    .fillMaxWidth(),
                             )
                         }
                         Steppers(
                             item,
-                            cart,
-                            addCart = { movie: Result?, action: String ->
+                            steppers = steppers,
+                            addCart = { content: Content?, result: Result?, action: String ->
                                 addCart.invoke(
-                                    movie,
+                                    content,
+                                    result,
                                     action
                                 )
                                 keyBoard?.hide()
-                            })
+                            }
+                        )
                     }
                 }
             }

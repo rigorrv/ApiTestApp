@@ -9,7 +9,6 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -22,15 +21,16 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberImagePainter
 import com.example.apitestapp.R
+import com.example.apitestapp.model.content.Content
 import com.example.apitestapp.model.content.Result
-import com.example.apitestapp.utilities.ApplicationConstants.DeleteCart
 import com.example.apitestapp.utilities.ApplicationConstants.thumbPath
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Checkout(
     cart: MutableMap<Result?, Int>,
-    addCart: (movie: Result?, action: String) -> Unit,
+    steppers: MutableMap<Int?, Int>,
+    addCart: (content: Content?, result: Result?, action: String) -> Unit,
     nav: () -> Boolean,
     getMovieInfo: (Int?) -> Unit,
     payment: () -> Unit,
@@ -89,26 +89,16 @@ fun Checkout(
                                     .padding(12.dp)
                                     .weight(6f)
                             )
-                            Steppers(
-                                item = item,
-                                cart = cart,
-                                addCart = { movie: Result?, action: String ->
+                            SteppersCheckout(
+                                cart = item,
+                                steppers = steppers,
+                                addCart = { content: Content?, result: Result?, action: String ->
                                     addCart.invoke(
-                                        movie,
+                                        content,
+                                        result,
                                         action
                                     )
                                 })
-                            Image(
-                                imageVector = Icons.Default.Delete,
-                                contentDescription = stringResource(
-                                    id = R.string.remove
-                                ),
-                                Modifier
-                                    .padding(end = 12.dp)
-                                    .clickable {
-                                        addCart.invoke(item, DeleteCart)
-                                    }
-                            )
                         }
                     }
                 })

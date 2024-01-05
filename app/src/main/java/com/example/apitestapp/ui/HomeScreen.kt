@@ -12,16 +12,18 @@ import androidx.compose.ui.graphics.Color
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.apitestapp.model.content.Content
 import com.example.apitestapp.model.content.Result
 import com.example.apitestapp.utilities.ApplicationConstants
 
 @Composable
 fun HomeScreen(
-    info: List<Result>,
+    info: List<Content>,
     cart: MutableMap<Result?, Int>,
-    movieInfo: Result?,
+    steppers: MutableMap<Int?, Int>,
+    movieInfo: Content?,
     searchMovie: (String?) -> Unit,
-    addCart: (Result?, String) -> Unit,
+    addCart: (content: Content?, result: Result?, action: String) -> Unit,
     getMovieInfo: (Int?) -> Unit,
     preload: Boolean,
 ) {
@@ -43,14 +45,15 @@ fun HomeScreen(
                     MovieList(
                         info,
                         cart,
-                        movieInfo,
+                        steppers,
                         searchMovie = { movie: String ->
                             search.value = movie
                             searchMovie.invoke(movie)
                         },
-                        addCart = { movie: Result?, action: String ->
+                        addCart = { content: Content?, result: Result?, action: String ->
                             addCart.invoke(
-                                movie,
+                                content,
+                                result,
                                 action
                             )
                         },
@@ -65,11 +68,12 @@ fun HomeScreen(
                 composable(ComposeNavigation.MovieInfoNav.route) {
                     MovieInfo(
                         movieInfo,
-                        preload,
-                        cart,
-                        addCart = { movie: Result?, action: String ->
+                        steppers = steppers,
+                        preload = preload,
+                        addCart = { content: Content?, result: Result?, action: String ->
                             addCart.invoke(
-                                movie,
+                                content,
+                                null,
                                 action
                             )
                         }
@@ -78,19 +82,20 @@ fun HomeScreen(
                 composable(ComposeNavigation.CheckoutNav.route) {
                     Checkout(
                         cart,
-                        addCart = { movie, action ->
+                        steppers,
+                        nav = { navController.popBackStack() },
+                        addCart = { content: Content?, result: Result?, action: String ->
                             addCart.invoke(
-                                movie,
+                                content,
+                                result,
                                 action
                             )
                         },
-                        nav = { navController.popBackStack() },
                         getMovieInfo = { movieId: Int? ->
                             getMovieInfo.invoke(movieId)
                             navController.navigate(ComposeNavigation.MovieInfoNav.route)
                         },
-                        payment = { navController.navigate(ComposeNavigation.PaymentNav.route) },
-                    )
+                    ) { navController.navigate(ComposeNavigation.PaymentNav.route) }
                 }
                 composable(ComposeNavigation.PaymentNav.route) {
                     Payment(
@@ -99,7 +104,7 @@ fun HomeScreen(
                             search.value = ""
                             searchMovie.invoke(null)
                             navController.navigate(ComposeNavigation.MovieListNav.route)
-                            addCart.invoke(null, ApplicationConstants.ClearCart)
+                            addCart.invoke(null, null, ApplicationConstants.ClearCart)
                         }
                     )
                 }

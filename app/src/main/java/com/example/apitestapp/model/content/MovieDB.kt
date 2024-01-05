@@ -8,7 +8,7 @@ data class MovieDB(
     @PrimaryKey
     val id: Int = 0,
     val page: Int? = null,
-    val results: List<Result>? = null,
+    val results: List<Content>? = null,
     val total_pages: Int? = null,
     val total_results: Int? = null
 )

@@ -2,6 +2,7 @@ package com.example.apitestapp.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.apitestapp.model.content.Content
 import com.example.apitestapp.model.content.MovieDB
 import com.example.apitestapp.model.content.Result
 import com.example.apitestapp.repository.Repository
@@ -17,8 +18,8 @@ class MovieViewModel @Inject constructor(private val repository: Repository) : V
     private val _movieStateFlow = MutableStateFlow<MovieDB?>(null)
     val movieStateFlow: StateFlow<MovieDB?> = _movieStateFlow
 
-    private val _movieInfoStateFlow = MutableStateFlow<Result?>(null)
-    val movieInStateFlow: StateFlow<Result?> = _movieInfoStateFlow
+    private val _movieInfoStateFlow = MutableStateFlow<Content?>(null)
+    val movieInStateFlow: StateFlow<Content?> = _movieInfoStateFlow
 
     val preload = MutableStateFlow<Boolean>(false)
 

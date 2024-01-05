@@ -2,6 +2,7 @@ package com.example.apitestapp.repository
 
 import com.example.apitestapp.api.Api
 import com.example.apitestapp.model.cart.Cart
+import com.example.apitestapp.model.content.Content
 import com.example.apitestapp.model.content.MovieDB
 import com.example.apitestapp.model.content.Result
 import com.example.apitestapp.room.Dao
@@ -14,7 +15,7 @@ class Repository @Inject constructor(private val api: Api, private val dao: Dao)
 
     override suspend fun searchMovie(search: String): Response<MovieDB> = api.searchMovie(search)
 
-    override suspend fun movieInfo(movieID: Int?): Response<Result> = api.movieInfo(movieID)
+    override suspend fun movieInfo(movieID: Int?): Response<Content> = api.movieInfo(movieID)
 
     override suspend fun getCart(): Cart? = dao.getCart()
 

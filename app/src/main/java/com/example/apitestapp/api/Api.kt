@@ -1,5 +1,6 @@
 package com.example.apitestapp.api
 
+import com.example.apitestapp.model.content.Content
 import com.example.apitestapp.model.content.MovieDB
 import com.example.apitestapp.model.content.Result
 import com.example.apitestapp.utilities.ApplicationConstants.endPoint
@@ -25,5 +26,5 @@ interface Api {
     suspend fun movieInfo(
         @Path("movieId")
         movieID: Int?
-    ): Response<Result>
+    ): Response<Content>
 }

@@ -14,16 +14,17 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberImagePainter
 import com.example.apitestapp.R
+import com.example.apitestapp.model.content.Content
 import com.example.apitestapp.model.content.Result
 import com.example.apitestapp.utilities.ApplicationConstants.imagePath
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MovieInfo(
-    movieInfo: Result?,
+    movieInfo: Content?,
     preload: Boolean,
-    cart: MutableMap<Result?, Int>,
-    addCart: (Result?, String) -> Unit,
+    steppers: MutableMap<Int?, Int>,
+    addCart: (content: Content?, result: Result?, action: String) -> Unit,
     nav: () -> Boolean
 ) {
     if (preload) {
@@ -68,9 +69,15 @@ fun MovieInfo(
                 contentDescription = movieInfo?.title, Modifier.padding(20.dp)
             )
             Steppers(
-                item = movieInfo,
-                cart = cart,
-                addCart = { movie: Result?, action: String -> addCart.invoke(movie, action) })
+                info = movieInfo,
+                steppers = steppers,
+                addCart = { content: Content?, result: Result?, action: String ->
+                    addCart.invoke(
+                        content,
+                        result,
+                        action
+                    )
+                })
             Text(
                 text = movieInfo?.overview.toString(),
                 Modifier.padding(20.dp),
