@@ -29,18 +29,19 @@ import com.example.apitestapp.utilities.ApplicationConstants.thumbPath
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Checkout(
-    cart: MutableMap<Result?, Int>,
+    cart: MutableMap<Int?, Int>,
+    info: MutableMap<Result?, Int>,
     addCart: (movie: Result?, action: String) -> Unit,
     nav: () -> Boolean,
     getMovieInfo: (Int?) -> Unit,
     payment: () -> Unit,
 ) {
-    if (cart.isNullOrEmpty()) {
+    if (info.isNullOrEmpty()) {
         LaunchedEffect(key1 = 1) {
             nav.invoke()
         }
     }
-    cart.keys.toList().let { info ->
+    info.keys.let { info ->
         Column(
             Modifier
                 .fillMaxWidth()
@@ -66,7 +67,7 @@ fun Checkout(
             LazyColumn(
                 Modifier.weight(8f),
                 content = {
-                    itemsIndexed(info) { index, item ->
+                    itemsIndexed(info.toList()) { index, item ->
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()

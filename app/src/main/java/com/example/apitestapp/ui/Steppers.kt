@@ -23,7 +23,7 @@ import com.example.apitestapp.utilities.ApplicationConstants.RemoveCart
 @Composable
 fun Steppers(
     item: Result?,
-    cart: MutableMap<Result?, Int>,
+    cart: MutableMap<Int?, Int>,
     addCart: (movie: Result?, action: String) -> Unit
 ) {
     Row(
@@ -43,22 +43,18 @@ fun Steppers(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Row(Modifier.padding(5.dp), verticalAlignment = Alignment.CenterVertically) {
-            if (cart.keys.contains(item)) {
+            if (cart.keys.contains(item?.id)) {
                 Image(painter = painterResource(id = R.drawable.remove),
-                    contentDescription = stringResource(
-                        id = R.string.remove
-                    ),
+                    contentDescription = stringResource(id = R.string.remove),
                     Modifier.clickable { addCart.invoke(item, RemoveCart) })
                 Text(
-                    text = cart.filterKeys { it == item }.values.joinToString(),
+                    text = cart.filterKeys { it == item?.id }.values.joinToString(),
                     color = Color.White,
                     textAlign = TextAlign.Center
                 )
             }
             Image(painter = painterResource(id = R.drawable.add),
-                contentDescription = stringResource(
-                    id = R.string.add
-                ),
+                contentDescription = stringResource(id = R.string.add),
                 Modifier.clickable { addCart.invoke(item, AddCart) })
         }
     }

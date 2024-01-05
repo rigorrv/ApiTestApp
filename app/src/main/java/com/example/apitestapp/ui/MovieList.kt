@@ -37,8 +37,7 @@ import com.example.apitestapp.utilities.ApplicationConstants.thumbPath
 @Composable
 fun MovieList(
     info: List<Result>,
-    cart: MutableMap<Result?, Int>,
-    movieInfo: Result?,
+    cart: MutableMap<Int?, Int>,
     searchMovie: (String) -> Unit,
     addCart: (Result?, String) -> Unit,
     getMovieInfo: (Int) -> Unit,

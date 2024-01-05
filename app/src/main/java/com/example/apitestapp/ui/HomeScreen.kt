@@ -18,7 +18,8 @@ import com.example.apitestapp.utilities.ApplicationConstants
 @Composable
 fun HomeScreen(
     info: List<Result>,
-    cart: MutableMap<Result?, Int>,
+    cart: MutableMap<Int?, Int>,
+    checkout: MutableMap<Result?, Int>,
     movieInfo: Result?,
     searchMovie: (String?) -> Unit,
     addCart: (Result?, String) -> Unit,
@@ -43,7 +44,6 @@ fun HomeScreen(
                     MovieList(
                         info,
                         cart,
-                        movieInfo,
                         searchMovie = { movie: String ->
                             search.value = movie
                             searchMovie.invoke(movie)
@@ -78,6 +78,7 @@ fun HomeScreen(
                 composable(ComposeNavigation.CheckoutNav.route) {
                     Checkout(
                         cart,
+                        checkout,
                         addCart = { movie, action ->
                             addCart.invoke(
                                 movie,
@@ -89,12 +90,11 @@ fun HomeScreen(
                             getMovieInfo.invoke(movieId)
                             navController.navigate(ComposeNavigation.MovieInfoNav.route)
                         },
-                        payment = { navController.navigate(ComposeNavigation.PaymentNav.route) },
-                    )
+                    ) { navController.navigate(ComposeNavigation.PaymentNav.route) }
                 }
                 composable(ComposeNavigation.PaymentNav.route) {
                     Payment(
-                        cart,
+                        checkout,
                         nav = {
                             search.value = ""
                             searchMovie.invoke(null)

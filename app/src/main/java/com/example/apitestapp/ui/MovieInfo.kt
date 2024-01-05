@@ -22,7 +22,7 @@ import com.example.apitestapp.utilities.ApplicationConstants.imagePath
 fun MovieInfo(
     movieInfo: Result?,
     preload: Boolean,
-    cart: MutableMap<Result?, Int>,
+    cart: MutableMap<Int?, Int>,
     addCart: (Result?, String) -> Unit,
     nav: () -> Boolean
 ) {

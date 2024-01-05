@@ -18,11 +18,14 @@ import javax.inject.Inject
 @HiltViewModel
 class CartViewModel @Inject constructor(private val repository: Repository) : ViewModel() {
 
-    private val _cartStateFlow = MutableStateFlow<MutableMap<Result?, Int>>(mutableMapOf())
-    val cartStateFlow: StateFlow<MutableMap<Result?, Int>> = _cartStateFlow
+    private val _cartStateFlow = MutableStateFlow<MutableMap<Int?, Int>>(mutableMapOf())
+    val cartStateFlow: StateFlow<MutableMap<Int?, Int>> = _cartStateFlow
+    private val _checkoutStateFlow = MutableStateFlow<MutableMap<Result?, Int>>(mutableMapOf())
+    val checkoutStateFlow: StateFlow<MutableMap<Result?, Int>> = _checkoutStateFlow
     private var movieId = mutableListOf<Result?>()
 
-    fun addCart(movie: Result?, action: String) {
+    fun addCart(
+        movie: Result?, action: String) {
         viewModelScope.launch {
             repository.getCart()?.cart?.let { movieId = it }
             when (action) {
@@ -42,8 +45,11 @@ class CartViewModel @Inject constructor(private val repository: Repository) : Vi
 
     private fun getCart() {
         viewModelScope.launch {
-            repository.getCart()?.cart?.groupingBy { it }?.eachCount()?.toMutableMap()?.let {
+            repository.getCart()?.cart?.groupingBy { it?.id }?.eachCount()?.toMutableMap()?.let {
                 _cartStateFlow.value = it
+            }
+            repository.getCart()?.cart?.groupingBy { it }?.eachCount()?.toMutableMap()?.let {
+                _checkoutStateFlow.value = it
             }
         }
     }

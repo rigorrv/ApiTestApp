@@ -27,6 +27,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             val info = movieViewModel.movieStateFlow.collectAsState().value?.results
             val cart = cartViewModel.cartStateFlow.collectAsState().value
+            val checkout = cartViewModel.checkoutStateFlow.collectAsState().value
             val movieInfo = movieViewModel.movieInStateFlow.collectAsState().value
             val preload = movieViewModel.preload.collectAsState().value
 
@@ -34,6 +35,7 @@ class MainActivity : ComponentActivity() {
                 HomeScreen(
                     info,
                     cart,
+                    checkout,
                     movieInfo,
                     searchMovie = { movie: String? -> movieViewModel.getMovie(movie) },
                     addCart = { movie: Result?, action: String ->
