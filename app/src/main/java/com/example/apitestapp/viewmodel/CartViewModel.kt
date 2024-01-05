@@ -1,6 +1,5 @@
 package com.example.apitestapp.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.apitestapp.model.cart.Cart
@@ -60,7 +59,6 @@ class CartViewModel @Inject constructor(private val repository: Repository) : Vi
                 DeleteCart -> {
                     while (stepper.contains(id)) stepper.remove(id)
                     while (cart.contains(item)) cart.remove(item)
-                    Log.d("TAG", "addCart: Deleat Cart")
                 }
                 ClearCart -> {
                     stepper.clear()
@@ -69,20 +67,27 @@ class CartViewModel @Inject constructor(private val repository: Repository) : Vi
             }
             repository.insertCart(Cart(cart = cart, steppers = stepper))
             getCart()
+            getSteppers()
         }
     }
 
     init {
         getCart()
+        getSteppers()
+    }
+
+    private fun getSteppers() {
+        viewModelScope.launch {
+            repository.getCart()?.steppers?.groupingBy { it }?.eachCount()?.toMutableMap()?.let {
+                _steppersStateFlow.value = it
+            }
+        }
     }
 
     private fun getCart() {
         viewModelScope.launch {
             repository.getCart()?.cart?.groupingBy { it }?.eachCount()?.toMutableMap()?.let {
                 _cartStateFlow.value = it
-            }
-            repository.getCart()?.steppers?.groupingBy { it }?.eachCount()?.toMutableMap()?.let {
-                _steppersStateFlow.value = it
             }
         }
     }

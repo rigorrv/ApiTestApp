@@ -71,6 +71,9 @@ fun Checkout(
                     itemsIndexed(info) { index, item ->
                         Row(
                             modifier = Modifier
+                                .clickable {
+                                    getMovieInfo.invoke(item?.id)
+                                }
                                 .fillMaxWidth()
                                 .padding(horizontal = 20.dp, vertical = 10.dp),
                             verticalAlignment = CenterVertically
@@ -87,9 +90,6 @@ fun Checkout(
                                 text = item?.title.toString(), modifier = Modifier
                                     .padding(12.dp)
                                     .weight(6f)
-                                    .clickable {
-                                        getMovieInfo.invoke(item?.id)
-                                    }
                             )
                             SteppersCheckout(
                                 cart = item,
