@@ -9,6 +9,7 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -23,6 +24,7 @@ import coil.compose.rememberImagePainter
 import com.example.apitestapp.R
 import com.example.apitestapp.model.content.Content
 import com.example.apitestapp.model.content.Result
+import com.example.apitestapp.utilities.ApplicationConstants.DeleteCart
 import com.example.apitestapp.utilities.ApplicationConstants.thumbPath
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -70,10 +72,7 @@ fun Checkout(
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(horizontal = 20.dp, vertical = 10.dp)
-                                .clickable {
-                                    getMovieInfo.invoke(item?.id)
-                                },
+                                .padding(horizontal = 20.dp, vertical = 10.dp),
                             verticalAlignment = CenterVertically
                         ) {
                             Image(
@@ -88,6 +87,9 @@ fun Checkout(
                                 text = item?.title.toString(), modifier = Modifier
                                     .padding(12.dp)
                                     .weight(6f)
+                                    .clickable {
+                                        getMovieInfo.invoke(item?.id)
+                                    }
                             )
                             SteppersCheckout(
                                 cart = item,
@@ -99,6 +101,17 @@ fun Checkout(
                                         action
                                     )
                                 })
+                            Image(
+                                imageVector = Icons.Default.Delete,
+                                contentDescription = stringResource(
+                                    id = R.string.remove
+                                ),
+                                Modifier
+                                    .padding(end = 12.dp)
+                                    .clickable {
+                                        addCart.invoke(null, item, DeleteCart)
+                                    }
+                            )
                         }
                     }
                 })

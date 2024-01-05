@@ -31,6 +31,7 @@ class CartViewModel @Inject constructor(private val repository: Repository) : Vi
     fun addCart(movie: Content? = null, result: Result? = null, action: String) {
         viewModelScope.launch {
             repository.getCart()?.cart?.let { cart = it }
+            repository.getCart()?.steppers?.let { stepper = it }
             val id: Int? = if (movie != null) movie.id else result?.id
             val item: Result? = if (movie != null) {
                 Result(
@@ -59,6 +60,7 @@ class CartViewModel @Inject constructor(private val repository: Repository) : Vi
                 DeleteCart -> {
                     while (stepper.contains(id)) stepper.remove(id)
                     while (cart.contains(item)) cart.remove(item)
+                    Log.d("TAG", "addCart: Deleat Cart")
                 }
                 ClearCart -> {
                     stepper.clear()
