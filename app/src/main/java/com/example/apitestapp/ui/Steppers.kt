@@ -17,7 +17,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.apitestapp.R
 import com.example.apitestapp.model.content.Content
-import com.example.apitestapp.model.content.Result
+import com.example.apitestapp.model.cart.Cart
 import com.example.apitestapp.utilities.ApplicationConstants.AddCart
 import com.example.apitestapp.utilities.ApplicationConstants.RemoveCart
 
@@ -25,7 +25,7 @@ import com.example.apitestapp.utilities.ApplicationConstants.RemoveCart
 fun Steppers(
     info: Content?,
     steppers: MutableMap<Int?, Int>,
-    addCart: (movie: Content?, result: Result?, action: String) -> Unit
+    addCart: (movie: Content?, cart: Cart?, action: String) -> Unit
 ) {
     Row(
         Modifier

@@ -23,16 +23,16 @@ import androidx.compose.ui.unit.dp
 import coil.compose.rememberImagePainter
 import com.example.apitestapp.R
 import com.example.apitestapp.model.content.Content
-import com.example.apitestapp.model.content.Result
+import com.example.apitestapp.model.cart.Cart
 import com.example.apitestapp.utilities.ApplicationConstants.DeleteCart
 import com.example.apitestapp.utilities.ApplicationConstants.thumbPath
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Checkout(
-    cart: MutableMap<Result?, Int>,
+    cart: MutableMap<Cart?, Int>,
     steppers: MutableMap<Int?, Int>,
-    addCart: (content: Content?, result: Result?, action: String) -> Unit,
+    addCart: (content: Content?, cart: Cart?, action: String) -> Unit,
     nav: () -> Boolean,
     getMovieInfo: (Int?) -> Unit,
     payment: () -> Unit,
@@ -94,10 +94,10 @@ fun Checkout(
                             SteppersCheckout(
                                 cart = item,
                                 steppers = steppers,
-                                addCart = { content: Content?, result: Result?, action: String ->
+                                addCart = { content: Content?, cart: Cart?, action: String ->
                                     addCart.invoke(
                                         content,
-                                        result,
+                                        cart,
                                         action
                                     )
                                 })

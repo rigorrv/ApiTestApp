@@ -6,7 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.compose.runtime.collectAsState
 import androidx.lifecycle.ViewModelProvider
 import com.example.apitestapp.model.content.Content
-import com.example.apitestapp.model.content.Result
+import com.example.apitestapp.model.cart.Cart
 import com.example.apitestapp.ui.HomeScreen
 import com.example.apitestapp.viewmodel.CartViewModel
 import com.example.apitestapp.viewmodel.MovieViewModel
@@ -39,10 +39,10 @@ class MainActivity : ComponentActivity() {
                     steppers,
                     movieInfo,
                     searchMovie = { movie: String? -> movieViewModel.getMovie(movie) },
-                    addCart = { movie: Content?, result: Result?, action: String ->
+                    addCart = { movie: Content?, cart: Cart?, action: String ->
                         cartViewModel.addCart(
                             movie = movie,
-                            result = result,
+                            cart = cart,
                             action = action
                         )
                     },

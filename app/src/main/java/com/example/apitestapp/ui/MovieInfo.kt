@@ -15,7 +15,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.rememberImagePainter
 import com.example.apitestapp.R
 import com.example.apitestapp.model.content.Content
-import com.example.apitestapp.model.content.Result
+import com.example.apitestapp.model.cart.Cart
 import com.example.apitestapp.utilities.ApplicationConstants.imagePath
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -24,7 +24,7 @@ fun MovieInfo(
     movieInfo: Content?,
     preload: Boolean,
     steppers: MutableMap<Int?, Int>,
-    addCart: (content: Content?, result: Result?, action: String) -> Unit,
+    addCart: (content: Content?, cart: Cart?, action: String) -> Unit,
     nav: () -> Boolean
 ) {
     if (preload) {
@@ -71,10 +71,10 @@ fun MovieInfo(
             Steppers(
                 info = movieInfo,
                 steppers = steppers,
-                addCart = { content: Content?, result: Result?, action: String ->
+                addCart = { content: Content?, cart: Cart?, action: String ->
                     addCart.invoke(
                         content,
-                        result,
+                        cart,
                         action
                     )
                 })

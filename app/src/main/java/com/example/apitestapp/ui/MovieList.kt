@@ -31,17 +31,17 @@ import androidx.compose.ui.unit.dp
 import coil.compose.rememberImagePainter
 import com.example.apitestapp.R
 import com.example.apitestapp.model.content.Content
-import com.example.apitestapp.model.content.Result
+import com.example.apitestapp.model.cart.Cart
 import com.example.apitestapp.utilities.ApplicationConstants.thumbPath
 
 @OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun MovieList(
     info: List<Content>,
-    cart: MutableMap<Result?, Int>,
+    cart: MutableMap<Cart?, Int>,
     steppers: MutableMap<Int?, Int>,
     searchMovie: (String) -> Unit,
-    addCart: (content: Content?, result: Result?, action: String) -> Unit,
+    addCart: (content: Content?, cart: Cart?, action: String) -> Unit,
     getMovieInfo: (Int) -> Unit,
     checkout: () -> Unit,
     lastSearch: String,
@@ -148,10 +148,10 @@ fun MovieList(
                         Steppers(
                             item,
                             steppers = steppers,
-                            addCart = { content: Content?, result: Result?, action: String ->
+                            addCart = { content: Content?, cart: Cart?, action: String ->
                                 addCart.invoke(
                                     content,
-                                    result,
+                                    cart,
                                     action
                                 )
                                 keyBoard?.hide()

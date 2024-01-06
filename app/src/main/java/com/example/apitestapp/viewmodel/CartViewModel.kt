@@ -2,9 +2,9 @@ package com.example.apitestapp.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.apitestapp.model.cart.Cart
+import com.example.apitestapp.model.cart.Steppers
 import com.example.apitestapp.model.content.Content
-import com.example.apitestapp.model.content.Result
+import com.example.apitestapp.model.cart.Cart
 import com.example.apitestapp.repository.Repository
 import com.example.apitestapp.utilities.ApplicationConstants.AddCart
 import com.example.apitestapp.utilities.ApplicationConstants.ClearCart
@@ -19,21 +19,21 @@ import javax.inject.Inject
 @HiltViewModel
 class CartViewModel @Inject constructor(private val repository: Repository) : ViewModel() {
 
-    private val _cartStateFlow = MutableStateFlow<MutableMap<Result?, Int>>(mutableMapOf())
-    val cartStateFlow: StateFlow<MutableMap<Result?, Int>> = _cartStateFlow
-    private var cart = mutableListOf<Result?>()
+    private val _cartStateFlow = MutableStateFlow<MutableMap<Cart?, Int>>(mutableMapOf())
+    val cartStateFlow: StateFlow<MutableMap<Cart?, Int>> = _cartStateFlow
+    private var cart = mutableListOf<Cart?>()
 
     private val _steppersStateFlow = MutableStateFlow<MutableMap<Int?, Int>>(mutableMapOf())
     val stepperStateFlow: StateFlow<MutableMap<Int?, Int>> = _steppersStateFlow
     private var stepper = mutableListOf<Int?>()
 
-    fun addCart(movie: Content? = null, result: Result? = null, action: String) {
+    fun addCart(movie: Content? = null, cart: Cart? = null, action: String) {
         viewModelScope.launch {
-            repository.getCart()?.cart?.let { cart = it }
+            repository.getCart()?.cart?.let { this@CartViewModel.cart = it }
             repository.getCart()?.steppers?.let { stepper = it }
-            val id: Int? = if (movie != null) movie.id else result?.id
-            val item: Result? = if (movie != null) {
-                Result(
+            val id: Int? = if (movie != null) movie.id else cart?.id
+            val item: Cart? = if (movie != null) {
+                Cart(
                     adult = movie.adult,
                     id = movie.id,
                     original_language = movie.original_language,
@@ -45,27 +45,27 @@ class CartViewModel @Inject constructor(private val repository: Repository) : Vi
                     video = movie.video
                 )
             } else {
-                result
+                cart
             }
             when (action) {
                 AddCart -> {
                     stepper.add(id)
-                    cart.add(item)
+                    this@CartViewModel.cart.add(item)
                 }
                 RemoveCart -> {
                     stepper.remove(id)
-                    cart.remove(item)
+                    this@CartViewModel.cart.remove(item)
                 }
                 DeleteCart -> {
                     while (stepper.contains(id)) stepper.remove(id)
-                    while (cart.contains(item)) cart.remove(item)
+                    while (this@CartViewModel.cart.contains(item)) this@CartViewModel.cart.remove(item)
                 }
                 ClearCart -> {
                     stepper.clear()
-                    cart.clear()
+                    this@CartViewModel.cart.clear()
                 }
             }
-            repository.insertCart(Cart(cart = cart, steppers = stepper))
+            repository.insertCart(Steppers(cart = this@CartViewModel.cart, steppers = stepper))
             getCart()
             getSteppers()
         }

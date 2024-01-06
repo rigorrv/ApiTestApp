@@ -13,17 +13,17 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.apitestapp.model.content.Content
-import com.example.apitestapp.model.content.Result
+import com.example.apitestapp.model.cart.Cart
 import com.example.apitestapp.utilities.ApplicationConstants
 
 @Composable
 fun HomeScreen(
     info: List<Content>,
-    cart: MutableMap<Result?, Int>,
+    cart: MutableMap<Cart?, Int>,
     steppers: MutableMap<Int?, Int>,
     movieInfo: Content?,
     searchMovie: (String?) -> Unit,
-    addCart: (content: Content?, result: Result?, action: String) -> Unit,
+    addCart: (content: Content?, cart: Cart?, action: String) -> Unit,
     getMovieInfo: (Int?) -> Unit,
     preload: Boolean,
 ) {
@@ -50,10 +50,10 @@ fun HomeScreen(
                             search.value = movie
                             searchMovie.invoke(movie)
                         },
-                        addCart = { content: Content?, result: Result?, action: String ->
+                        addCart = { content: Content?, cart: Cart?, action: String ->
                             addCart.invoke(
                                 content,
-                                result,
+                                cart,
                                 action
                             )
                         },
@@ -70,7 +70,7 @@ fun HomeScreen(
                         movieInfo,
                         steppers = steppers,
                         preload = preload,
-                        addCart = { content: Content?, result: Result?, action: String ->
+                        addCart = { content: Content?, cart: Cart?, action: String ->
                             addCart.invoke(
                                 content,
                                 null,
@@ -84,10 +84,10 @@ fun HomeScreen(
                         cart,
                         steppers,
                         nav = { navController.popBackStack() },
-                        addCart = { content: Content?, result: Result?, action: String ->
+                        addCart = { content: Content?, cart: Cart?, action: String ->
                             addCart.invoke(
                                 content,
-                                result,
+                                cart,
                                 action
                             )
                         },

@@ -15,14 +15,13 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberImagePainter
 import com.example.apitestapp.R
-import com.example.apitestapp.model.content.Result
-import com.example.apitestapp.utilities.ApplicationConstants.ClearCart
+import com.example.apitestapp.model.cart.Cart
 import com.example.apitestapp.utilities.ApplicationConstants.thumbPath
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Payment(
-    cart: MutableMap<Result?, Int>, nav: () -> Unit,
+    cart: MutableMap<Cart?, Int>, nav: () -> Unit,
 ) {
     Column(
         Modifier

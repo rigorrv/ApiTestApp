@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.apitestapp.model.content.Content
 import com.example.apitestapp.model.content.MovieDB
-import com.example.apitestapp.model.content.Result
 import com.example.apitestapp.repository.Repository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
