@@ -22,8 +22,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberImagePainter
 import com.example.apitestapp.R
-import com.example.apitestapp.model.content.Content
 import com.example.apitestapp.model.cart.Cart
+import com.example.apitestapp.model.content.Content
 import com.example.apitestapp.utilities.ApplicationConstants.DeleteCart
 import com.example.apitestapp.utilities.ApplicationConstants.thumbPath
 
@@ -127,6 +127,7 @@ fun Checkout(
                         .background(color = Color.Black, RoundedCornerShape(20.dp))
                         .clickable {
                             payment.invoke()
+                            //Where we can send to the API a json to buy the movies
                         }
                 ) {
                     Text(
