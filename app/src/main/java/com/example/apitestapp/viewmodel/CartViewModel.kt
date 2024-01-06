@@ -44,8 +44,7 @@ class CartViewModel @Inject constructor(private val repository: Repository) : Vi
                     title = title,
                     video = video
                 )
-            }
-                ?: cart
+            } ?: cart
             when (action) {
                 AddCart -> {
                     stepper.add(movieId)
