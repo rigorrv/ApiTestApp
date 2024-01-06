@@ -10,6 +10,6 @@ data class Content(
     val release_date: String? = null,
     val title: String? = null,
     val video: Boolean? = null,
-    val vote_average: Any? = null,
-    val vote_count: Any? = null,
+    val vote_average: Double? = null,
+    val vote_count: Double? = null,
 )
