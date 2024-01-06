@@ -41,7 +41,7 @@ class MainActivity : ComponentActivity() {
                     searchMovie = { movie: String? -> movieViewModel.getMovie(movie) },
                     addCart = { movie: Content?, cart: Cart?, action: String ->
                         cartViewModel.addCart(
-                            movie = movie,
+                            content = movie,
                             cart = cart,
                             action = action
                         )
