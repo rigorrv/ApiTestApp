@@ -30,8 +30,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberImagePainter
 import com.example.apitestapp.R
-import com.example.apitestapp.model.content.Content
 import com.example.apitestapp.model.cart.Cart
+import com.example.apitestapp.model.content.Content
 import com.example.apitestapp.utilities.ApplicationConstants.thumbPath
 
 @OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterial3Api::class)
@@ -144,6 +144,15 @@ fun MovieList(
                                     .padding(horizontal = 20.dp)
                                     .fillMaxWidth(),
                             )
+                            item.vote_average?.toInt()?.let {
+                                RatingBar(
+                                    currentRating = it,
+                                    modifierRow = Modifier
+                                        .fillMaxWidth()
+                                        .padding(start = 16.dp),
+                                    modifierIcon = Modifier.size(20.dp)
+                                )
+                            }
                         }
                         Steppers(
                             item,

@@ -83,6 +83,8 @@ fun MovieInfo(
             movieInfo?.vote_average?.toInt()?.let {
                 RatingBar(
                     currentRating = it,
+                    modifierRow = Modifier.padding(10.dp),
+                    modifierIcon = Modifier.size(20.dp)
                 )
             }
             Steppers(
@@ -97,7 +99,7 @@ fun MovieInfo(
                 })
             Text(
                 text = movieInfo?.overview.toString(),
-                Modifier.padding(20.dp),
+                Modifier.padding(horizontal = 20.dp),
                 textAlign = TextAlign.Center
             )
         }
