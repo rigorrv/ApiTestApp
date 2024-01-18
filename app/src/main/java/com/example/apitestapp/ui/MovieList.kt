@@ -69,7 +69,7 @@ fun MovieList(
                     searchMovie.invoke(it)
                 },
                 Modifier
-                    .weight(7f)
+                    .weight(5f)
                     .border(
                         width = 1.dp,
                         color = Color.Gray,
@@ -174,7 +174,7 @@ fun MovieList(
             Column(
                 Modifier
                     .fillMaxWidth()
-                    .weight(1.5f)
+                    .weight(2f)
             ) {
                 Row(
                     Modifier

@@ -42,7 +42,7 @@ fun HomeScreen(
             startDestination = ComposeNavigation.MovieListNav.route,
             builder = {
                 composable(ComposeNavigation.MovieListNav.route) {
-                    MovieList(
+                    MovieScreen(
                         info,
                         cart,
                         steppers,
