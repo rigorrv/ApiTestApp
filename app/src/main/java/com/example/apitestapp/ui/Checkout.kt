@@ -15,8 +15,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.example.apitestapp.R
 import com.example.apitestapp.model.ContentDB
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -41,13 +43,20 @@ fun Checkout(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         info.toList().let { items ->
-            CenterAlignedTopAppBar(title = { Text(text = "Checkout") }, navigationIcon = {
-                IconButton(onClick = {
-                    nav.invoke()
-                }) {
-                    Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "BackArrow")
-                }
-            })
+            CenterAlignedTopAppBar(
+                title = { Text(text = stringResource(id = R.string.checkout)) },
+                navigationIcon = {
+                    IconButton(onClick = {
+                        nav.invoke()
+                    }) {
+                        Icon(
+                            imageVector = Icons.Default.ArrowBack,
+                            contentDescription = stringResource(
+                                id = R.string.back_buton
+                            )
+                        )
+                    }
+                })
             LazyColumn(
                 Modifier.weight(8f),
                 content = {
@@ -94,7 +103,7 @@ fun Checkout(
                         }
                 ) {
                     Text(
-                        text = "Payment",
+                        text = stringResource(id = R.string.payment),
                         Modifier
                             .fillMaxWidth()
                             .padding(20.dp),

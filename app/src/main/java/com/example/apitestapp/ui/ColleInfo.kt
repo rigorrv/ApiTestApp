@@ -13,11 +13,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.apitestapp.R
 import com.example.apitestapp.model.ContentDBItem
+import com.example.apitestapp.utilities.AndroidUtilities.AddSteppers
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -34,13 +37,18 @@ fun CollegeInfo(
             .fillMaxHeight(),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        CenterAlignedTopAppBar(title = { Text(text = "College Info") }, navigationIcon = {
-            IconButton(onClick = {
-                nav.invoke()
-            }) {
-                Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "BackArrow")
-            }
-        })
+        CenterAlignedTopAppBar(
+            title = { Text(text = stringResource(R.string.college_info)) },
+            navigationIcon = {
+                IconButton(onClick = {
+                    nav.invoke()
+                }) {
+                    Icon(
+                        imageVector = Icons.Default.ArrowBack,
+                        contentDescription = stringResource(id = R.string.back_buton)
+                    )
+                }
+            })
         Text(
             text = info?.school_name.toString(),
             Modifier.padding(20.dp),
@@ -71,12 +79,12 @@ fun CollegeInfo(
                         .fillMaxWidth()
                         .padding(20.dp)
                         .clickable {
-                            addStepper.invoke(info?.dbn.toString(), "AddSteppers")
+                            addStepper.invoke(info?.dbn.toString(), AddSteppers)
                         }
                         .background(Color.Black, RoundedCornerShape(20.dp))
                 ) {
                     Text(
-                        text = "Add College",
+                        text = stringResource(R.string.add_college),
                         Modifier
                             .fillMaxWidth()
                             .padding(20.dp),
@@ -86,7 +94,7 @@ fun CollegeInfo(
                 }
             } else {
                 Text(
-                    text = "Added into the Basket",
+                    text = stringResource(R.string.add_to_basket),
                     Modifier
                         .fillMaxWidth()
                         .padding(20.dp),

@@ -8,6 +8,7 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.TextField
+import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -18,9 +19,12 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.example.apitestapp.R
 import com.example.apitestapp.model.ContentDB
+import java.util.*
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
@@ -45,71 +49,87 @@ fun CollegeList(
             .fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        info.toList().let { infos ->
-            TextField(value = search.value, onValueChange = {
-                search.value = it
-            }, Modifier.fillMaxWidth(), placeholder = {
-                Text(
-                    text = "Search School"
+        info.toList().filter {
+            it?.school_name.toString().lowercase(Locale.getDefault()).contains(search.value)
+        }
+            .let { infos ->
+                TextField(
+                    value = search.value,
+                    onValueChange = {
+                        search.value = it
+                    },
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(start = 20.dp, end = 20.dp, top = 20.dp, bottom = 10.dp),
+                    colors = TextFieldDefaults.textFieldColors(
+                        backgroundColor = Color.LightGray,
+                        focusedIndicatorColor = Color.Transparent,
+                        unfocusedIndicatorColor = Color.Transparent
+                    ),
+                    placeholder = {
+                        Text(
+                            text = stringResource(R.string.search_college)
+                        )
+                    },
+                    shape = RoundedCornerShape(8.dp),
                 )
-            }
-            )
-            LazyColumn(
-                Modifier.weight(8f),
-                state = scroll,
-                content = {
-                    itemsIndexed(infos) { index, item ->
+                LazyColumn(
+                    Modifier.weight(8f),
+                    state = scroll,
+                    content = {
+                        itemsIndexed(infos) { index, item ->
+                            Row(
+                                Modifier
+                                    .fillMaxWidth()
+                                    .padding(horizontal = 20.dp, vertical = 5.dp)
+                                    .clickable {
+                                        getInfoSchool.invoke(index)
+                                    },
+                                verticalAlignment = CenterVertically
+                            ) {
+                                Text(text = item?.school_name.toString(), Modifier.weight(5f))
+                                Text(
+                                    text = item?.dbn.toString(),
+                                    Modifier
+                                        .weight(5f)
+                                        .padding(end = 10.dp),
+                                    textAlign = TextAlign.End
+                                )
+                                Steppers(
+                                    item,
+                                    steppers
+                                ) { content: String?, action: String ->
+                                    keyBoard?.hide()
+                                    addSteppers.invoke(content, action)
+                                }
+                            }
+                        }
+                    })
+                if (steppers.isNotEmpty()) {
+                    Column(
+                        Modifier
+                            .weight(2f)
+                            .padding(20.dp)
+                    ) {
                         Row(
                             Modifier
                                 .fillMaxWidth()
-                                .padding(horizontal = 20.dp, vertical = 5.dp)
+                                .background(Color.Black, RoundedCornerShape(20.dp))
                                 .clickable {
-                                    getInfoSchool.invoke(index)
-                                },
-                            verticalAlignment = CenterVertically
+                                    goCheckout.invoke()
+                                }
                         ) {
-                            Text(text = item?.school_name.toString(), Modifier.weight(5f))
                             Text(
-                                text = item?.dbn.toString(),
+                                text = stringResource(id = R.string.checkout),
                                 Modifier
-                                    .weight(5f)
-                                    .padding(end = 10.dp),
-                                textAlign = TextAlign.End
+                                    .fillMaxWidth()
+                                    .padding(20.dp),
+                                textAlign = TextAlign.Center,
+                                color = Color.White
                             )
-                            Steppers(
-                                item,
-                                steppers
-                            ) { content: String?, action: String ->
-                                addSteppers.invoke(content, action)
-                            }
                         }
-                    }
-                })
-            if (steppers.isNotEmpty()) {
-                Column(
-                    Modifier
-                        .weight(2f)
-                        .padding(20.dp)
-                ) {
-                    Row(
-                        Modifier
-                            .fillMaxWidth()
-                            .background(Color.Black, RoundedCornerShape(20.dp))
-                            .clickable {
-                                goCheckout.invoke()
-                            }
-                    ) {
-                        Text(
-                            text = "Checkout",
-                            Modifier
-                                .fillMaxWidth()
-                                .padding(20.dp),
-                            textAlign = TextAlign.Center,
-                            color = Color.White
-                        )
                     }
                 }
             }
-        }
     }
 }
