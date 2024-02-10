@@ -11,9 +11,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.apitestapp.model.ContentDB
 
@@ -38,7 +40,14 @@ fun CollegeList(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         info.toList().let { infos ->
-            TextField(value = search.value, onValueChange = { search.value = it })
+            TextField(value = search.value, onValueChange = {
+                search.value = it
+            }, Modifier.fillMaxWidth(), placeholder = {
+                Text(
+                    text = "Search School"
+                )
+            }
+            )
             LazyColumn(
                 state = scroll,
                 content = {
@@ -49,10 +58,15 @@ fun CollegeList(
                                 .padding(horizontal = 20.dp, vertical = 5.dp)
                                 .clickable {
                                     getInfoSchool.invoke(index)
-                                }
+                                },
+                            verticalAlignment = CenterVertically
                         ) {
                             Text(text = item?.school_name.toString(), Modifier.weight(5f))
-                            Text(text = item?.dbn.toString(), Modifier.weight(5f))
+                            Text(
+                                text = item?.dbn.toString(),
+                                Modifier.weight(5f),
+                                textAlign = TextAlign.End
+                            )
                         }
                     }
                 })
