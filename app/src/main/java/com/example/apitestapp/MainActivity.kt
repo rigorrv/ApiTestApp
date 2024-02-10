@@ -4,13 +4,14 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModelProvider
 import com.example.apitestapp.ui.HomeScreen
 import com.example.apitestapp.viewmodel.CollegeSteppersVM
@@ -36,10 +37,19 @@ class MainActivity : ComponentActivity() {
                     .fillMaxWidth()
                     .fillMaxHeight()
                     .background(Color.White),
-                verticalArrangement = Arrangement.Center
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 val info = collegeViewModel.collegeStateFlow.collectAsState().value
                 val steppers = collegeSteppersViewModel.schoolSteppers.collectAsState().value
+                if (info.isNullOrEmpty()) {
+                    CircularProgressIndicator(
+                        Modifier
+                            .width(100.dp)
+                            .height(100.dp),
+                        color = colorResource(id = R.color.red)
+                    )
+                }
                 info?.let {
                     HomeScreen(
                         info,
