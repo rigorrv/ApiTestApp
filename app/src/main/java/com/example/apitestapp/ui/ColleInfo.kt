@@ -1,15 +1,18 @@
 package com.example.apitestapp.ui
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -18,12 +21,18 @@ import com.example.apitestapp.model.ContentDBItem
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CollegeInfo(contentDBItem: ContentDBItem?, nav: () -> Unit) {
+fun CollegeInfo(
+    info: ContentDBItem?,
+    steppers: MutableList<String>,
+    nav: () -> Unit,
+    addStepper: (String, String) -> Unit
+) {
+    val scroll = rememberScrollState()
     Column(
         Modifier
             .fillMaxWidth()
             .fillMaxHeight(),
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         CenterAlignedTopAppBar(title = { Text(text = "College Info") }, navigationIcon = {
             IconButton(onClick = {
@@ -32,8 +41,60 @@ fun CollegeInfo(contentDBItem: ContentDBItem?, nav: () -> Unit) {
                 Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "BackArrow")
             }
         })
-        Text(text = contentDBItem?.school_name.toString(), Modifier.padding(20.dp), textAlign = TextAlign.Center, fontSize = 18.sp, fontWeight = FontWeight(900))
-        Text(text = contentDBItem?.overview_paragraph.toString(), Modifier.padding(20.dp), textAlign = TextAlign.Center)
-        Text(text = contentDBItem?.dbn.toString(), Modifier.padding(20.dp), textAlign = TextAlign.Center)
+        Text(
+            text = info?.school_name.toString(),
+            Modifier.padding(20.dp),
+            textAlign = TextAlign.Center,
+            fontSize = 18.sp,
+            fontWeight = FontWeight(900)
+        )
+        Column(
+            Modifier
+                .verticalScroll(
+                    scroll
+                ),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = info?.overview_paragraph.toString(),
+                Modifier.padding(20.dp),
+                textAlign = TextAlign.Center
+            )
+            Text(
+                text = info?.dbn.toString(),
+                Modifier.padding(20.dp),
+                textAlign = TextAlign.Center
+            )
+            if (!steppers.contains(info?.dbn)) {
+                Row(
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(20.dp)
+                        .clickable {
+                            addStepper.invoke(info?.dbn.toString(), "AddSteppers")
+                        }
+                        .background(Color.Black, RoundedCornerShape(20.dp))
+                ) {
+                    Text(
+                        text = "Add College",
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(20.dp),
+                        textAlign = TextAlign.Center,
+                        color = Color.White
+                    )
+                }
+            } else {
+                Text(
+                    text = "Added into the Basket",
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(20.dp),
+                    textAlign = TextAlign.Center,
+                    color = Color.Black,
+                    fontWeight = FontWeight(900)
+                )
+            }
+        }
     }
 }

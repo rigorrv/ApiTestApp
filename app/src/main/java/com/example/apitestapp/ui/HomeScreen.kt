@@ -55,9 +55,16 @@ fun HomeScreen(
                     )
                 }
                 composable(ComposeNavigation.CollegeInfo.route) {
-                    CollegeInfo(contentDBItem = info[index.value]) {
-                        navController.popBackStack()
-                    }
+                    CollegeInfo(
+                        info = info[index.value],
+                        nav = {
+                            navController.popBackStack()
+                        },
+                        addStepper = { content, action ->
+                            addSteppers.invoke(content, action)
+                        },
+                        steppers = steppers
+                    )
                 }
                 composable(ComposeNavigation.Checkout.route) {
                     Checkout(
