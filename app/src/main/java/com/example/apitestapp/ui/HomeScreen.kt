@@ -77,7 +77,18 @@ fun HomeScreen(
                         getCollegeInfo = { int: Int ->
                             index.value = int
                             navController.navigate(ComposeNavigation.CollegeInfo.route)
-                        }
+                        },
+                        payment = { navController.navigate(ComposeNavigation.Payment.route) }
+                    )
+                }
+                composable(ComposeNavigation.Payment.route) {
+                    Payment(
+                        info = info,
+                        steppers = steppers,
+                        nav = {
+                            navController.popBackStack()
+                        },
+                        addSteppers = { content, action -> addSteppers.invoke(content, action) }
                     )
                 }
             }

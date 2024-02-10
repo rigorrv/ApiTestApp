@@ -19,18 +19,17 @@ class CollegeSteppersVM @Inject constructor(private val repository: Repository) 
     private var school = mutableListOf<String>()
 
     fun addSteppers(contentDBItem: String?, action: String) {
-        contentDBItem?.let {
-            viewModelScope.launch {
-                repository.getSteppers()?.let { school = it.content }
-                when (action) {
-                    "AddSteppers" -> school.add(contentDBItem)
-                    "RemoveSteppers" -> school.remove(contentDBItem)
-                }
-                repository.insertSteppers(
-                    Steppers(content = school)
-                )
-                getSteppers()
+        viewModelScope.launch {
+            repository.getSteppers()?.let { school = it.content }
+            when (action) {
+                "AddSteppers" -> contentDBItem?.let { school.add(it) }
+                "RemoveSteppers" -> school.remove(contentDBItem)
+                "Delete" -> school.clear()
             }
+            repository.insertSteppers(
+                Steppers(content = school)
+            )
+            getSteppers()
         }
     }
 
