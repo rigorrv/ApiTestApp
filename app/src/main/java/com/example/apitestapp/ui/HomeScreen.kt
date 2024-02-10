@@ -16,7 +16,11 @@ import androidx.navigation.compose.rememberNavController
 import com.example.apitestapp.model.ContentDB
 
 @Composable
-fun HomeScreen(info: ContentDB) {
+fun HomeScreen(
+    info: ContentDB,
+    steppers: MutableList<String>,
+    addSteppers: (String?, String) -> Unit
+) {
 
     val index = remember {
         mutableStateOf(0)
@@ -36,18 +40,28 @@ fun HomeScreen(info: ContentDB) {
                 composable(ComposeNavigation.CollegeList.route) {
                     CollegeList(
                         info,
+                        steppers,
                         getInfoSchool = { int: Int ->
                             index.value = int
                             navController.navigate(ComposeNavigation.CollegeInfo.route)
-                        }
+                        },
+                        addSteppers = { content: String?, action: String ->
+                            addSteppers.invoke(
+                                content,
+                                action
+                            )
+                        },
+                        goCheckout = { navController.navigate(ComposeNavigation.Checkout.route) }
                     )
                 }
-                composable(ComposeNavigation.CollegeInfo.route) {
-                    CollegeInfo(
-                        info[index.value],
+                composable(ComposeNavigation.Checkout.route) {
+                    Checkout(
+                        info,
+                        steppers,
                         nav = {
                             navController.popBackStack()
-                        }
+                        },
+                        addSteppers = { content, action -> addSteppers.invoke(content, action) }
                     )
                 }
             }

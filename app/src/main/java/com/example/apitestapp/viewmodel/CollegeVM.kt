@@ -11,7 +11,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class CollegeViewModel @Inject constructor(private val repository: Repository) : ViewModel() {
+class CollegeVM @Inject constructor(private val repository: Repository) : ViewModel() {
 
     private val _collegeStateFlow = MutableStateFlow<ContentDB?>(null)
     val collegeStateFlow: StateFlow<ContentDB?> = _collegeStateFlow
