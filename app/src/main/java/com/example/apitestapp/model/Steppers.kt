@@ -7,5 +7,5 @@ import androidx.room.PrimaryKey
 data class Steppers(
     @PrimaryKey
     val id: Int = 0,
-    val content: MutableList<String>
+    val content: MutableList<String?>
 )

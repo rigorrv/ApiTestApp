@@ -12,6 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.apitestapp.R
@@ -22,7 +23,7 @@ import com.example.apitestapp.utilities.AndroidUtilities.Delete
 @Composable
 fun Payment(
     info: ContentDB,
-    steppers: MutableList<String>,
+    steppers: MutableList<String?>,
     nav: () -> Unit,
     addSteppers: (String?, String) -> Unit
 ) {
@@ -58,6 +59,23 @@ fun Payment(
                 nav.invoke()
             }
         } else {
+            Row(
+                Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 20.dp, vertical = 10.dp)
+            ) {
+                Text(
+                    text = stringResource(R.string.college_name),
+                    Modifier.weight(5f),
+                    fontWeight = FontWeight(500)
+                )
+                Text(
+                    text = stringResource(R.string.dbn_tx),
+                    Modifier.weight(5f),
+                    textAlign = TextAlign.End,
+                    fontWeight = FontWeight(500)
+                )
+            }
             info.toList().let { items ->
                 LazyColumn(content = {
                     itemsIndexed(items) { index, item ->

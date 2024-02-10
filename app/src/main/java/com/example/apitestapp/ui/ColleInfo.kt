@@ -26,7 +26,7 @@ import com.example.apitestapp.utilities.AndroidUtilities.AddSteppers
 @Composable
 fun CollegeInfo(
     info: ContentDBItem?,
-    steppers: MutableList<String>,
+    steppers: MutableList<String?>,
     nav: () -> Unit,
     addStepper: (String, String) -> Unit
 ) {

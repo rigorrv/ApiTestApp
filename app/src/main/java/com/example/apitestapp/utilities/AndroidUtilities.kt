@@ -9,4 +9,6 @@ object AndroidUtilities {
     const val CollegeInfo = "CollegeInfo"
     const val Checkout = "Checkout"
     const val Payment = "Payment"
+    const val AddAll = "AddAll"
+    const val RemoveAll = "RemoveAll"
 }

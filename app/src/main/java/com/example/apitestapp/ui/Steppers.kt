@@ -18,7 +18,7 @@ import com.example.apitestapp.utilities.AndroidUtilities.RemoveSteppers
 @Composable
 fun Steppers(
     item: ContentDBItem?,
-    steppers: MutableList<String>,
+    steppers: MutableList<String?>,
     addSteppers: (String?, String) -> Unit
 ) {
     item?.let {

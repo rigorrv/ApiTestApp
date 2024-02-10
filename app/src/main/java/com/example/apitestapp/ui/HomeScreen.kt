@@ -18,8 +18,9 @@ import com.example.apitestapp.model.ContentDB
 @Composable
 fun HomeScreen(
     info: ContentDB,
-    steppers: MutableList<String>,
-    addSteppers: (String?, String) -> Unit
+    steppers: MutableList<String?>,
+    addSteppers: (String?, String) -> Unit,
+    addAll: (ContentDB, String) -> Unit
 ) {
 
     val index = remember {
@@ -51,7 +52,8 @@ fun HomeScreen(
                                 action
                             )
                         },
-                        goCheckout = { navController.navigate(ComposeNavigation.Checkout.route) }
+                        goCheckout = { navController.navigate(ComposeNavigation.Checkout.route) },
+                        addAll = { content, action -> addAll.invoke(content, action) }
                     )
                 }
                 composable(ComposeNavigation.CollegeInfo.route) {

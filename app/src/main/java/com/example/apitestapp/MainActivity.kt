@@ -30,10 +30,14 @@ class MainActivity : ComponentActivity() {
             info?.let {
                 HomeScreen(
                     info,
-                    steppers
-                ) { content: String?, action: String ->
-                    collegeSteppersViewModel.addSteppers(content, action)
-                }
+                    steppers,
+                    addSteppers = { content: String?, action: String ->
+                        collegeSteppersViewModel.addSteppers(content, action)
+                    },
+                    addAll = {
+                        content, action -> collegeSteppersViewModel.addAllColleges(content, action)
+                    }
+                )
             }
         }
     }

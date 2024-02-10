@@ -17,4 +17,6 @@
     <string name="college_info">College Info</string>
     <string name="search_college">Search School</string>
     <string name="logo">logo</string>
+    <string name="dbn_tx">Dbn</string>
+    <string name="college_name">College Name</string>
 </resources>

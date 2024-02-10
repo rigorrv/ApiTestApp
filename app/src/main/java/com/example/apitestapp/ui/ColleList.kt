@@ -35,9 +35,10 @@ import java.util.*
 @Composable
 fun CollegeList(
     info: ContentDB,
-    steppers: MutableList<String>,
+    steppers: MutableList<String?>,
     getInfoSchool: (int: Int) -> Unit,
     addSteppers: (String?, String) -> Unit,
+    addAll: (ContentDB, String) -> Unit,
     goCheckout: () -> Unit
 ) {
     val scroll = rememberLazyListState()
@@ -97,17 +98,25 @@ fun CollegeList(
                 Row(
                     Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 20.dp, vertical = 10.dp)
+                        .padding(horizontal = 20.dp, vertical = 10.dp),
+                    verticalAlignment = CenterVertically
                 ) {
                     Text(
-                        text = "College Name", Modifier.weight(5f),
+                        text = stringResource(R.string.college_name), Modifier.weight(5f),
                         fontWeight = FontWeight(500)
                     )
                     Text(
-                        text = "Dbn",
-                        Modifier.weight(5f),
+                        text = stringResource(R.string.dbn_tx),
+                        Modifier
+                            .weight(5f)
+                            .padding(end = 10.dp),
                         textAlign = TextAlign.End,
                         fontWeight = FontWeight(500)
+                    )
+                    AddMultipleSteppers(
+                        info,
+                        steppers,
+                        addAll = { content, action -> addAll.invoke(content, action) }
                     )
                 }
                 LazyColumn(
