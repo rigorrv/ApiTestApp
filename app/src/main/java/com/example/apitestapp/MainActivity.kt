@@ -5,10 +5,9 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.collectAsState
 import androidx.lifecycle.ViewModelProvider
-import com.example.apitestapp.model.ContentDBItem
 import com.example.apitestapp.ui.HomeScreen
-import com.example.apitestapp.viewmodel.CollegeVM
 import com.example.apitestapp.viewmodel.CollegeSteppersVM
+import com.example.apitestapp.viewmodel.CollegeVM
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -34,8 +33,8 @@ class MainActivity : ComponentActivity() {
                     addSteppers = { content: String?, action: String ->
                         collegeSteppersViewModel.addSteppers(content, action)
                     },
-                    addAll = {
-                        content, action -> collegeSteppersViewModel.addAllColleges(content, action)
+                    addAll = { content, action ->
+                        collegeSteppersViewModel.addAllColleges(content, action)
                     }
                 )
             }

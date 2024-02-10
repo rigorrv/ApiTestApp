@@ -2,7 +2,7 @@ package com.example.apitestapp.injection
 
 import android.content.Context
 import androidx.room.Room
-import com.example.apitestapp.Api.Api
+import com.example.apitestapp.api.Api
 import com.example.apitestapp.repository.Repository
 import com.example.apitestapp.room.Dao
 import com.example.apitestapp.room.DataBase

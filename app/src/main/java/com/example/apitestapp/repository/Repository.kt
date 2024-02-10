@@ -1,6 +1,6 @@
 package com.example.apitestapp.repository
 
-import com.example.apitestapp.Api.Api
+import com.example.apitestapp.api.Api
 import com.example.apitestapp.model.Steppers
 import com.example.apitestapp.room.Dao
 import javax.inject.Inject

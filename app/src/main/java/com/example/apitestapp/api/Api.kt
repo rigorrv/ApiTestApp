@@ -1,4 +1,4 @@
-package com.example.apitestapp.Api
+package com.example.apitestapp.api
 
 import com.example.apitestapp.model.ContentDB
 import retrofit2.Response
