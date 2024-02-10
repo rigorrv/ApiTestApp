@@ -15,8 +15,8 @@ class MainActivity : ComponentActivity() {
     /**
      * Please Take a look to the Branch photon_test_room
      * Where I added Room and steppers to this project
-     * to show how to developed the architecture of an e-commerce easier with compose
-     * MVVM, Dagger Hilt, Room
+     * to show how to developed the architecture of an e-commerce with compose
+     * MVVM, Dagger Hilt, Room, Filtering a list through a TextField
      * thank you
      */
 
