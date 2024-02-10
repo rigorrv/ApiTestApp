@@ -45,8 +45,8 @@ class MainActivity : ComponentActivity() {
                 if (info.isNullOrEmpty()) {
                     CircularProgressIndicator(
                         Modifier
-                            .width(100.dp)
-                            .height(100.dp),
+                            .width(60.dp)
+                            .height(60.dp),
                         color = colorResource(id = R.color.red)
                     )
                 }
