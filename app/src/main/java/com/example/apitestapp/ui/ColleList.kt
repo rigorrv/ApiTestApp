@@ -2,6 +2,7 @@ package com.example.apitestapp.ui
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -20,6 +21,7 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -61,33 +63,46 @@ fun CollegeList(
             it?.school_name.toString().lowercase(Locale.getDefault()).contains(search.value)
         }
             .let { infos ->
-                TextField(
-                    value = search.value,
-                    onValueChange = {
-                        search.value = it
-                    },
+                Row(
                     Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 20.dp),
-                    colors = TextFieldDefaults.textFieldColors(
-                        backgroundColor = Color.LightGray,
-                        focusedIndicatorColor = Color.Transparent,
-                        unfocusedIndicatorColor = Color.Transparent
-                    ),
-                    placeholder = {
-                        Text(
-                            text = stringResource(R.string.search_college)
-                        )
-                    },
-                    shape = RoundedCornerShape(8.dp),
-                )
+                        .padding(horizontal = 20.dp)
+                ) {
+                    TextField(
+                        value = search.value,
+                        onValueChange = {
+                            search.value = it
+                        },
+                        Modifier
+                            .fillMaxWidth()
+                            .border(
+                                width = 1.dp,
+                                color = colorResource(id = R.color.red),
+                                RoundedCornerShape(10.dp)
+                            ),
+                        colors = TextFieldDefaults.textFieldColors(
+                            backgroundColor = Color.White,
+                            focusedIndicatorColor = Color.Transparent,
+                            unfocusedIndicatorColor = Color.Transparent
+                        ),
+                        placeholder = {
+                            Text(
+                                text = stringResource(R.string.search_college),
+                                color = colorResource(id = R.color.red),
+                            )
+                        },
+                        shape = RoundedCornerShape(8.dp),
+                    )
+                }
                 Row(
                     Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 20.dp, vertical = 10.dp)
                 ) {
-                    Text(text = "College Name", Modifier.weight(5f),
-                        fontWeight = FontWeight(500))
+                    Text(
+                        text = "College Name", Modifier.weight(5f),
+                        fontWeight = FontWeight(500)
+                    )
                     Text(
                         text = "Dbn",
                         Modifier.weight(5f),
@@ -136,7 +151,10 @@ fun CollegeList(
                         Row(
                             Modifier
                                 .fillMaxWidth()
-                                .background(Color.Black, RoundedCornerShape(20.dp))
+                                .background(
+                                    colorResource(id = R.color.red),
+                                    RoundedCornerShape(20.dp)
+                                )
                                 .clickable {
                                     goCheckout.invoke()
                                 }
