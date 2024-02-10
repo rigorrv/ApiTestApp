@@ -11,7 +11,7 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-    
+
     /**
      * Please Take a look to the Branch photon_test_room
      * Where I added Room and steppers to this project
