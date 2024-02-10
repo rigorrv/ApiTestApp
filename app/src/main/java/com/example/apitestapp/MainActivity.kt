@@ -11,6 +11,14 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+    
+    /**
+     * Please Take a look to the Branch photon_test_room
+     * Where I added Room and steppers to this project
+     * to show how to developed the architecture of an e-commerce easier with compose
+     * MVVM, Dagger Hilt, Room
+     * thank you
+     */
 
     private val collegeViewModel: CollegeViewModel by lazy {
         ViewModelProvider(this)[CollegeViewModel::class.java]
