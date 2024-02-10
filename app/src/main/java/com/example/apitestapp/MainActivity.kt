@@ -32,6 +32,8 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+            val info = collegeViewModel.collegeStateFlow.collectAsState().value
+            val steppers = collegeSteppersViewModel.schoolSteppers.collectAsState().value
             Column(
                 Modifier
                     .fillMaxWidth()
@@ -40,9 +42,7 @@ class MainActivity : ComponentActivity() {
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                val info = collegeViewModel.collegeStateFlow.collectAsState().value
-                val steppers = collegeSteppersViewModel.schoolSteppers.collectAsState().value
-                if (info.isNullOrEmpty()) {
+               if (info.isNullOrEmpty()) {
                     CircularProgressIndicator(
                         Modifier
                             .width(60.dp)
