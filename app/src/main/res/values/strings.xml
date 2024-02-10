@@ -12,7 +12,8 @@
     <string name="cancel">Cancel</string>
     <string name="removing_items">Removing Items</string>
     <string name="checkout_button">CheckButton</string>
-    <string name="add_to_basket">Added into the Basket</string>
+    <string name="add_to_basket">Added into the List</string>
+    <string name="remove_intoto_basket">Remove this College \nfrom the List</string>
     <string name="add_college">Add College</string>
     <string name="college_info">College Info</string>
     <string name="search_college">Search School</string>

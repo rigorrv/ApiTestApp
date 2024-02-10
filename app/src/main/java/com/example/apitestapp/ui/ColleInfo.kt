@@ -13,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -21,6 +22,7 @@ import androidx.compose.ui.unit.sp
 import com.example.apitestapp.R
 import com.example.apitestapp.model.ContentDBItem
 import com.example.apitestapp.utilities.AndroidUtilities.AddSteppers
+import com.example.apitestapp.utilities.AndroidUtilities.RemoveSteppers
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -94,13 +96,14 @@ fun CollegeInfo(
                 }
             } else {
                 Text(
-                    text = stringResource(R.string.add_to_basket),
+                    text = stringResource(R.string.remove_intoto_basket),
                     Modifier
-                        .fillMaxWidth()
-                        .padding(20.dp),
+                        .clickable {
+                            addStepper.invoke(info?.dbn.toString(), RemoveSteppers)
+                        }
+                        .fillMaxWidth(),
                     textAlign = TextAlign.Center,
-                    color = Color.Black,
-                    fontWeight = FontWeight(900)
+                    color = colorResource(id = R.color.red)
                 )
             }
         }
