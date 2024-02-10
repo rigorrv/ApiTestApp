@@ -1,5 +1,6 @@
 package com.example.apitestapp.ui
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -21,7 +22,8 @@ fun Checkout(
     info: ContentDB,
     steppers: MutableList<String>,
     nav: () -> Unit,
-    addSteppers: (String?, String) -> Unit
+    addSteppers: (String?, String) -> Unit,
+    getCollegeInfo: (int: Int) -> Unit
 ) {
     if (steppers.isEmpty()) {
         LaunchedEffect(key1 = 1) {
@@ -48,7 +50,10 @@ fun Checkout(
                         Row(
                             Modifier
                                 .fillMaxWidth()
-                                .padding(horizontal = 20.dp, vertical = 5.dp),
+                                .padding(horizontal = 20.dp, vertical = 5.dp)
+                                .clickable {
+                                    getCollegeInfo.invoke(index)
+                                },
                             verticalAlignment = CenterVertically
                         ) {
                             Text(text = item?.school_name.toString(), Modifier.weight(5f))
