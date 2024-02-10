@@ -29,6 +29,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.apitestapp.R
 import com.example.apitestapp.model.ContentDB
+import com.example.apitestapp.model.ContentDBItem
 import java.util.*
 
 @OptIn(ExperimentalComposeUiApi::class)
@@ -38,7 +39,7 @@ fun CollegeList(
     steppers: MutableList<String?>,
     getInfoSchool: (int: Int) -> Unit,
     addSteppers: (String?, String) -> Unit,
-    addAll: (ContentDB, String) -> Unit,
+    addAll: (List<ContentDBItem?>, String) -> Unit,
     goCheckout: () -> Unit
 ) {
     val scroll = rememberLazyListState()
@@ -60,125 +61,141 @@ fun CollegeList(
             contentDescription = stringResource(R.string.logo),
             Modifier.padding(30.dp)
         )
-        info.toList().filter {
+        info.filter {
             it?.school_name.toString().lowercase(Locale.getDefault()).contains(search.value)
-        }
-            .let { infos ->
-                Row(
+        }.let { infos ->
+            Row(
+                Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 20.dp),
+                verticalAlignment = CenterVertically
+            ) {
+                TextField(
+                    value = search.value,
+                    onValueChange = {
+                        search.value = it
+                    },
                     Modifier
+                        .weight(8f)
                         .fillMaxWidth()
-                        .padding(horizontal = 20.dp)
-                ) {
-                    TextField(
-                        value = search.value,
-                        onValueChange = {
-                            search.value = it
-                        },
-                        Modifier
-                            .fillMaxWidth()
-                            .border(
-                                width = 1.dp,
-                                color = colorResource(id = R.color.red),
-                                RoundedCornerShape(10.dp)
-                            ),
-                        colors = TextFieldDefaults.textFieldColors(
-                            backgroundColor = Color.White,
-                            focusedIndicatorColor = Color.Transparent,
-                            unfocusedIndicatorColor = Color.Transparent
+                        .border(
+                            width = 1.dp,
+                            color = colorResource(id = R.color.red),
+                            RoundedCornerShape(10.dp)
                         ),
-                        placeholder = {
-                            Text(
-                                text = stringResource(R.string.search_college),
-                                color = colorResource(id = R.color.red),
-                            )
-                        },
-                        shape = RoundedCornerShape(8.dp),
-                    )
-                }
-                Row(
-                    Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 20.dp, vertical = 10.dp),
-                    verticalAlignment = CenterVertically
-                ) {
+                    colors = TextFieldDefaults.textFieldColors(
+                        backgroundColor = Color.White,
+                        focusedIndicatorColor = Color.Transparent,
+                        unfocusedIndicatorColor = Color.Transparent
+                    ),
+                    placeholder = {
+                        Text(
+                            text = stringResource(R.string.search_college),
+                            color = colorResource(id = R.color.red),
+                        )
+                    },
+                    shape = RoundedCornerShape(8.dp),
+                )
+                if (search.value.isNotEmpty()) {
                     Text(
-                        text = stringResource(R.string.college_name), Modifier.weight(5f),
-                        fontWeight = FontWeight(500)
-                    )
-                    Text(
-                        text = stringResource(R.string.dbn_tx),
+                        text = stringResource(id = R.string.cancel),
                         Modifier
-                            .weight(5f)
-                            .padding(end = 10.dp),
-                        textAlign = TextAlign.End,
-                        fontWeight = FontWeight(500)
-                    )
-                    AddMultipleSteppers(
-                        info,
-                        steppers,
-                        addAll = { content, action -> addAll.invoke(content, action) }
-                    )
-                }
-                LazyColumn(
-                    Modifier.weight(8f),
-                    state = scroll,
-                    content = {
-                        itemsIndexed(infos) { index, item ->
-                            Row(
-                                Modifier
-                                    .fillMaxWidth()
-                                    .padding(horizontal = 20.dp, vertical = 5.dp)
-                                    .clickable {
-                                        getInfoSchool.invoke(index)
-                                    },
-                                verticalAlignment = CenterVertically
-                            ) {
-                                Text(text = item?.school_name.toString(), Modifier.weight(5f))
-                                Text(
-                                    text = item?.dbn.toString(),
-                                    Modifier
-                                        .weight(5f)
-                                        .padding(end = 10.dp),
-                                    textAlign = TextAlign.End
-                                )
-                                Steppers(
-                                    item,
-                                    steppers
-                                ) { content: String?, action: String ->
-                                    keyBoard?.hide()
-                                    addSteppers.invoke(content, action)
-                                }
-                            }
-                        }
-                    })
-                if (steppers.isNotEmpty()) {
-                    Column(
-                        Modifier
+                            .padding(start = 12.dp)
                             .weight(2f)
-                            .padding(20.dp)
-                    ) {
+                            .clickable {
+                                keyBoard?.hide()
+                                search.value = ""
+                            },
+                        textAlign = TextAlign.End
+                    )
+                }
+            }
+            Row(
+                Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 20.dp, vertical = 10.dp),
+                verticalAlignment = CenterVertically
+            ) {
+                Text(
+                    text = stringResource(R.string.college_name), Modifier.weight(5f),
+                    fontWeight = FontWeight(500)
+                )
+                Text(
+                    text = stringResource(R.string.dbn_tx),
+                    Modifier
+                        .weight(5f)
+                        .padding(end = 10.dp),
+                    textAlign = TextAlign.End,
+                    fontWeight = FontWeight(500)
+                )
+                AddMultipleSteppers(
+                    infos,
+                    steppers
+                ) { content, action ->
+                    keyBoard?.hide()
+                    addAll.invoke(content, action)
+                }
+            }
+            LazyColumn(
+                Modifier.weight(8f),
+                state = scroll,
+                content = {
+                    itemsIndexed(infos) { index, item ->
                         Row(
                             Modifier
                                 .fillMaxWidth()
-                                .background(
-                                    colorResource(id = R.color.red),
-                                    RoundedCornerShape(20.dp)
-                                )
+                                .padding(horizontal = 20.dp, vertical = 5.dp)
                                 .clickable {
-                                    goCheckout.invoke()
-                                }
+                                    getInfoSchool.invoke(index)
+                                },
+                            verticalAlignment = CenterVertically
                         ) {
+                            Text(text = item?.school_name.toString(), Modifier.weight(5f))
                             Text(
-                                text = stringResource(id = R.string.checkout),
+                                text = item?.dbn.toString(),
                                 Modifier
-                                    .fillMaxWidth()
-                                    .padding(20.dp),
-                                textAlign = TextAlign.Center,
-                                color = Color.White
+                                    .weight(5f)
+                                    .padding(end = 10.dp),
+                                textAlign = TextAlign.End
                             )
+                            Steppers(
+                                item,
+                                steppers
+                            ) { content: String?, action: String ->
+                                keyBoard?.hide()
+                                addSteppers.invoke(content, action)
+                            }
                         }
+                    }
+                })
+            if (steppers.isNotEmpty()) {
+                Column(
+                    Modifier
+                        .weight(2f)
+                        .padding(20.dp)
+                ) {
+                    Row(
+                        Modifier
+                            .fillMaxWidth()
+                            .background(
+                                colorResource(id = R.color.red),
+                                RoundedCornerShape(20.dp)
+                            )
+                            .clickable {
+                                goCheckout.invoke()
+                            }
+                    ) {
+                        Text(
+                            text = stringResource(id = R.string.checkout),
+                            Modifier
+                                .fillMaxWidth()
+                                .padding(20.dp),
+                            textAlign = TextAlign.Center,
+                            color = Color.White
+                        )
                     }
                 }
             }
+        }
     }
 }

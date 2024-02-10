@@ -14,13 +14,14 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.apitestapp.model.ContentDB
+import com.example.apitestapp.model.ContentDBItem
 
 @Composable
 fun HomeScreen(
     info: ContentDB,
     steppers: MutableList<String?>,
     addSteppers: (String?, String) -> Unit,
-    addAll: (ContentDB, String) -> Unit
+    addAll: (List<ContentDBItem?>, String) -> Unit
 ) {
 
     val index = remember {

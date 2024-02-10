@@ -2,7 +2,7 @@ package com.example.apitestapp.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.apitestapp.model.ContentDB
+import com.example.apitestapp.model.ContentDBItem
 import com.example.apitestapp.model.Steppers
 import com.example.apitestapp.repository.Repository
 import com.example.apitestapp.utilities.AndroidUtilities.AddAll
@@ -24,7 +24,7 @@ class CollegeSteppersVM @Inject constructor(private val repository: Repository) 
     val schoolSteppers: StateFlow<MutableList<String?>> = _schoolSteppers
     private var school = mutableListOf<String?>()
 
-    fun addAllColleges(content: ContentDB, action: String) {
+    fun addAllColleges(content: List<ContentDBItem?>, action: String) {
         viewModelScope.launch {
             repository.getSteppers()?.let { school = it.content }
             when (action) {

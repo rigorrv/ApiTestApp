@@ -17,14 +17,15 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.apitestapp.R
 import com.example.apitestapp.model.ContentDB
+import com.example.apitestapp.model.ContentDBItem
 import com.example.apitestapp.utilities.AndroidUtilities.AddAll
 import com.example.apitestapp.utilities.AndroidUtilities.RemoveAll
 
 @Composable
 fun AddMultipleSteppers(
-    info: ContentDB,
+    info: List<ContentDBItem?>,
     stepper: MutableList<String?>,
-    addAll: (ContentDB, String) -> Unit
+    addAll: (List<ContentDBItem?>, String) -> Unit
 ) {
     Box(
         modifier = Modifier
