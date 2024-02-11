@@ -1,5 +1,6 @@
 package com.example.apitestapp.ui
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -27,6 +28,9 @@ fun Payment(
     nav: () -> Unit,
     addSteppers: (String?, String) -> Unit
 ) {
+    BackHandler {
+        addSteppers.invoke(null, Delete)
+    }
     Column(
         Modifier
             .fillMaxWidth()
