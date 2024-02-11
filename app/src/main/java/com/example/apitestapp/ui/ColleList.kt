@@ -136,6 +136,14 @@ fun CollegeList(
                     addAll.invoke(content, action)
                 }
             }
+            if (infos.isNullOrEmpty()) {
+                Text(
+                    text = stringResource(R.string.no_result),
+                    Modifier.fillMaxWidth(),
+                    color = colorResource(id = R.color.red),
+                    textAlign = TextAlign.Center
+                )
+            }
             LazyColumn(
                 Modifier.weight(8f),
                 state = scroll,
