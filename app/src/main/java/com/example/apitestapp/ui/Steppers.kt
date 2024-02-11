@@ -6,7 +6,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
@@ -22,25 +21,23 @@ fun Steppers(
     addSteppers: (String?, String) -> Unit
 ) {
     item?.let {
-        if (steppers.contains(item.dbn))
-            Image(
-                imageVector = Icons.Default.Check,
-                contentDescription = stringResource(R.string.checkout_button),
-                Modifier.clickable {
+        Image(
+            imageVector = Icons.Default.Check,
+            contentDescription = stringResource(R.string.checkout_button),
+            Modifier.clickable {
+                if (steppers.contains(item.dbn)) {
                     addSteppers.invoke(item.dbn, RemoveSteppers)
-                },
-                colorFilter = ColorFilter.tint(
-                    colorResource(id = R.color.red),
-                )
-            )
-        else
-            Image(
-                imageVector = Icons.Default.Check,
-                contentDescription = stringResource(R.string.checkout_button),
-                Modifier.clickable {
+                } else {
                     addSteppers.invoke(item.dbn, AddSteppers)
-                },
-                colorFilter = ColorFilter.tint(Color.Gray)
+                }
+            },
+            colorFilter = ColorFilter.tint(
+                if (steppers.contains(item.dbn)) {
+                    colorResource(id = R.color.red)
+                } else {
+                    colorResource(id = R.color.lowGray)
+                }
             )
+        )
     }
 }

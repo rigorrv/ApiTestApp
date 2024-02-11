@@ -40,30 +40,24 @@ fun AddMultipleSteppers(
                 RoundedCornerShape(5.dp)
             )
     ) {
-        if (stepper.isNullOrEmpty()) {
-            Image(
-                imageVector = Icons.Default.Check,
-                contentDescription = stringResource(R.string.checkout_button),
-                Modifier
-                    .clickable {
+        Image(
+            imageVector = Icons.Default.Check,
+            contentDescription = stringResource(R.string.checkout_button),
+            Modifier
+                .clickable {
+                    if (stepper.isNullOrEmpty()) {
                         addAll.invoke(info, AddAll)
-                    },
-                colorFilter = ColorFilter.tint(
-                    Color.LightGray
-                )
-            )
-        } else {
-            Image(
-                imageVector = Icons.Default.Check,
-                contentDescription = stringResource(R.string.checkout_button),
-                Modifier
-                    .clickable {
+                    } else {
                         addAll.invoke(info, RemoveAll)
-                    },
-                colorFilter = ColorFilter.tint(
-                    colorResource(id = R.color.red),
-                )
+                    }
+                },
+            colorFilter = ColorFilter.tint(
+                if (stepper.isNullOrEmpty()) {
+                    colorResource(id = R.color.lowGray)
+                } else {
+                    colorResource(id = R.color.red)
+                }
             )
-        }
+        )
     }
 }
