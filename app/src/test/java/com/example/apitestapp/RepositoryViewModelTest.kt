@@ -1,8 +1,9 @@
 package com.example.apitestapp
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import com.example.apitestapp.model.ContentDB
 import com.example.apitestapp.model.ContentDBItem
-import com.example.apitestapp.repository.Repository
+import com.example.apitestapp.repository.RetrofitRepository
 import com.example.apitestapp.viewmodel.CollegeVM
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.test.StandardTestDispatcher
@@ -23,7 +24,7 @@ class RepositoryViewModelTest {
     val rule = InstantTaskExecutorRule()
 
     @Mock
-    private lateinit var mockRepository: Repository
+    private lateinit var mockRepository: RetrofitRepository
     private lateinit var viewModel: CollegeVM
     private val testDispatcher = StandardTestDispatcher()
 
@@ -36,15 +37,14 @@ class RepositoryViewModelTest {
 
     @Test
     fun testFetchRepositories() = runTest {
-        val mockRepositories = arrayListOf(
-            ContentDBItem(dbn = "", overview_paragraph = "", school_name = ""),
-            ContentDBItem(dbn = "", overview_paragraph = "", school_name = ""),
-            ContentDBItem(dbn = "", overview_paragraph = "", school_name = ""),
-            ContentDBItem(dbn = "", overview_paragraph = "", school_name = "")
-        )
-        `when`(mockRepository.getData())
+        val mockRepositories = ContentDB()
+        mockRepositories.add(ContentDBItem(dbn = "", overview_paragraph = "", school_name = ""))
+        mockRepositories.add(ContentDBItem(dbn = "", overview_paragraph = "", school_name = ""))
+        mockRepositories.add(ContentDBItem(dbn = "", overview_paragraph = "", school_name = ""))
+        mockRepositories.add(ContentDBItem(dbn = "", overview_paragraph = "", school_name = ""))
+        `when`(mockRepository.getData()).thenReturn(mockRepositories)
         testDispatcher.scheduler.advanceUntilIdle()
-        val repositories = viewModel.getData()
+        val repositories = viewModel.collegeStateFlow.value
         assertEquals(mockRepositories, repositories)
     }
 
