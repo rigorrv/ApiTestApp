@@ -9,9 +9,13 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
-import org.junit.*
+import org.junit.After
+import org.junit.Assert.assertEquals
+import org.junit.Before
+import org.junit.Rule
+import org.junit.Test
 import org.mockito.Mock
-import org.mockito.Mockito
+import org.mockito.Mockito.`when`
 import org.mockito.MockitoAnnotations
 
 class CollegeVMTest {
@@ -37,15 +41,15 @@ class CollegeVMTest {
         content.add(ContentDBItem("", "", ""))
         content.add(ContentDBItem("", "", ""))
         content.add(ContentDBItem("", "", ""))
-        Mockito.`when`(repository.getData()).thenReturn(content)
+        `when`(repository.getData()).thenReturn(content)
         dispatcher.scheduler.advanceUntilIdle()
-        val repository = collegeVM.collegeStateFlow.value
-        print(repository)
-        Assert.assertEquals(repository, content)
+        val repo = collegeVM.collegeStateFlow.value
+        assertEquals(repo, content)
     }
 
     @After
     fun close() {
         Dispatchers.shutdown()
     }
+
 }
