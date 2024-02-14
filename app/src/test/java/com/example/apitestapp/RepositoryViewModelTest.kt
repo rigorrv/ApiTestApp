@@ -24,35 +24,28 @@ class RepositoryViewModelTest {
     val rule = InstantTaskExecutorRule()
 
     @Mock
-    private lateinit var mockRepository: Repository
-    private lateinit var viewModel: CollegeVM
-    private val testDispatcher = StandardTestDispatcher()
+    lateinit var repository: Repository
+    lateinit var collegeVM: CollegeVM
+    private val dispatcher = StandardTestDispatcher()
 
     @Before
     fun setup() {
         MockitoAnnotations.openMocks(this)
-        Dispatchers.setMain(testDispatcher)
-        viewModel = CollegeVM(mockRepository)
+        Dispatchers.setMain(dispatcher)
+        collegeVM = CollegeVM(repository)
     }
 
     @Test
-    fun testFetchRepositories() = runTest {
-        val mockRepositories = ContentDB()
-        mockRepositories.add(
-            ContentDBItem(
-                dbn = "1x2301",
-                overview_paragraph = "Hello School",
-                school_name = "UVM"
-            )
-        )
-        mockRepositories.add(ContentDBItem(dbn = "", overview_paragraph = "", school_name = ""))
-        mockRepositories.add(ContentDBItem(dbn = "", overview_paragraph = "", school_name = ""))
-        mockRepositories.add(ContentDBItem(dbn = "", overview_paragraph = "", school_name = ""))
-        `when`(mockRepository.getData()).thenReturn(mockRepositories)
-        testDispatcher.scheduler.advanceUntilIdle()
-        val repositories = viewModel.collegeStateFlow.value
-        println(mockRepositories)
-        assertEquals(mockRepositories, repositories)
+    fun fetchApi() = runTest {
+        val content = ContentDB()
+        content.add(ContentDBItem("", "", ""))
+        content.add(ContentDBItem("", "", ""))
+        content.add(ContentDBItem("", "", ""))
+        `when`(repository.getData()).thenReturn(content)
+        dispatcher.scheduler.advanceUntilIdle()
+        val repository = collegeVM.collegeStateFlow.value
+        print(repository)
+        assertEquals(repository, content)
     }
 
     @After
