@@ -38,7 +38,13 @@ class RepositoryViewModelTest {
     @Test
     fun testFetchRepositories() = runTest {
         val mockRepositories = ContentDB()
-        mockRepositories.add(ContentDBItem(dbn = "", overview_paragraph = "", school_name = ""))
+        mockRepositories.add(
+            ContentDBItem(
+                dbn = "1x2301",
+                overview_paragraph = "Hello School",
+                school_name = "UVM"
+            )
+        )
         mockRepositories.add(ContentDBItem(dbn = "", overview_paragraph = "", school_name = ""))
         mockRepositories.add(ContentDBItem(dbn = "", overview_paragraph = "", school_name = ""))
         mockRepositories.add(ContentDBItem(dbn = "", overview_paragraph = "", school_name = ""))
