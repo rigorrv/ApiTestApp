@@ -23,11 +23,8 @@ class CollegeVM @Inject constructor(private val repository: Repository) : ViewMo
     fun getData() {
         viewModelScope.launch {
             repository.getData().apply {
-                if (this.isSuccessful) {
-                    _collegeStateFlow.value = this.body()
-                }
+                _collegeStateFlow.value = this
             }
         }
     }
-
 }
