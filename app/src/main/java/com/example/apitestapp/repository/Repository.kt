@@ -5,7 +5,7 @@ import com.example.apitestapp.model.Steppers
 import com.example.apitestapp.room.Dao
 import javax.inject.Inject
 
-class Repository @Inject constructor(private val api: Api, private val dao: Dao) {
+open class Repository @Inject constructor(private val api: Api, private val dao: Dao) {
 
     suspend fun getData() = api.getData()
 
